@@ -1,0 +1,13 @@
+window_sizes 1920 1018 450 1350 720 82
+diagrams
+  active  activitydiagram_ref 128002 // ad
+    1167 688 100 4 0 0
+  usecasediagram_ref 128130 // ucd
+    1460 860 100 4 12 0
+end
+show_stereotypes
+selected usecase_ref 128258 // Schwierigkeit wählen
+open
+  activityaction_ref 128130 // activity action Spiel wählen
+end
+end

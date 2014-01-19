@@ -1,0 +1,95 @@
+format 76
+
+activitynodecanvas 128002 activitynode_ref 128002 // initial_node
+  xyz 235 85 2000
+end
+activitynodecanvas 128130 activitynode_ref 128130 // activity_final
+  xyz 213 377 2000
+end
+activityactioncanvas 128386 activityaction_ref 128002 // activity action App starten
+  show_infonote default drawing_language default show_stereotype_properties default
+  show_opaque_action_definition default
+  xyzwh 196 126 2000 100 60
+end
+activityactioncanvas 129282 activityaction_ref 128130 // activity action Spiel wählen
+  show_infonote default drawing_language default show_stereotype_properties default
+  show_opaque_action_definition default
+  xyzwh 369 125 2005 100 60
+end
+activitynodecanvas 130434 activitynode_ref 128642 // decision
+  xyz 533 137 2000
+end
+activityactioncanvas 130690 activityaction_ref 128386 // activity action vorheriges Spiel laden
+  show_infonote default drawing_language default show_stereotype_properties default
+  show_opaque_action_definition default
+  xyzwh 574 204 2000 100 60
+end
+activityactioncanvas 130818 activityaction_ref 128514 // activity action neues Spiel starten
+  show_infonote default drawing_language default show_stereotype_properties default
+  show_opaque_action_definition default
+  xyzwh 417 206 2000 100 60
+end
+activityactioncanvas 131202 activityaction_ref 128642 // activity action Spiel spielen
+  show_infonote default drawing_language default show_stereotype_properties default
+  show_opaque_action_definition default
+  xyzwh 493 360 2005 100 60
+end
+activitynodecanvas 131330 activitynode_ref 128770 // merge
+  xyz 530 296 2010
+end
+activityactioncanvas 131842 activityaction_ref 128770 // activity action Spiel beenden
+  show_infonote default drawing_language default show_stereotype_properties default
+  show_opaque_action_definition default
+  xyzwh 301 359 2000 100 60
+end
+flowcanvas 128514 flow_ref 128002 // <flow>
+  
+  from ref 128002 z 2001 to ref 128386
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+flowcanvas 130178 flow_ref 128898 // <flow>
+  
+  from ref 128386 z 2006 to ref 129282
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+flowcanvas 130562 flow_ref 129154 // <flow>
+  
+  from ref 129282 z 2006 to ref 130434
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+flowcanvas 130946 flow_ref 129282 // <flow>
+  
+  from ref 130434 z 2001 to ref 130818
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+flowcanvas 131074 flow_ref 129410 // <flow>
+  
+  from ref 130434 z 2001 to ref 130690
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+flowcanvas 131458 flow_ref 129538 // <flow>
+  
+  from ref 130818 z 2011 to ref 131330
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+flowcanvas 131586 flow_ref 129666 // <flow>
+  
+  from ref 130690 z 2011 to ref 131330
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+flowcanvas 131714 flow_ref 129794 // <flow>
+  
+  from ref 131330 z 2011 to ref 131202
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+flowcanvas 131970 flow_ref 129922 // <flow>
+  
+  from ref 131202 z 2006 to ref 131842
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+flowcanvas 132098 flow_ref 130050 // <flow>
+  
+  from ref 131842 z 2001 to ref 128130
+  show_infonote default drawing_language default show_stereotype_properties default write_horizontally default
+end
+end
