@@ -5,30 +5,33 @@ classcanvas 128002 class_ref 128002 // Anwender
   xyz 104 238 2000
 end
 subject 128258 "Andrid-Spielesammlung"
-  xyzwh 194 105 2000 216 337
+  xyzwh 197 122 2000 325 248
 usecasecanvas 128386 usecase_ref 128002 // Spiel starten
-  xyzwh 273 140 3005 64 32 label_xy 275 172
+  xyzwh 224 204 3005 64 32 label_xy 226 236
 end
 usecasecanvas 128514 usecase_ref 128130 // Spiel speichern
-  xyzwh 272 198 3005 65 33 label_xy 267 230
+  xyzwh 417 203 3005 65 33 label_xy 412 235
 end
 usecasecanvas 128642 usecase_ref 128258 // Schwierigkeit wählen
-  xyzwh 272 366 3005 65 33 label_xy 252 398
+  xyzwh 417 144 3005 65 33 label_xy 397 176
 end
 usecasecanvas 129154 usecase_ref 134786 // Highscre ansehen
-  xyzwh 272 308 3005 64 32 label_xy 260 340
+  xyzwh 229 289 3005 64 32 label_xy 217 321
 end
 usecasecanvas 129410 usecase_ref 134914 // Spiel laden
-  xyzwh 272 255 3005 64 32 label_xy 278 287
+  xyzwh 417 264 3005 64 32 label_xy 423 296
 end
 line 128770 ----
   from ref 128002 z 3006 to ref 128386
-line 128898 ----
-  from ref 128002 z 3006 to ref 128514
-line 129026 ----
-  from ref 128002 z 3006 to ref 128642
 line 129282 ----
   from ref 128002 z 3006 to ref 129154
-line 129538 ----
-  from ref 128002 z 3006 to ref 129410
+simplerelationcanvas 130050 simplerelation_ref 128386
+  from ref 128642 z 3006 stereotype "<<extend>>" xyz 323 193 3000 to ref 128386
+end
+simplerelationcanvas 130178 simplerelation_ref 128514
+  from ref 128514 z 3006 stereotype "<<extend>>" xyz 323 219 3000 to ref 128386
+end
+simplerelationcanvas 130434 simplerelation_ref 128642
+  from ref 129410 z 3006 stereotype "<<extend>>" xyz 323 253 3000 to ref 128386
+end
 end

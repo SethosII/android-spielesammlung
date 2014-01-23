@@ -1,6 +1,6 @@
 format 76
 "bouml"
-  revision 4
+  revision 5
   modified_by 2 "Paul"
 
 
@@ -214,6 +214,11 @@ ${members}}
       //activity diagram settings
       package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
       show_infonote default drawing_language default show_stereotype_properties default
+      simplerelation 128514
+	-_->
+	  stereotype "extend"
+	  on usecase_ref 128002 // Spiel starten
+      end
     end
 
     usecase 128258 "Schwierigkeit wählen"
@@ -234,6 +239,11 @@ ${members}}
       package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
       show_infonote default drawing_language default show_stereotype_properties default
       comment "Wunschkriterium"
+      simplerelation 128386
+	-_->
+	  stereotype "extend"
+	  on usecase_ref 128002 // Spiel starten
+      end
     end
 
     usecase 134786 "Highscre ansehen"
@@ -272,6 +282,11 @@ ${members}}
       //activity diagram settings
       package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
       show_infonote default drawing_language default show_stereotype_properties default
+      simplerelation 128642
+	-_->
+	  stereotype "extend"
+	  on usecase_ref 128002 // Spiel starten
+      end
     end
   end
 end

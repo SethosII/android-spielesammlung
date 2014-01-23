@@ -1,8 +1,8 @@
 window_sizes 1366 746 375 1125 600 82
 diagrams
-  usecasediagram_ref 128130 // ucd
-    971 545 100 4 0 0
-  active  activitydiagram_ref 128002 // ad
+  active  usecasediagram_ref 128130 // ucd
+    985 590 100 4 28 0
+  activitydiagram_ref 128002 // ad
     985 590 100 4 36 0
 end
 show_stereotypes
