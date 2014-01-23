@@ -1,19 +1,25 @@
 format 76
 
-classcanvas 128002 class_ref 128002 // Nutzer
+classcanvas 128002 class_ref 128002 // Anwender
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 104 238 2000
 end
 subject 128258 "Andrid-Spielesammlung"
-  xyzwh 201 162 2000 219 226
+  xyzwh 194 105 2000 216 337
 usecasecanvas 128386 usecase_ref 128002 // Spiel starten
-  xyzwh 280 196 3005 64 32 label_xy 282 228
+  xyzwh 273 140 3005 64 32 label_xy 275 172
 end
-usecasecanvas 128514 usecase_ref 128130 // Spiel speichern/laden
-  xyzwh 279 254 3005 65 33 label_xy 259 286
+usecasecanvas 128514 usecase_ref 128130 // Spiel speichern
+  xyzwh 272 198 3005 65 33 label_xy 267 230
 end
 usecasecanvas 128642 usecase_ref 128258 // Schwierigkeit wählen
-  xyzwh 279 311 3005 65 33 label_xy 259 343
+  xyzwh 272 366 3005 65 33 label_xy 252 398
+end
+usecasecanvas 129154 usecase_ref 134786 // Highscre ansehen
+  xyzwh 272 308 3005 64 32 label_xy 260 340
+end
+usecasecanvas 129410 usecase_ref 134914 // Spiel laden
+  xyzwh 272 255 3005 64 32 label_xy 278 287
 end
 line 128770 ----
   from ref 128002 z 3006 to ref 128386
@@ -21,4 +27,8 @@ line 128898 ----
   from ref 128002 z 3006 to ref 128514
 line 129026 ----
   from ref 128002 z 3006 to ref 128642
+line 129282 ----
+  from ref 128002 z 3006 to ref 129154
+line 129538 ----
+  from ref 128002 z 3006 to ref 129410
 end

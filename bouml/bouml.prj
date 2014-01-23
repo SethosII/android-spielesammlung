@@ -1,6 +1,6 @@
 format 76
 "bouml"
-  revision 3
+  revision 4
   modified_by 2 "Paul"
 
 
@@ -57,7 +57,7 @@ format 76
     show_infonote default drawing_language default show_stereotype_properties default
     activity 128002 "activity"
       activitydiagram 128002 "ad"
-	package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+	package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations no shadow default
 	show_infonote default drawing_language default show_stereotype_properties default
 	size A4
       end
@@ -124,8 +124,38 @@ format 76
 
       activityaction 128770 "Spiel beenden"
 	opaque_action
-	flow 130050 "<flow>"
+	flow 136578 "<flow>"
+	  on activitynode_ref 135298 // decision
+	end
+      end
+
+      activitynode 135298 decision ""
+	flow 136834 "<flow>"
+	  on activityaction_ref 135298 // activity action Spiel speichern
+	end
+
+	flow 136962 "<flow>"
+	  on activityaction_ref 135426 // activity action Spiel verwerfen
+	end
+      end
+
+      activitynode 135426 merge ""
+	flow 136706 "<flow>"
 	  on activitynode_ref 128130 // activity_final
+	end
+      end
+
+      activityaction 135298 "Spiel speichern"
+	opaque_action
+	flow 137090 "<flow>"
+	  on activitynode_ref 135426 // merge
+	end
+      end
+
+      activityaction 135426 "Spiel verwerfen"
+	opaque_action
+	flow 137218 "<flow>"
+	  on activitynode_ref 135426 // merge
 	end
       end
     end
@@ -135,7 +165,7 @@ format 76
       size A4
     end
 
-    class 128002 "Nutzer"
+    class 128002 "Anwender"
       visibility package stereotype "actor"
       cpp_decl ""
       java_decl "${comment}${@}${visibility}${final}${abstract}class ${name}${extends}${implements} {
@@ -167,7 +197,7 @@ ${members}}
       show_infonote default drawing_language default show_stereotype_properties default
     end
 
-    usecase 128130 "Spiel speichern/laden"
+    usecase 128130 "Spiel speichern"
       //use case diagram settings
       package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
       //sequence diagram settings
@@ -203,8 +233,45 @@ ${members}}
       //activity diagram settings
       package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
       show_infonote default drawing_language default show_stereotype_properties default
+      comment "Wunschkriterium"
     end
 
-  end
+    usecase 134786 "Highscre ansehen"
+      //use case diagram settings
+      package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+      //sequence diagram settings
+      show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+      //collaboration diagram settings
+      show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+      //class diagram settings
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      //object diagram settings
+       write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+      //state diagram settings
+      package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+      show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+      //activity diagram settings
+      package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+      show_infonote default drawing_language default show_stereotype_properties default
+    end
 
+    usecase 134914 "Spiel laden"
+      //use case diagram settings
+      package_name_in_tab default show_context default auto_label_position default draw_all_relations default class_drawing_mode default shadow default show_stereotype_properties default
+      //sequence diagram settings
+      show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+      //collaboration diagram settings
+      show_full_operations_definition default show_hierarchical_rank default write_horizontally default class_drawing_mode default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+      //class diagram settings
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      //object diagram settings
+       write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+      //state diagram settings
+      package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+      show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+      //activity diagram settings
+      package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+      show_infonote default drawing_language default show_stereotype_properties default
+    end
+  end
 end
