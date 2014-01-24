@@ -28,5 +28,5 @@ proguard/
 *.iws
 .idea/
 
-# Open Document files
-*.odt#
+# TMP files
+*~*
