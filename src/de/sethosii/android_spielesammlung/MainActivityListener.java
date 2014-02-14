@@ -4,12 +4,12 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class MainListener implements OnClickListener {
+public class MainActivityListener implements OnClickListener {
 	
 	private MainActivity mainActivity;
 	
 
-	public MainListener(MainActivity mainActivity) {
+	public MainActivityListener(MainActivity mainActivity) {
 		this.mainActivity = mainActivity;
 	}
 
