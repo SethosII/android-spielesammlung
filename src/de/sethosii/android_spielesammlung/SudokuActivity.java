@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 public class MainActivity extends Activity {
 
@@ -25,6 +26,10 @@ public class MainActivity extends Activity {
 	Button focused_old;
 	// the generated sudoku
 	Integer[][] sudoku;
+	// the button showing the win message
+	Button win;
+	//the menu
+	LinearLayout optionsmenu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +41,16 @@ public class MainActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+
+		win = (Button)findViewById(R.id.winbutton);
+		optionsmenu = (LinearLayout)findViewById(R.id.menu);
 		
-		//difficulty hard=60;average=50;easy=40
-		diff = 40;
+		win.setVisibility(View.GONE);
+		optionsmenu.setVisibility(View.GONE);
+		
+
+		// difficulty hard=60;average=50;easy=40
+		diff = 1;
 		inputs = new ArrayList<Integer>();
 		fields = new Integer[9][9];
 
@@ -48,7 +60,7 @@ public class MainActivity extends Activity {
 
 	}
 
-	//orders the fields
+	// orders the fields
 	public void getallfields() {
 		int counter = 0;
 		for (int i = 0; i < 9; i++) {
@@ -114,10 +126,11 @@ public class MainActivity extends Activity {
 
 			}
 
+			// checks if player won
 			if (fillcheck() == true) {
 				if (inputcheck() == true) {
-					Button bmenu = (Button) findViewById(R.id.input1);
-					bmenu.setText("WIN!");
+					win.setText("You won!\n Touch to Continue!");
+					win.setVisibility(View.VISIBLE);
 				}
 			}
 		}
@@ -128,10 +141,13 @@ public class MainActivity extends Activity {
 	public void getField(View v) {
 		focused_old = focused;
 		focused = (Button) findViewById(v.getId());
-		focused.setBackgroundColor(Color.GRAY);
-		if (focused_old != null) {
-			focused_old.setBackgroundColor(Color.WHITE);
+		if (focused != focused_old) {
+			focused.setBackgroundColor(Color.GRAY);
+			if (focused_old != null) {
+				focused_old.setBackgroundColor(Color.WHITE);
+			}
 		}
+
 	}
 
 	// deletes all inputs
@@ -152,16 +168,17 @@ public class MainActivity extends Activity {
 		sudoku = new Integer[9][9];
 		int hswitch = 0;
 		int vswitch = 0;
+
+		win.setVisibility(View.GONE);
 		
-		//deletes previous inputs
-		if(focused != null)
-		{
+		// deletes previous inputs
+		if (focused != null) {
 			focused.setEnabled(false);
 			focused.setBackgroundColor(Color.WHITE);
 			focused = null;
 		}
 
-		//picks numbers of run without putting back
+		// picks numbers of run without putting back
 		for (int i = 0; i < 9; i++) {
 			int index = (int) (Math.random() * (pointer + 1));
 			random[i] = run[index];
@@ -169,7 +186,7 @@ public class MainActivity extends Activity {
 			pointer--;
 		}
 
-		//fills and shifts the fieldarray
+		// fills and shifts the fieldarray
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				sudoku[i][j] = random[shift];
@@ -208,9 +225,9 @@ public class MainActivity extends Activity {
 			}
 		}
 
-		//shuffles the array
-		
-		//shuffles horizontal lines
+		// shuffles the array
+
+		// shuffles horizontal lines
 		for (int z = 0; z < 3; z++) {
 			int y1 = (int) (Math.random() * 3) + hswitch;
 			int y2 = (int) (Math.random() * 3) + hswitch;
@@ -225,7 +242,7 @@ public class MainActivity extends Activity {
 			hswitch = hswitch + 3;
 		}
 
-		//shuffles vertical lines
+		// shuffles vertical lines
 		for (int z = 0; z < 3; z++) {
 			int x1 = (int) (Math.random() * 3) + vswitch;
 			int x2 = (int) (Math.random() * 3) + vswitch;
@@ -290,6 +307,18 @@ public class MainActivity extends Activity {
 		}
 		return true;
 	}
+	
+	public void showMenu(View v)
+	{
+		optionsmenu.setVisibility(View.VISIBLE);
+	}
+	
+	public void hideMenu(View v)
+	{
+		optionsmenu.setVisibility(View.GONE);
+	}
+	
+	
 
 	// public boolean inputcheck() {
 	// boolean checkx = true;
