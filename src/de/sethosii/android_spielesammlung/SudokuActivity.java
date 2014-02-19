@@ -50,8 +50,8 @@ public class SudokuActivity extends Activity {
 		optionsmenu.setVisibility(View.GONE);
 		
 
-		// difficulty hard=60;average=50;easy=40
-		diff = 1;
+		//if difficulty is higher than 50 an endless loop is generated
+		diff = 50;
 		inputs = new ArrayList<Integer>();
 		fields = new Integer[9][9];
 
@@ -70,15 +70,15 @@ public class SudokuActivity extends Activity {
 				counter++;
 			}
 		}
-		for (int i = 0; i < 9; i++) {
-			for (int j = 3; j < 6; j++) {
-				fields[i][j] = R.id.field11 + counter;
+		for (int k = 0; k < 9; k++) {
+			for (int l = 3; l < 6; l++) {
+				fields[k][l] = R.id.field11 + counter;
 				counter++;
 			}
 		}
-		for (int i = 0; i < 9; i++) {
-			for (int j = 6; j < 9; j++) {
-				fields[i][j] = R.id.field11 + counter;
+		for (int m = 0; m < 9; m++) {
+			for (int n = 6; n < 9; n++) {
+				fields[m][n] = R.id.field11 + counter;
 				counter++;
 			}
 		}
@@ -174,18 +174,17 @@ public class SudokuActivity extends Activity {
 		int vswitch = 0;
 
 		win.setVisibility(View.GONE);
-		
+
 		// deletes previous inputs
 		if (focused != null) {
-			focused.setEnabled(false);
 			focused.setBackgroundColor(Color.WHITE);
 			focused = null;
 		}
 
-		// picks numbers of run without putting back
-		for (int i = 0; i < 9; i++) {
+		// picks numbers of run without putting back into random
+		for (int h = 0; h < 9; h++) {
 			int index = (int) (Math.random() * (pointer + 1));
-			random[i] = run[index];
+			random[h] = run[index];
 			run[index] = run[pointer];
 			pointer--;
 		}
@@ -228,14 +227,14 @@ public class SudokuActivity extends Activity {
 			default:
 				Log.e(Tag, "generatesudoku - switch failed!!!");
 				break;
-				
+
 			}
 		}
 
 		// shuffles the array
 
 		// shuffles horizontal lines
-		for (int z = 0; z < 3; z++) {
+		for (int k = 0; k < 3; k++) {
 			int y1 = (int) (Math.random() * 3) + hswitch;
 			int y2 = (int) (Math.random() * 3) + hswitch;
 
@@ -250,7 +249,7 @@ public class SudokuActivity extends Activity {
 		}
 
 		// shuffles vertical lines
-		for (int z = 0; z < 3; z++) {
+		for (int l = 0; l < 3; l++) {
 			int x1 = (int) (Math.random() * 3) + vswitch;
 			int x2 = (int) (Math.random() * 3) + vswitch;
 
@@ -263,147 +262,207 @@ public class SudokuActivity extends Activity {
 			}
 			vswitch = vswitch + 3;
 		}
+		
+		//sudoku with gaps to be completed
+		Integer[][] gapsudoku = new Integer[9][9];
 
-		// sets the calculated fields
-		for (int f = 0; f < 9; f++) {
-			for (int g = 0; g < 9; g++) {
-				Button b = (Button) findViewById(fields[f][g]);
-				b.setText(sudoku[f][g].toString());
-				b.setEnabled(false);
+		for (int m = 0; m < 9; m++) {
+			for (int n = 0; n < 9; n++) {
+				gapsudoku[m][n] = sudoku[m][n];
 			}
 		}
 
-		// deletes random fields
-		for (int m = 0; m < diff; m++) {
+		// deletes fields that don´t change the uniqueness
+		for (int o = 0; o < diff; o++) {
 			int rx = (int) (Math.random() * 9);
 			int ry = (int) (Math.random() * 9);
-			Button b = (Button) findViewById(fields[rx][ry]);
-			if (b.getText() == "") {
-				m--;
-			} else if (b.getText() != "") {
-				b.setText("");
-				b.setEnabled(true);
+			int save = gapsudoku[rx][ry];
+
+			// if field is empty skip back
+			if (gapsudoku[rx][ry] == 0) {
+				o--;
+			}
+
+			// if field is not empty check if random field can be removed
+			else if (gapsudoku[rx][ry] != 0) {
+				gapsudoku[rx][ry] = 0;
+				if (checksolutions(gapsudoku) == false) {
+					gapsudoku[rx][ry] = save;
+					o--;
+				}
 			}
 
 		}
-	}
 
-	// checks if all fields are filled
-	public boolean fillcheck() {
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				Button b = (Button) findViewById(fields[i][j]);
-				if (b.getText() == "") {
-					return false;
+		// sets the calculated sudoku with gaps on buttons
+		for (int p = 0; p < 9; p++) {
+			for (int q = 0; q < 9; q++) {
+				Button b = (Button) findViewById(fields[p][q]);
+				if (gapsudoku[p][q] == 0) {
+					b.setText("");
+					b.setEnabled(true);
+				}
+
+				if (gapsudoku[p][q] != 0) {
+					b.setText(gapsudoku[p][q].toString());
+					b.setEnabled(false);
 				}
 			}
 		}
-		return true;
-	}
 
-	// checks if all fields were filled correctly
-	public boolean inputcheck() {
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				Button b = (Button) findViewById(fields[i][j]);
-				int number = Integer.parseInt(b.getText().toString());
-				if (sudoku[i][j] != number) {
-					return false;
+	}
+	
+	// checks if all fields were filled by player
+		public boolean fillcheck() {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					Button b = (Button) findViewById(fields[i][j]);
+					if (b.getText() == "") {
+						return false;
+					}
 				}
 			}
+			return true;
 		}
-		return true;
-	}
-	
-	public void showMenu(View v)
-	{
-		optionsmenu.setVisibility(View.VISIBLE);
-	}
-	
-	public void hideMenu(View v)
-	{
-		optionsmenu.setVisibility(View.GONE);
-	}
-	
-	
 
-	// public boolean inputcheck() {
-	// boolean checkx = true;
-	// boolean checky = true;
-	// boolean checkxy = true;
-	// int xup = 0;
-	// int xdown = 0;
-	// int yup = 0;
-	// int ydown = 0;
-	// for (int i = 0; i < 9; i++) {
-	// for (int j = 0; j < 9; j++) {
-	// Button b = (Button) findViewById(fields[i][j]);
-	//
-	// // checks horizontal
-	// for (int k = 0; k < 9; k++) {
-	// Button bx = (Button) findViewById(fields[i][k]);
-	// if (((b.getText().equals(bx.getText())))
-	// && (!(b.equals(bx)))) {
-	// checkx = false;
-	// }
-	// }
-	//
-	// // checks vertical
-	// for (int l = 0; l < 9; l++) {
-	// Button by = (Button) findViewById(fields[l][j]);
-	// if (((b.getText().equals(by.getText())))
-	// && (!(b.equals(by)))) {
-	// checky = false;
-	// }
-	// }
-	// if(i>=0 && i<=2)
-	// {
-	// yup=2;
-	// ydown=0;
-	// }
-	// if(i>=3 && i<=5)
-	// {
-	// yup=5;
-	// ydown=3;
-	// }
-	// if(i>=6 && i<=8)
-	// {
-	// yup=8;
-	// ydown=6;
-	// }
-	// if(j>=0 && i<=2)
-	// {
-	// xup=2;
-	// xdown=0;
-	// }
-	// if(j>=3 && i<=5)
-	// {
-	// xup=5;
-	// xdown=3;
-	// }
-	// if(j>=6 && i<=8)
-	// {
-	// xup=8;
-	// xdown=6;
-	// }
-	// while(ydown<=yup)
-	// {
-	// while(xdown<=xup)
-	// {
-	// Button bxy = (Button)findViewById(fields[ydown][xdown]);
-	//
-	// if (((b.getText().equals(bxy.getText())))
-	// && (!(b.equals(bxy)))) {
-	// checkxy = false;
-	// }
-	//
-	// xdown++;
-	// }
-	// ydown++;
-	// }
-	// }
-	// }
-	// return checkx && checky && checkxy;
-	//
-	// }
+		// checks if all fields were filled correctly by player
+		public boolean inputcheck() {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					Button b = (Button) findViewById(fields[i][j]);
+					int number = Integer.parseInt(b.getText().toString());
+					if (sudoku[i][j] != number) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		public void showMenu(View v) {
+			optionsmenu.setVisibility(View.VISIBLE);
+		}
+
+		public void hideMenu(View v) {
+			optionsmenu.setVisibility(View.GONE);
+		}
+
+		//checks if sudoku with gap has a distinct solution
+		public boolean checksolutions(Integer[][] gapsudoku) {
+			Integer[][] copy = new Integer[9][9];
+			int[] run = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+			// copy gapsudoko, so it can be filled
+			for (int g = 0; g < 9; g++) {
+				for (int h = 0; h < 9; h++) {
+					copy[g][h] = gapsudoku[g][h];
+				}
+			}
+
+			// is solution completely filled
+			boolean filled = false;
+
+			// sets all fields with just one solution
+			while (!filled) {
+				filled = true;
+				for (int i = 0; i < 9; i++) {
+					for (int j = 0; j < 9; j++) {
+						if (copy[i][j] == 0) {
+							int solutions = 0;
+							int save = 0;
+							for (int k = 0; k < 9; k++) {
+								if (validate(run[k], i, j, copy) == true) {
+									solutions++;
+									save = run[k];
+								}
+							}
+
+							// if a distinct solution for a field was found, set
+							// solution, repeat everything
+							if (solutions == 1) {
+								copy[i][j] = save;
+								filled = false;
+							}
+						}
+					}
+				}
+			}
+
+			// checks if there are still fields missing
+			for (int m = 0; m < 9; m++) {
+				for (int n = 0; n < 9; n++) {
+					if (copy[m][n] == 0) {
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+
+		// checks if a number is valid at the position (y,x)
+		public boolean validate(int number, int y, int x, Integer[][] copy) {
+			boolean checkx = true;
+			boolean checky = true;
+			boolean checkxy = true;
+			int xu = 0;
+			int xd = 0;
+			int yu = 0;
+			int yd = 0;
+
+			// checks horizontal
+			for (int k = 0; k < 9; k++) {
+				if (number == copy[y][k]) {
+					checkx = false;
+				}
+			}
+
+			// checks vertical
+			for (int l = 0; l < 9; l++) {
+				if (number == copy[l][x]) {
+					checky = false;
+				}
+			}
+
+			// gets the box
+			if (y >= 0 && y <= 2) {
+				yu = 2;
+				yd = 0;
+			}
+			if (y >= 3 && y <= 5) {
+				yu = 5;
+				yd = 3;
+			}
+			if (y >= 6 && y <= 8) {
+				yu = 8;
+				yd = 6;
+			}
+			if (x >= 0 && x <= 2) {
+				xu = 2;
+				xd = 0;
+			}
+			if (x >= 3 && x <= 5) {
+				xu = 5;
+				xd = 3;
+			}
+			if (x >= 6 && x <= 8) {
+				xu = 8;
+				xd = 6;
+			}
+
+			// checks in box
+			while (yd <= yu) {
+				while (xd <= xu) {
+					if (number == copy[yd][xd]) {
+						checkxy = false;
+					}
+
+					xd++;
+				}
+				yd++;
+			}
+			return checkx && checky && checkxy;
+
+		}
+	
 }
