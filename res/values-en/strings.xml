@@ -3,13 +3,13 @@
 
     <!-- General Strings -->
 
-    <string name="app_name">Spielesammlung</string>
-    <string name="action_settings">Einstellungen</string>
-    <string name="new_game">Neues Spiel</string>
-    <string name="save">Speichern</string>
-    <string name="load">Laden</string>
-    <string name="quit">Beenden</string>
-    <string name="win">Gewonnen!\n Antippen für Neues Spiel!</string>
+    <string name="app_name">Gamecollection</string>
+    <string name="action_settings">Settings</string>
+    <string name="new_game">New Game</string>
+    <string name="save">Save</string>
+    <string name="load">Load</string>
+    <string name="quit">Quit</string>
+    <string name="win">You won!\n Touch to Continue!</string>
 
     <!-- Sudoku Strings -->
 

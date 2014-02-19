@@ -1,12 +1,11 @@
 package de.sethosii.android_spielesammlung;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-import android.R.bool;
-import android.os.Bundle;
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +29,8 @@ public class SudokuActivity extends Activity {
 	Button win;
 	//the menu
 	LinearLayout optionsmenu;
+	//tag for loggings
+	private final static String Tag = "SudokuActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
+
 	// set focused field
 	public void setNumbers(View v) {
 
@@ -93,43 +95,45 @@ public class SudokuActivity extends Activity {
 			// sets the focused field on clicked number
 			switch (v.getId()) {
 			case R.id.input1:
-				focused.setText("1");
+				focused.setText(R.string.one);
 				break;
 			case R.id.input2:
-				focused.setText("2");
+				focused.setText(R.string.two);
 				break;
 			case R.id.input3:
-				focused.setText("3");
+				focused.setText(R.string.three);
 				break;
 			case R.id.input4:
-				focused.setText("4");
+				focused.setText(R.string.four);
 				break;
 			case R.id.input5:
-				focused.setText("5");
+				focused.setText(R.string.five);
 				break;
 			case R.id.input6:
-				focused.setText("6");
+				focused.setText(R.string.six);
 				break;
 			case R.id.input7:
-				focused.setText("7");
+				focused.setText(R.string.seven);
 				break;
 			case R.id.input8:
-				focused.setText("8");
+				focused.setText(R.string.eight);
 				break;
 			case R.id.input9:
-				focused.setText("9");
+				focused.setText(R.string.nine);
 				break;
 			case R.id.inputdel:
 				focused.setText("");
+				break;
 			default:
-				// do nothing
+				Log.e(Tag,"setnumbers - switch Failed!!!");
+				break;
 
 			}
 
 			// checks if player won
 			if (fillcheck() == true) {
 				if (inputcheck() == true) {
-					win.setText("You won!\n Touch to Continue!");
+					win.setText(R.string.win);
 					win.setVisibility(View.VISIBLE);
 				}
 			}
@@ -221,7 +225,10 @@ public class SudokuActivity extends Activity {
 			case (7):
 				shift = 1;
 				break;
-
+			default:
+				Log.e(Tag, "generatesudoku - switch failed!!!");
+				break;
+				
 			}
 		}
 

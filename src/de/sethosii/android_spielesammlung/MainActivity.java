@@ -1,15 +1,10 @@
 package de.sethosii.android_spielesammlung;
 
-import java.io.File;
-
-import android.os.Bundle;
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.view.Menu;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;

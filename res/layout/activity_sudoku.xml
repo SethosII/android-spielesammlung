@@ -1106,7 +1106,7 @@
                 android:layout_weight="1"
                 android:background="#D3D3D3"
                 android:onClick="setNumbers"
-                android:text="del" />
+                android:text="@string/del" />
         </LinearLayout>
 
         <LinearLayout
@@ -1159,7 +1159,7 @@
             android:layout_margin="20dp"
             android:background="#696969"
             android:layout_weight="1"
-            android:text="New Game" />
+            android:text="@string/new_game" />
 
         <Button
             android:id="@+id/loadgame"
@@ -1169,7 +1169,7 @@
             android:layout_margin="20dp"
             android:background="#696969"
             android:layout_weight="1"
-            android:text="Load" />
+            android:text="@string/load" />
 
         <Button
             android:id="@+id/savegame"
@@ -1179,7 +1179,7 @@
             android:layout_margin="20dp"
             android:background="#696969"
             android:layout_weight="1"
-            android:text="Save" />
+            android:text="@string/save" />
 
         <Button
             android:id="@+id/quitmenu"
@@ -1190,7 +1190,7 @@
             android:onClick="hideMenu"
             android:background="#696969"
             android:layout_weight="1"
-            android:text="Quit" />
+            android:text="@string/quit" />
     </LinearLayout>
 
     <Button
