@@ -1,4 +1,4 @@
-package de.it2011.sudoku;
+package de.sethosii.android_spielesammlung;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class MainActivity extends Activity {
+public class SudokuActivity extends Activity {
 
 	// the difficulty of the game
 	int diff;
@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_sudoku);
 	}
 
 	@Override
