@@ -1121,7 +1121,7 @@
                 android:id="@+id/newbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:onClick="generateSudoku"
                 android:src="@drawable/ic_action_new" />
 
@@ -1129,7 +1129,7 @@
                 android:id="@+id/deletebutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:onClick="deleteInput"
                 android:src="@drawable/ic_action_cancel" />
 
@@ -1137,12 +1137,22 @@
                 android:id="@+id/menubutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:onClick="showMenu"
                 android:src="@drawable/ic_action_view_as_grid" />
+
+            <Chronometer
+                android:id="@+id/chronometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:format="%s"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout
+
+    <LinearLayout
         android:id="@+id/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -1157,8 +1167,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:background="#696969"
             android:layout_weight="1"
+            android:background="#696969"
             android:text="@string/new_game" />
 
         <Button
@@ -1167,8 +1177,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:background="#696969"
             android:layout_weight="1"
+            android:background="#696969"
             android:text="@string/load" />
 
         <Button
@@ -1177,8 +1187,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:background="#696969"
             android:layout_weight="1"
+            android:background="#696969"
             android:text="@string/save" />
 
         <Button
@@ -1187,9 +1197,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:onClick="hideMenu"
-            android:background="#696969"
             android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="quit"
             android:text="@string/quit" />
     </LinearLayout>
 
@@ -1197,8 +1207,8 @@
         android:id="@+id/winbutton"
         android:layout_width="200dp"
         android:layout_height="150dp"
-        android:background="#696969"
         android:layout_centerInParent="true"
+        android:background="#696969"
         android:onClick="generateSudoku" />
 
 </RelativeLayout>
