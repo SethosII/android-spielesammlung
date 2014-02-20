@@ -28,6 +28,7 @@
         </activity>
         <activity
             android:name=".SudokuActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>
         <activity
