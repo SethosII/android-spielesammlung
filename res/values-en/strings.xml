@@ -28,6 +28,9 @@
     <!-- Mines Strings -->
 
     <string name="mines">Mines</string>
+    <string name="mines_remaining">Mines</string>
+    <string name="mine">*</string>
+    <string name="flag">!</string>
 
     <!-- Spaceslider Strings -->
 
