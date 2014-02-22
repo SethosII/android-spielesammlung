@@ -32,7 +32,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b12"
@@ -40,7 +41,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b13"
@@ -48,7 +50,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b14"
@@ -56,7 +59,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b15"
@@ -64,7 +68,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b16"
@@ -72,7 +77,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b17"
@@ -80,7 +86,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b18"
@@ -88,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b19"
@@ -96,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
             </LinearLayout>
 
             <LinearLayout
@@ -110,7 +119,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b22"
@@ -118,7 +128,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b23"
@@ -126,7 +137,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b24"
@@ -134,7 +146,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b25"
@@ -142,7 +155,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b26"
@@ -150,7 +164,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b27"
@@ -158,7 +173,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b28"
@@ -166,7 +182,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b29"
@@ -174,7 +191,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
             </LinearLayout>
 
             <LinearLayout
@@ -188,7 +206,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b32"
@@ -196,7 +215,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b33"
@@ -204,7 +224,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b34"
@@ -212,7 +233,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b35"
@@ -220,7 +242,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b36"
@@ -228,7 +251,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b37"
@@ -236,7 +260,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b38"
@@ -244,7 +269,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b39"
@@ -252,7 +278,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
             </LinearLayout>
 
             <LinearLayout
@@ -266,7 +293,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b42"
@@ -274,7 +302,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b43"
@@ -282,7 +311,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b44"
@@ -290,7 +320,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b45"
@@ -298,7 +329,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b46"
@@ -306,7 +338,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b47"
@@ -314,7 +347,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b48"
@@ -322,7 +356,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b49"
@@ -330,7 +365,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
             </LinearLayout>
 
             <LinearLayout
@@ -344,7 +380,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b52"
@@ -352,7 +389,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b53"
@@ -360,7 +398,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b54"
@@ -368,7 +407,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b55"
@@ -376,7 +416,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b56"
@@ -384,7 +425,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b57"
@@ -392,7 +434,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b58"
@@ -400,7 +443,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b59"
@@ -408,7 +452,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
             </LinearLayout>
 
             <LinearLayout
@@ -422,7 +467,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b62"
@@ -430,7 +476,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b63"
@@ -438,7 +485,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b64"
@@ -446,7 +494,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b65"
@@ -454,7 +503,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b66"
@@ -462,7 +512,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b67"
@@ -470,7 +521,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b68"
@@ -478,7 +530,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b69"
@@ -486,7 +539,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
             </LinearLayout>
 
             <LinearLayout
@@ -500,7 +554,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b72"
@@ -508,7 +563,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b73"
@@ -516,7 +572,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b74"
@@ -524,7 +581,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b75"
@@ -532,7 +590,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b76"
@@ -540,7 +599,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b77"
@@ -548,7 +608,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b78"
@@ -556,7 +617,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b79"
@@ -564,7 +626,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
             </LinearLayout>
 
             <LinearLayout
@@ -578,7 +641,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b82"
@@ -586,7 +650,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b83"
@@ -594,7 +659,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b84"
@@ -602,7 +668,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b85"
@@ -610,7 +677,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b86"
@@ -618,7 +686,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b87"
@@ -626,7 +695,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b88"
@@ -634,7 +704,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b89"
@@ -642,7 +713,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
             </LinearLayout>
 
             <LinearLayout
@@ -656,7 +728,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b92"
@@ -664,7 +737,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b93"
@@ -672,7 +746,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b94"
@@ -680,7 +755,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b95"
@@ -688,7 +764,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b96"
@@ -696,7 +773,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b97"
@@ -704,7 +782,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b98"
@@ -712,7 +791,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
 
                 <Button
                     android:id="@+id/b99"
@@ -720,7 +800,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:layout_weight="1"
-                    android:background="#FFFFFF" />
+                    android:background="#FFFFFF"
+                    android:onClick="getField" />
             </LinearLayout>
         </LinearLayout>
 
@@ -736,6 +817,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:contentDescription="@string/new_game"
+                android:onClick="clear"
                 android:src="@drawable/ic_action_new" />
 
             <ImageButton
@@ -743,6 +826,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:contentDescription="@string/mark"
+                android:onClick="changeMode"
                 android:src="@drawable/ic_action_cancel" />
 
             <ImageButton
@@ -750,6 +835,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:contentDescription="@string/menu"
+                android:onClick="menu"
                 android:src="@drawable/ic_action_view_as_grid" />
 
             <LinearLayout
@@ -762,7 +849,9 @@
                     android:id="@+id/mineCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:minEms="4"
                     android:text="" />
 
                 <Chronometer
@@ -776,5 +865,67 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="#D3D3D3"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/newgame"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="clear"
+            android:text="@string/new_game" />
+
+        <Button
+            android:id="@+id/loadgame"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="load"
+            android:text="@string/load" />
+
+        <Button
+            android:id="@+id/savegame"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="save"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/quitmenu"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="quit"
+            android:text="@string/quit" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/endbutton"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:background="#696969"
+        android:onClick="clear" />
 
 </RelativeLayout>

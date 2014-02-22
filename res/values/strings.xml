@@ -9,7 +9,9 @@
     <string name="save">Speichern</string>
     <string name="load">Laden</string>
     <string name="quit">Beenden</string>
+    <string name="menu">Menü</string>
     <string name="win">Gewonnen!\n Antippen für Neues Spiel!</string>
+    <string name="lose">Verloren!\n Antippen für Neues Spiel!</string>
 
     <!-- Sudoku Strings -->
 
@@ -31,6 +33,7 @@
     <string name="mines_remaining">Minen</string>
     <string name="mine">*</string>
     <string name="flag">!</string>
+    <string name="mark">Markieren</string>
 
     <!-- Spaceslider Strings -->
 
