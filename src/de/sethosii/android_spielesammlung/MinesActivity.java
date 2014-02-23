@@ -1,6 +1,7 @@
 package de.sethosii.android_spielesammlung;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Menu;
@@ -54,7 +55,8 @@ public class MinesActivity extends Activity {
 			for (int j = 0; j < dimensionY; j++) {
 				view[i][j] = ((Button) findViewById(R.id.b11 + i * dimensionY
 						+ j));
-				view[i][j].setText(" ");
+				view[i][j].setText("");
+				view[i][j].setBackgroundColor(Color.LTGRAY);
 			}
 		}
 		tvMineCount = (TextView) findViewById(R.id.mineCount);
@@ -86,8 +88,10 @@ public class MinesActivity extends Activity {
 	private void initialize() {
 		for (int i = 0; i < dimensionX; i++) {
 			for (int j = 0; j < dimensionY; j++) {
-				solution[i][j] = " ";
-				view[i][j].setText(" ");
+				solution[i][j] = "";
+				view[i][j].setText("");
+				view[i][j].setBackgroundColor(Color.LTGRAY);
+				view[i][j].setEnabled(true);
 			}
 		}
 		end = EnumGameState.NOT_FINISHED;
@@ -175,7 +179,7 @@ public class MinesActivity extends Activity {
 		String name = getResources().getResourceEntryName(v.getId());
 		int x = Integer.parseInt(name.substring(1, 2)) - 1;
 		int y = Integer.parseInt(name.substring(2, 3)) - 1;
-		System.out.println(name + " " + x + " " + y);
+		System.out.println(name + "" + x + "" + y);
 		if (end.equals(EnumGameState.NOT_STARTED) && !mark) {
 			generateGame(x, y);
 		}
@@ -187,7 +191,7 @@ public class MinesActivity extends Activity {
 		// set flag or not
 		if (mark) {
 			// empty: set flag
-			if (view[posX][posY].getText().equals(" ")) {
+			if (view[posX][posY].getText().equals("")) {
 				view[posX][posY].setText("!");
 				mineCount--;
 				tvMineCount.setText(getString(R.string.mines_remaining) + ": "
@@ -195,23 +199,25 @@ public class MinesActivity extends Activity {
 			} else
 			// marked: remove flag
 			if (view[posX][posY].getText().equals("!")) {
-				view[posX][posY].setText(" ");
+				view[posX][posY].setText("");
 				mineCount++;
 				tvMineCount.setText(getString(R.string.mines_remaining) + ": "
 						+ mineCount);
 			}
 		} else {
 			// checks if field is covered
-			if (view[posX][posY].getText().equals(" ")) {
+			if (view[posX][posY].getText().equals("")) {
 				// set field of solution at the position
 				view[posX][posY].setText(solution[posX][posY]);
+				view[posX][posY].setBackgroundColor(Color.WHITE);
 				// mine: game lost
 				if (solution[posX][posY].equals("*")) {
 					view[posX][posY].setText("*");
+					view[posX][posY].setBackgroundColor(Color.WHITE);
 					end = EnumGameState.LOSE;
 				} else
 				// empty field: reveal surrounding
-				if (solution[posX][posY].equals(" ")) {
+				if (solution[posX][posY].equals("")) {
 					revealSurrounding(posX, posY);
 				}
 			}
@@ -222,105 +228,126 @@ public class MinesActivity extends Activity {
 	// reveal surrounding
 	private void revealSurrounding(int posX, int posY) {
 		// mark field as empty
-		view[posX][posY].setText("#");
+		view[posX][posY].setText(" ");
+		view[posX][posY].setBackgroundColor(Color.WHITE);
 		// check surrounding, marked: do nothing
 		// empty: mark, else: set number on field
 		if (posX > 0) {
 			if (!solution[posX - 1][posY].equals("!")) {
-				if (solution[posX - 1][posY].equals(" ")) {
-					solution[posX - 1][posY] = "#";
+				if (solution[posX - 1][posY].equals("")) {
+					solution[posX - 1][posY] = " ";
 					revealSurrounding(posX - 1, posY);
 				} else {
 					view[posX - 1][posY].setText(solution[posX - 1][posY]);
+					view[posX - 1][posY].setBackgroundColor(Color.WHITE);
 				}
 			}
 			if (posY < dimensionY - 1) {
 				if (!solution[posX - 1][posY + 1].equals("!")) {
-					if (solution[posX - 1][posY + 1].equals(" ")) {
-						solution[posX - 1][posY + 1] = "#";
+					if (solution[posX - 1][posY + 1].equals("")) {
+						solution[posX - 1][posY + 1] = " ";
 						revealSurrounding(posX - 1, posY + 1);
 					} else {
 						view[posX - 1][posY + 1]
 								.setText(solution[posX - 1][posY + 1]);
+						view[posX - 1][posY + 1]
+								.setBackgroundColor(Color.WHITE);
 					}
 				}
 			}
 			if (posY > 0) {
-				if (solution[posX - 1][posY - 1].equals(" ")) {
-					solution[posX - 1][posY - 1] = "#";
+				if (solution[posX - 1][posY - 1].equals("")) {
+					solution[posX - 1][posY - 1] = " ";
 					revealSurrounding(posX - 1, posY - 1);
 				} else {
 					view[posX - 1][posY - 1]
 							.setText(solution[posX - 1][posY - 1]);
+					view[posX - 1][posY - 1].setBackgroundColor(Color.WHITE);
 				}
 			}
 		}
 		if (posY > 0) {
-			if (solution[posX][posY - 1].equals(" ")) {
-				solution[posX][posY - 1] = "#";
+			if (solution[posX][posY - 1].equals("")) {
+				solution[posX][posY - 1] = " ";
 				revealSurrounding(posX, posY - 1);
 			} else {
 				view[posX][posY - 1].setText(solution[posX][posY - 1]);
+				view[posX][posY - 1].setBackgroundColor(Color.WHITE);
 			}
 			if (posX < dimensionX - 1) {
-				if (solution[posX + 1][posY - 1].equals(" ")) {
-					solution[posX + 1][posY - 1] = "#";
+				if (solution[posX + 1][posY - 1].equals("")) {
+					solution[posX + 1][posY - 1] = " ";
 					revealSurrounding(posX + 1, posY - 1);
 				} else {
 					view[posX + 1][posY - 1]
 							.setText(solution[posX + 1][posY - 1]);
+					view[posX + 1][posY - 1].setBackgroundColor(Color.WHITE);
 				}
 			}
 		}
 		if (posX < dimensionX - 1) {
-			if (solution[posX + 1][posY].equals(" ")) {
-				solution[posX + 1][posY] = "#";
+			if (solution[posX + 1][posY].equals("")) {
+				solution[posX + 1][posY] = " ";
 				revealSurrounding(posX + 1, posY);
 			} else {
 				view[posX + 1][posY].setText(solution[posX + 1][posY]);
+				view[posX + 1][posY].setBackgroundColor(Color.WHITE);
 			}
 			if (posY < dimensionY - 1) {
-				if (solution[posX + 1][posY + 1].equals(" ")) {
-					solution[posX + 1][posY + 1] = "#";
+				if (solution[posX + 1][posY + 1].equals("")) {
+					solution[posX + 1][posY + 1] = " ";
 					revealSurrounding(posX + 1, posY + 1);
 				} else {
 					view[posX + 1][posY + 1]
 							.setText(solution[posX + 1][posY + 1]);
+					view[posX + 1][posY + 1].setBackgroundColor(Color.WHITE);
 				}
 			}
 		}
 		if (posY < dimensionY - 1) {
-			if (solution[posX][posY + 1].equals(" ")) {
-				solution[posX][posY + 1] = "#";
+			if (solution[posX][posY + 1].equals("")) {
+				solution[posX][posY + 1] = " ";
 				revealSurrounding(posX, posY + 1);
 			} else {
 				view[posX][posY + 1].setText(solution[posX][posY + 1]);
+				view[posX][posY + 1].setBackgroundColor(Color.WHITE);
 			}
 		}
 	}
 
 	// check game state
 	private void checkEnd() {
-		int count = 0;
-		for (int i = 0; i < dimensionX; i++) {
-			for (int j = 0; j < dimensionY; j++) {
-				if (view[i][j].getText().equals(" ")
-						|| view[i][j].getText().equals("!")) {
-					count++;
-				}
-			}
-		}
-		System.out.println(count);
-		if (count <= maxMineCount) {
-			end = EnumGameState.WIN;
-		}
-		if (end.equals(EnumGameState.WIN)) {
-			endButton.setVisibility(View.VISIBLE);
-			endButton.setText(R.string.win);
-		}
 		if (end.equals(EnumGameState.LOSE)) {
 			endButton.setVisibility(View.VISIBLE);
 			endButton.setText(R.string.lose);
+			for (int i = 0; i < dimensionX; i++) {
+				for (int j = 0; j < dimensionY; j++) {
+					view[i][j].setEnabled(false);
+				}
+			}
+		} else {
+			int count = 0;
+			for (int i = 0; i < dimensionX; i++) {
+				for (int j = 0; j < dimensionY; j++) {
+					if (view[i][j].getText().equals("")
+							|| view[i][j].getText().equals("!")) {
+						count++;
+					}
+				}
+			}
+			System.out.println(count);
+			if (count <= maxMineCount) {
+				end = EnumGameState.WIN;
+			}
+			if (end.equals(EnumGameState.WIN)) {
+				endButton.setVisibility(View.VISIBLE);
+				endButton.setText(R.string.win);
+				for (int i = 0; i < dimensionX; i++) {
+					for (int j = 0; j < dimensionY; j++) {
+						view[i][j].setEnabled(false);
+					}
+				}
+			}
 		}
 	}
 
