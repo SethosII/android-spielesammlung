@@ -35,6 +35,8 @@ public class MinesActivity extends Activity {
 	private LinearLayout menu;
 	// game end button
 	private Button endButton;
+	// time elapsed
+	private long timeElapsed;	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class MinesActivity extends Activity {
 		menu.setVisibility(View.GONE);
 		endButton = (Button) findViewById(R.id.endbutton);
 		endButton.setVisibility(View.GONE);
+		timeElapsed = 0;
 	}
 
 	@Override
@@ -103,6 +106,7 @@ public class MinesActivity extends Activity {
 		// reset time
 		chronometer.stop();
 		chronometer.setBase(SystemClock.elapsedRealtime());
+		timeElapsed = 0;
 	}
 
 	// place the mines
@@ -188,32 +192,33 @@ public class MinesActivity extends Activity {
 
 	// method called when field was touched
 	private void touchField(int posX, int posY) {
+		Button touched = view[posX][posY];
 		// set flag or not
 		if (mark) {
 			// empty: set flag
-			if (view[posX][posY].getText().equals("")) {
-				view[posX][posY].setText("!");
+			if (touched.getText().equals("")) {
+				touched.setText("!");
 				mineCount--;
 				tvMineCount.setText(getString(R.string.mines_remaining) + ": "
 						+ mineCount);
 			} else
 			// marked: remove flag
-			if (view[posX][posY].getText().equals("!")) {
-				view[posX][posY].setText("");
+			if (touched.getText().equals("!")) {
+				touched.setText("");
 				mineCount++;
 				tvMineCount.setText(getString(R.string.mines_remaining) + ": "
 						+ mineCount);
 			}
 		} else {
 			// checks if field is covered
-			if (view[posX][posY].getText().equals("")) {
+			if (touched.getText().equals("")) {
 				// set field of solution at the position
-				view[posX][posY].setText(solution[posX][posY]);
-				view[posX][posY].setBackgroundColor(Color.WHITE);
+				touched.setText(solution[posX][posY]);
+				touched.setBackgroundColor(Color.WHITE);
 				// mine: game lost
 				if (solution[posX][posY].equals("*")) {
-					view[posX][posY].setText("*");
-					view[posX][posY].setBackgroundColor(Color.WHITE);
+					touched.setText("*");
+					touched.setBackgroundColor(Color.WHITE);
 					end = EnumGameState.LOSE;
 				} else
 				// empty field: reveal surrounding
@@ -318,6 +323,8 @@ public class MinesActivity extends Activity {
 	// check game state
 	private void checkEnd() {
 		if (end.equals(EnumGameState.LOSE)) {
+			chronometer.stop();
+			timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
 			endButton.setVisibility(View.VISIBLE);
 			endButton.setText(R.string.lose);
 			for (int i = 0; i < dimensionX; i++) {
@@ -340,6 +347,8 @@ public class MinesActivity extends Activity {
 				end = EnumGameState.WIN;
 			}
 			if (end.equals(EnumGameState.WIN)) {
+				chronometer.stop();
+				timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
 				endButton.setVisibility(View.VISIBLE);
 				endButton.setText(R.string.win);
 				for (int i = 0; i < dimensionX; i++) {
