@@ -36,7 +36,7 @@ public class MinesActivity extends Activity {
 	// game end button
 	private Button endButton;
 	// time elapsed
-	private long timeElapsed;	
+	private long timeElapsed;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +183,6 @@ public class MinesActivity extends Activity {
 		String name = getResources().getResourceEntryName(v.getId());
 		int x = Integer.parseInt(name.substring(1, 2)) - 1;
 		int y = Integer.parseInt(name.substring(2, 3)) - 1;
-		System.out.println(name + "" + x + "" + y);
 		if (end.equals(EnumGameState.NOT_STARTED) && !mark) {
 			generateGame(x, y);
 		}
@@ -342,13 +341,13 @@ public class MinesActivity extends Activity {
 					}
 				}
 			}
-			System.out.println(count);
 			if (count <= maxMineCount) {
 				end = EnumGameState.WIN;
 			}
 			if (end.equals(EnumGameState.WIN)) {
 				chronometer.stop();
-				timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
+				timeElapsed = SystemClock.elapsedRealtime()
+						- chronometer.getBase();
 				endButton.setVisibility(View.VISIBLE);
 				endButton.setText(R.string.win);
 				for (int i = 0; i < dimensionX; i++) {
@@ -363,7 +362,6 @@ public class MinesActivity extends Activity {
 	// change mark mode
 	public void changeMode(View v) {
 		mark = !mark;
-		System.out.println(mark);
 	}
 
 	// reset game
@@ -376,8 +374,17 @@ public class MinesActivity extends Activity {
 	public void menu(View v) {
 		if (menu.getVisibility() == View.VISIBLE) {
 			menu.setVisibility(View.GONE);
+			if (end == EnumGameState.NOT_FINISHED) {
+				chronometer.setBase(chronometer.getBase()
+						+ SystemClock.elapsedRealtime() - timeElapsed);
+				chronometer.start();
+			}
 		} else {
 			menu.setVisibility(View.VISIBLE);
+			if (end == EnumGameState.NOT_FINISHED) {
+				chronometer.stop();
+				timeElapsed = SystemClock.elapsedRealtime();
+			}
 		}
 	}
 
