@@ -1145,10 +1145,10 @@
                 android:id="@+id/chronometer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:format="%s"
-                android:textSize="20sp"
                 android:layout_gravity="center"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:format="%s"
+                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -1169,6 +1169,7 @@
             android:layout_margin="20dp"
             android:layout_weight="1"
             android:background="#696969"
+            android:onClick="generateSudoku"
             android:text="@string/new_game" />
 
         <Button
@@ -1190,6 +1191,17 @@
             android:layout_weight="1"
             android:background="#696969"
             android:text="@string/save" />
+        
+        <Button
+            android:id="@+id/music"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="sound"
+            android:text="@string/soundoff" />
 
         <Button
             android:id="@+id/quitmenu"
@@ -1201,6 +1213,55 @@
             android:background="#696969"
             android:onClick="quit"
             android:text="@string/quit" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:background="#D3D3D3"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/confirmtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="@string/confirmtext"/>"
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="#D3D3D3"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/confirmnewgame"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#696969"
+                android:onClick="generateSudoku"
+                android:text="@string/new_game" />
+
+            <Button
+                android:id="@+id/confirmload"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#696969"
+                android:text="@string/load" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button

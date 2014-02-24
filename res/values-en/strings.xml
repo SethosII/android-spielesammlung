@@ -38,5 +38,8 @@
     <!-- Spaceslider Strings -->
 
     <string name="spaceslider">Spaceslider</string>
+    <string name="confirmtext">Do you want to load a game?</string>
+    <string name="soundon">Music on</string>
+    <string name="soundoff">Music off</string>
 
 </resources>

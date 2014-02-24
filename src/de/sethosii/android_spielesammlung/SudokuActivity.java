@@ -1,9 +1,12 @@
 package de.sethosii.android_spielesammlung;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -31,8 +34,12 @@ public class SudokuActivity extends Activity {
 	Button win;
 	// the menu
 	LinearLayout optionsmenu;
-	//the chronometer
+	// the chronometer
 	Chronometer chron;
+	// the confirmation on startup
+	LinearLayout confirm;
+	// mediaplayer
+	MediaPlayer player;
 	// tag for loggings
 	private final static String Tag = "SudokuActivity";
 
@@ -49,21 +56,66 @@ public class SudokuActivity extends Activity {
 
 		win = (Button) findViewById(R.id.winbutton);
 		optionsmenu = (LinearLayout) findViewById(R.id.menu);
-		chron = (Chronometer)findViewById(R.id.chronometer);
-		
+		chron = (Chronometer) findViewById(R.id.chronometer);
+		confirm = (LinearLayout) findViewById(R.id.confirm);
+
 		win.setVisibility(View.GONE);
 		optionsmenu.setVisibility(View.GONE);
-		
-		
+
 		// if difficulty is higher than 50 an endless loop is generated
 		diff = 50;
 		inputs = new ArrayList<Integer>();
 		fields = new Integer[9][9];
 
+		play();
 		getallfields();
 
 		return true;
 
+	}
+
+	// stop chronometer and music on quit
+	@Override
+	public void finish() {
+		player.stop();
+		chron.stop();
+		super.finish();
+	}
+
+	public void play() {
+		// plays music
+		AssetFileDescriptor afd;
+		try {
+			// Read the music file from the asset folder
+			afd = getAssets().openFd("music.mid");
+			// Creation of new media player;
+			player = new MediaPlayer();
+			// Set the player music source.
+			player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(),
+					afd.getLength());
+			// Set the looping and play the music.
+			player.setLooping(true);
+			player.prepare();
+			player.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// mute
+	public void sound(View v) {
+		Button music = (Button) findViewById(R.id.music);
+
+		if ((player != null) && player.isPlaying()) {
+			music.setText(R.string.soundon);
+			player.stop();
+		}
+
+		else if ((player != null) && !player.isPlaying()) {
+				music.setText(R.string.soundoff);
+				play();
+
+		}
 	}
 
 	// orders the fields
@@ -177,19 +229,26 @@ public class SudokuActivity extends Activity {
 		int hswitch = 0;
 		int vswitch = 0;
 
-		//hide win message
+		// hide win message
 		win.setVisibility(View.GONE);
-		
-		//count time
-		chron.setBase(SystemClock.elapsedRealtime());
-        chron.start();
 
-		// deletes previous inputs
+		// count time
+		chron.setBase(SystemClock.elapsedRealtime());
+		chron.start();
+
+		// hide confirm
+		confirm.setVisibility(View.GONE);
+
+		// delete previous focus
 		if (focused != null) {
 			focused.setBackgroundColor(Color.WHITE);
 			focused = null;
 		}
 
+		// delete previous inputs
+		if (inputs != null) {
+			inputs.clear();
+		}
 		// picks numbers of run without putting back into random
 		for (int h = 0; h < 9; h++) {
 			int index = (int) (Math.random() * (pointer + 1));
