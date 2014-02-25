@@ -50,6 +50,8 @@ public class MinesActivity extends Activity {
 	private long timeElapsed;
 	// mediaplayer
 	private MediaPlayer musicPlayer;
+	// is chronometer stopped
+	private boolean chronometerStopped;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class MinesActivity extends Activity {
 		endButton = (Button) findViewById(R.id.endbutton);
 		endButton.setVisibility(View.GONE);
 		timeElapsed = 0;
+		chronometerStopped = false;
 		playMusic();
 	}
 
@@ -97,12 +100,36 @@ public class MinesActivity extends Activity {
 		return true;
 	}
 
+	// stop chronometer and music on quit
+	@Override
+	public void finish() {
+		musicPlayer.stop();
+		chronometer.stop();
+		super.finish();
+	}
+
+	// start music when app is maximized again
+	@Override
+	protected void onResume() {
+		super.onResume();
+		playMusic();
+		resumeChronometer();
+	}
+
+	// stop music when app is minimized
+	@Override
+	protected void onPause() {
+		stopChronometer();
+		musicPlayer.stop();
+		super.onPause();
+	}
+
 	// generate new game
 	private void generateGame(int x, int y) {
 		initialize();
 		placeMines(x, y);
 		setNumbers();
-		chronometer.start();
+		startChronometer();
 	}
 
 	// reset all values
@@ -125,9 +152,10 @@ public class MinesActivity extends Activity {
 		endButton.setVisibility(View.GONE);
 		enableView(true);
 		// reset time
-		chronometer.stop();
+		stopChronometer();
 		chronometer.setBase(SystemClock.elapsedRealtime());
 		timeElapsed = 0;
+		chronometerStopped = true;
 	}
 
 	// place the mines
@@ -371,8 +399,8 @@ public class MinesActivity extends Activity {
 			}
 		}
 	}
-	
-	private void enableView(boolean enable){
+
+	private void enableView(boolean enable) {
 		for (int i = 0; i < dimensionX; i++) {
 			for (int j = 0; j < dimensionY; j++) {
 				view[i][j].setEnabled(enable);
@@ -403,18 +431,41 @@ public class MinesActivity extends Activity {
 			enableView(true);
 			menuButton.setColorFilter(null);
 			if (end == EnumGameState.NOT_FINISHED) {
-				chronometer.setBase(chronometer.getBase()
-						+ SystemClock.elapsedRealtime() - timeElapsed);
-				chronometer.start();
+				resumeChronometer();
 			}
 		} else {
 			menu.setVisibility(View.VISIBLE);
 			enableView(false);
 			menuButton.setColorFilter(Color.RED);
 			if (end == EnumGameState.NOT_FINISHED) {
-				chronometer.stop();
-				timeElapsed = SystemClock.elapsedRealtime();
+				stopChronometer();
 			}
+		}
+	}
+
+	// start chronometer
+	private void startChronometer() {
+		if (chronometerStopped) {
+			chronometer.start();
+			chronometerStopped = false;
+		}
+	}
+
+	// stops chronometer
+	private void stopChronometer() {
+		if (!chronometerStopped) {
+			chronometer.stop();
+			timeElapsed = SystemClock.elapsedRealtime();
+			chronometerStopped = true;
+		}
+	}
+
+	// resumes chronometer
+	private void resumeChronometer() {
+		if (chronometerStopped && (menu.getVisibility() != View.VISIBLE)) {
+			chronometer.setBase(chronometer.getBase()
+					+ SystemClock.elapsedRealtime() - timeElapsed);
+			startChronometer();
 		}
 	}
 
@@ -462,14 +513,6 @@ public class MinesActivity extends Activity {
 	// end game
 	public void quit(View v) {
 		finish();
-	}
-
-	// stop chronometer and music on quit
-	@Override
-	public void finish() {
-		musicPlayer.stop();
-		chronometer.stop();
-		super.finish();
 	}
 
 	// prints solution or view
