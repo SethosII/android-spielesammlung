@@ -813,7 +813,7 @@
             android:gravity="bottom" >
 
             <ImageButton
-                android:id="@+id/imageButton1"
+                android:id="@+id/newGame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -822,7 +822,7 @@
                 android:src="@drawable/ic_action_new" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/changeMode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -831,7 +831,7 @@
                 android:src="@drawable/ic_action_cancel" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/showMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
@@ -919,6 +919,17 @@
             android:text="@string/save" />
 
         <Button
+            android:id="@+id/music"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="sound"
+            android:text="@string/soundoff" />
+
+        <Button
             android:id="@+id/quitmenu"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -931,6 +942,55 @@
             android:background="#696969"
             android:onClick="quit"
             android:text="@string/quit" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirmDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#D3D3D3"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/confirmtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="@string/confirmtext" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#D3D3D3"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/confirmnewgame"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#696969"
+                android:onClick="clear"
+                android:text="@string/new_game" />
+
+            <Button
+                android:id="@+id/confirmload"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#696969"
+                android:onClick="load"
+                android:text="@string/load" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button

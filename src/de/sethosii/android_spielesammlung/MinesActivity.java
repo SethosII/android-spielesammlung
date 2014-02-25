@@ -1,13 +1,18 @@
 package de.sethosii.android_spielesammlung;
 
+import java.io.IOException;
+
 import android.app.Activity;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,16 +32,24 @@ public class MinesActivity extends Activity {
 	private String[][] solution;
 	// user view
 	private Button[][] view;
+	// mark
+	private ImageButton changeMode;
+	// menu
+	private ImageButton menuButton;
 	// display mine count
 	private TextView tvMineCount;
 	// display time
 	private Chronometer chronometer;
 	// menu
 	private LinearLayout menu;
+	// confirm
+	private LinearLayout confirm;
 	// game end button
 	private Button endButton;
 	// time elapsed
 	private long timeElapsed;
+	// mediaplayer
+	private MediaPlayer musicPlayer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +74,20 @@ public class MinesActivity extends Activity {
 				view[i][j].setBackgroundColor(Color.LTGRAY);
 			}
 		}
+		changeMode = (ImageButton) findViewById(R.id.changeMode);
+		menuButton = (ImageButton) findViewById(R.id.showMenu);
 		tvMineCount = (TextView) findViewById(R.id.mineCount);
 		tvMineCount.setText(getString(R.string.mines_remaining) + ": "
 				+ mineCount);
 		chronometer = (Chronometer) findViewById(R.id.chronometer);
 		menu = (LinearLayout) findViewById(R.id.menu);
 		menu.setVisibility(View.GONE);
+		confirm = (LinearLayout) findViewById(R.id.confirmDialog);
+		enableView(false);
 		endButton = (Button) findViewById(R.id.endbutton);
 		endButton.setVisibility(View.GONE);
 		timeElapsed = 0;
+		playMusic();
 	}
 
 	@Override
@@ -102,7 +120,10 @@ public class MinesActivity extends Activity {
 		tvMineCount.setText(getString(R.string.mines_remaining) + ": "
 				+ mineCount);
 		menu.setVisibility(View.GONE);
+		menuButton.setColorFilter(null);
+		confirm.setVisibility(View.GONE);
 		endButton.setVisibility(View.GONE);
+		enableView(true);
 		// reset time
 		chronometer.stop();
 		chronometer.setBase(SystemClock.elapsedRealtime());
@@ -326,11 +347,7 @@ public class MinesActivity extends Activity {
 			timeElapsed = SystemClock.elapsedRealtime() - chronometer.getBase();
 			endButton.setVisibility(View.VISIBLE);
 			endButton.setText(R.string.lose);
-			for (int i = 0; i < dimensionX; i++) {
-				for (int j = 0; j < dimensionY; j++) {
-					view[i][j].setEnabled(false);
-				}
-			}
+			enableView(false);
 		} else {
 			int count = 0;
 			for (int i = 0; i < dimensionX; i++) {
@@ -350,11 +367,15 @@ public class MinesActivity extends Activity {
 						- chronometer.getBase();
 				endButton.setVisibility(View.VISIBLE);
 				endButton.setText(R.string.win);
-				for (int i = 0; i < dimensionX; i++) {
-					for (int j = 0; j < dimensionY; j++) {
-						view[i][j].setEnabled(false);
-					}
-				}
+				enableView(false);
+			}
+		}
+	}
+	
+	private void enableView(boolean enable){
+		for (int i = 0; i < dimensionX; i++) {
+			for (int j = 0; j < dimensionY; j++) {
+				view[i][j].setEnabled(enable);
 			}
 		}
 	}
@@ -362,6 +383,11 @@ public class MinesActivity extends Activity {
 	// change mark mode
 	public void changeMode(View v) {
 		mark = !mark;
+		if (mark) {
+			changeMode.setColorFilter(Color.RED);
+		} else {
+			changeMode.setColorFilter(null);
+		}
 	}
 
 	// reset game
@@ -374,6 +400,8 @@ public class MinesActivity extends Activity {
 	public void menu(View v) {
 		if (menu.getVisibility() == View.VISIBLE) {
 			menu.setVisibility(View.GONE);
+			enableView(true);
+			menuButton.setColorFilter(null);
 			if (end == EnumGameState.NOT_FINISHED) {
 				chronometer.setBase(chronometer.getBase()
 						+ SystemClock.elapsedRealtime() - timeElapsed);
@@ -381,6 +409,8 @@ public class MinesActivity extends Activity {
 			}
 		} else {
 			menu.setVisibility(View.VISIBLE);
+			enableView(false);
+			menuButton.setColorFilter(Color.RED);
 			if (end == EnumGameState.NOT_FINISHED) {
 				chronometer.stop();
 				timeElapsed = SystemClock.elapsedRealtime();
@@ -398,9 +428,48 @@ public class MinesActivity extends Activity {
 
 	}
 
+	// toggle music on/off
+	public void sound(View v) {
+		Button music = (Button) findViewById(R.id.music);
+		if ((musicPlayer != null) && musicPlayer.isPlaying()) {
+			music.setText(R.string.soundon);
+			musicPlayer.stop();
+		} else if ((musicPlayer != null) && !musicPlayer.isPlaying()) {
+			music.setText(R.string.soundoff);
+			playMusic();
+		}
+	}
+
+	// play music
+	public void playMusic() {
+		AssetFileDescriptor afd;
+		try {
+			// read the music file from the asset folder
+			afd = getAssets().openFd("music.mid");
+			musicPlayer = new MediaPlayer();
+			// Set the player music source.
+			musicPlayer.setDataSource(afd.getFileDescriptor(),
+					afd.getStartOffset(), afd.getLength());
+			// Set the looping and play the music.
+			musicPlayer.setLooping(true);
+			musicPlayer.prepare();
+			musicPlayer.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// end game
 	public void quit(View v) {
 		finish();
+	}
+
+	// stop chronometer and music on quit
+	@Override
+	public void finish() {
+		musicPlayer.stop();
+		chronometer.stop();
+		super.finish();
 	}
 
 	// prints solution or view
