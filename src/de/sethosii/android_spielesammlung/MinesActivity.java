@@ -112,7 +112,10 @@ public class MinesActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		playMusic();
+		if (getString(R.string.soundoff).equals(
+				((Button) findViewById(R.id.music)).getText())) {
+			playMusic();
+		}
 		resumeChronometer();
 	}
 
@@ -139,6 +142,7 @@ public class MinesActivity extends Activity {
 				solution[i][j] = "";
 				view[i][j].setText("");
 				view[i][j].setBackgroundColor(Color.LTGRAY);
+				view[i][j].setTextColor(Color.BLACK);
 				view[i][j].setEnabled(true);
 			}
 		}
@@ -245,14 +249,16 @@ public class MinesActivity extends Activity {
 		if (mark) {
 			// empty: set flag
 			if (touched.getText().equals("")) {
-				touched.setText("!");
+				touched.setText("X");
+				touched.setTextColor(Color.RED);
 				mineCount--;
 				tvMineCount.setText(getString(R.string.mines_remaining) + ": "
 						+ mineCount);
 			} else
 			// marked: remove flag
-			if (touched.getText().equals("!")) {
+			if (touched.getText().equals("X")) {
 				touched.setText("");
+				touched.setTextColor(Color.BLACK);
 				mineCount++;
 				tvMineCount.setText(getString(R.string.mines_remaining) + ": "
 						+ mineCount);
@@ -282,6 +288,7 @@ public class MinesActivity extends Activity {
 	private void revealSurrounding(int posX, int posY) {
 		// mark field as empty
 		view[posX][posY].setText(" ");
+		view[posX][posY].setTextColor(Color.BLACK);
 		view[posX][posY].setBackgroundColor(Color.WHITE);
 		// check surrounding, marked: do nothing
 		// empty: mark, else: set number on field
@@ -292,6 +299,7 @@ public class MinesActivity extends Activity {
 					revealSurrounding(posX - 1, posY);
 				} else {
 					view[posX - 1][posY].setText(solution[posX - 1][posY]);
+					view[posX - 1][posY].setTextColor(Color.BLACK);
 					view[posX - 1][posY].setBackgroundColor(Color.WHITE);
 				}
 			}
@@ -303,6 +311,8 @@ public class MinesActivity extends Activity {
 					} else {
 						view[posX - 1][posY + 1]
 								.setText(solution[posX - 1][posY + 1]);
+
+						view[posX - 1][posY + 1].setTextColor(Color.BLACK);
 						view[posX - 1][posY + 1]
 								.setBackgroundColor(Color.WHITE);
 					}
@@ -315,6 +325,8 @@ public class MinesActivity extends Activity {
 				} else {
 					view[posX - 1][posY - 1]
 							.setText(solution[posX - 1][posY - 1]);
+
+					view[posX - 1][posY - 1].setTextColor(Color.BLACK);
 					view[posX - 1][posY - 1].setBackgroundColor(Color.WHITE);
 				}
 			}
@@ -325,6 +337,7 @@ public class MinesActivity extends Activity {
 				revealSurrounding(posX, posY - 1);
 			} else {
 				view[posX][posY - 1].setText(solution[posX][posY - 1]);
+				view[posX][posY - 1].setTextColor(Color.BLACK);
 				view[posX][posY - 1].setBackgroundColor(Color.WHITE);
 			}
 			if (posX < dimensionX - 1) {
@@ -334,6 +347,7 @@ public class MinesActivity extends Activity {
 				} else {
 					view[posX + 1][posY - 1]
 							.setText(solution[posX + 1][posY - 1]);
+					view[posX + 1][posY - 1].setTextColor(Color.BLACK);
 					view[posX + 1][posY - 1].setBackgroundColor(Color.WHITE);
 				}
 			}
@@ -344,6 +358,7 @@ public class MinesActivity extends Activity {
 				revealSurrounding(posX + 1, posY);
 			} else {
 				view[posX + 1][posY].setText(solution[posX + 1][posY]);
+				view[posX + 1][posY].setTextColor(Color.BLACK);
 				view[posX + 1][posY].setBackgroundColor(Color.WHITE);
 			}
 			if (posY < dimensionY - 1) {
@@ -353,6 +368,7 @@ public class MinesActivity extends Activity {
 				} else {
 					view[posX + 1][posY + 1]
 							.setText(solution[posX + 1][posY + 1]);
+					view[posX + 1][posY + 1].setTextColor(Color.BLACK);
 					view[posX + 1][posY + 1].setBackgroundColor(Color.WHITE);
 				}
 			}
@@ -363,6 +379,7 @@ public class MinesActivity extends Activity {
 				revealSurrounding(posX, posY + 1);
 			} else {
 				view[posX][posY + 1].setText(solution[posX][posY + 1]);
+				view[posX][posY + 1].setTextColor(Color.BLACK);
 				view[posX][posY + 1].setBackgroundColor(Color.WHITE);
 			}
 		}

@@ -33,7 +33,7 @@
     <string name="mines_remaining">Mines</string>
     <string name="mine">*</string>
     <string name="flag">!</string>
-    <string name="mark">Markieren</string>
+    <string name="mark">Mark</string>
 
     <!-- Spaceslider Strings -->
 
