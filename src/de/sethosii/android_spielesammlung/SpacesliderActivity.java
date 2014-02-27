@@ -1,14 +1,14 @@
 package de.sethosii.android_spielesammlung;
 
-import java.lang.reflect.Array;
-
 import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
 import de.sethosii.android_spielesammlung.persistence.MinesPersistentSnapshot;
 import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,14 +19,14 @@ public class SpacesliderActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+        View ssliderView = new SpacesliderView(this);
+        setContentView(ssliderView);
+//if (true)
+//return;
 
-		android.widget.LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		GridLayout layout = new GridLayout(this);
-		layout.setOrientation(GridLayout.VERTICAL);
 
-
-
+/*
         // Infos speichern
 		MinesPersistentGameData mpgdw = new MinesPersistentGameData();
 		mpgdw.addHighScore(1000000);
@@ -36,6 +36,7 @@ public class SpacesliderActivity extends Activity {
         // Infos lesen
 		MinesPersistentGameData mpgdr = PersistenceHandler.getMinesPersistentGameData(this);
 		if (mpgdr != null) {
+			;
 		}
 
         // Snapshot speichern
@@ -61,6 +62,11 @@ public class SpacesliderActivity extends Activity {
 
 
 
+		android.widget.LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(GridLayout.VERTICAL);
+
 		// Textfeld
 		TextView txt = new TextView(this);
 		txt.setText("Spaceslider");
@@ -69,7 +75,9 @@ public class SpacesliderActivity extends Activity {
 
 		LinearLayout.LayoutParams layoutparams = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		this.addContentView(layout, layoutparams);
+		this.setContentView(layout, layoutparams);
+*/
+
 	}
 
 	@Override
