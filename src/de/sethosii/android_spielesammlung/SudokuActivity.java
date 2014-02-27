@@ -80,7 +80,6 @@ public class SudokuActivity extends Activity {
 		startup = true;
 		menushown = false;
 
-		playMusic();
 		getallFields();
 		disable(startup);
 
@@ -88,21 +87,31 @@ public class SudokuActivity extends Activity {
 
 	}
 
-	// // start music when app is maximized again
-	// @Override
-	// protected void onResume() {
-	// super.onResume();
-	// playMusic();
-	// resumeChronometer();
-	// }
-	//
-	// // stop music when app is minimized
-	// @Override
-	// protected void onPause() {
-	// stopChronometer();
-	// player.stop();
-	// super.onPause();
-	// }
+	// start music when app is maximized again
+	@Override
+	protected void onResume() {
+		if (getString(R.string.soundoff).equals(
+				((Button) findViewById(R.id.music)).getText())) {
+			playMusic();
+		}
+
+		super.onResume();
+
+	}
+
+	// stop music when app is minimized, show menu
+	@Override
+	protected void onPause() {
+		player.stop();
+
+		if (!startup) {
+			ImageButton menubutton = (ImageButton) findViewById(R.id.menubutton);
+			if (optionsmenu.getVisibility() == View.GONE) {
+				showMenu(menubutton);
+			}
+		}
+		super.onPause();
+	}
 
 	// stop chronometer and music on quit
 	@Override
@@ -524,14 +533,13 @@ public class SudokuActivity extends Activity {
 				}
 			}
 		}
-		
+
 		// set startup false
 		if (startup) {
 			startup = false;
 		}
-		
-		if(menushown)
-		{
+
+		if (menushown) {
 			disable(startup);
 			stopChronometer();
 		}
