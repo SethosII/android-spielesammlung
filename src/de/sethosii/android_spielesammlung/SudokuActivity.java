@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
+import de.sethosii.android_spielesammlung.persistence.MinesPersistentSnapshot;
 import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
 import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
+import de.sethosii.android_spielesammlung.persistence.SudokuPersistentSnapshot;
 
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
@@ -76,7 +78,7 @@ public class SudokuActivity extends Activity {
 		optionsmenu.setVisibility(View.GONE);
 
 		// if difficulty is higher than 50 an endless loop is generated
-		diff = 1;
+		diff = 10;
 		inputs = new ArrayList<Integer>();
 		disabled = new ArrayList<Integer>();
 		fields = new Integer[9][9];
@@ -231,13 +233,85 @@ public class SudokuActivity extends Activity {
 
 		}
 	}
+// load saved state
+	public void load(View v) {
+		
+		//load saved Object
+		SudokuPersistentSnapshot sps = PersistenceHandler
+				.getSudokuPersistentSnapshot(this, 0);
+		if (sps != null) {
+			startup = false;
 
-	public void load() {
-		startup = false;
+			//delete disabled fields
+			if (disabled != null) {
+				disabled.clear();
+			}
+
+			//load disabled fields
+			disabled.addAll(sps.disabled);
+
+			// delete previous inputs
+			if (inputs != null) {
+				inputs.clear();
+			}
+			
+			//load manual inputs
+			inputs.addAll(sps.inputs);
+
+			//load all fields
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					Button b = (Button) findViewById(fields[i][j]);
+					b.setText(sps.fieldState[i][j]);
+
+				}
+			}
+
+			//load chronometer
+			stop = sps.stop;
+			chron.setBase(sps.base);
+			chron.setText(sps.chrontext);
+
+			//load from startup
+			if (confirm.getVisibility() == View.VISIBLE) {
+				confirm.setVisibility(View.GONE);
+				enable(startup);
+				resumeChronometer();
+			}
+
+			// delete previous focus
+			if (focused != null) {
+				focused.setBackgroundColor(Color.WHITE);
+				focused = null;
+			}
+
+		}
 	}
 
-	public void save() {
+	// saves current state
+	public void save(View v) {
+		SudokuPersistentSnapshot sps = new SudokuPersistentSnapshot();
 
+		// saves chronometer
+		sps.stop = stop;
+		sps.base = chron.getBase();
+		sps.chrontext = chron.getText().toString();
+
+		// save fields, disabled fields and manual inputs
+		sps.fieldState = new String[9][9];
+		sps.disabled = new ArrayList<Integer>();
+		sps.inputs = new ArrayList<Integer>();
+
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				Button b = (Button) findViewById(fields[i][j]);
+				sps.fieldState[i][j] = b.getText().toString();
+			}
+		}
+
+		sps.disabled.addAll(disabled);
+		sps.inputs.addAll(inputs);
+		PersistenceHandler.setSudokuPersistentSnapshot(this, 0, sps);
 	}
 
 	public void playMusic() {
@@ -343,49 +417,58 @@ public class SudokuActivity extends Activity {
 				break;
 
 			}
+		}
+		checkwin();
+	}
 
-			// checks if player won
-			if (fillcheck() == true) {
-				if (inputcheck() == true) {
-					chron.stop();
-					win.setText(R.string.win);
-					win.setVisibility(View.VISIBLE);
+	public void checkwin() {
+		// checks if player won
+		if (fillcheck() == true) {
+			if (inputcheck() == true) {
 
-					// current highscore in ms
-					long highscore = SystemClock.elapsedRealtime()
-							- chron.getBase();
+				// stop chronometer
+				chron.stop();
 
-					SudokuPersistentGameData spgd = PersistenceHandler
-							.getSudokuPersistentGameData(this);
+				// set wining message
+				win.setText(R.string.win);
+				win.setVisibility(View.VISIBLE);
 
-					//checks if current score is higher than saved highscore
-					//if so overwrite
-					if (spgd != null) {
-						if (spgd.scoring.length == 1) {
-							if (highscore < spgd.scoring[0].score) {
-								spgd.scoring[0].score = highscore;
-								PersistenceHandler.setSudokuPersistentGameData(
-										this, spgd);
-							}
-						}
-						//if there is no score, save current score
-						else if (spgd.scoring == null) {
-							spgd = new SudokuPersistentGameData();
-							spgd.addHighScore(highscore);
+				// set highscore
+
+				// current highscore in ms
+				long highscore = SystemClock.elapsedRealtime()
+						- chron.getBase();
+
+				SudokuPersistentGameData spgd = PersistenceHandler
+						.getSudokuPersistentGameData(this);
+
+				// checks if current score is higher than saved highscore
+				// if so overwrite
+				if (spgd != null) {
+					if (spgd.scoring.length == 1) {
+						if (highscore < spgd.scoring[0].score) {
+							spgd.scoring[0].score = highscore;
 							PersistenceHandler.setSudokuPersistentGameData(
 									this, spgd);
 						}
-					} else {
+					}
+					// if there is no score, save current score
+					else if (spgd.scoring == null) {
 						spgd = new SudokuPersistentGameData();
 						spgd.addHighScore(highscore);
 						PersistenceHandler.setSudokuPersistentGameData(this,
 								spgd);
-
 					}
+				}
+				// if there is no object, create object and save score
+				else {
+					spgd = new SudokuPersistentGameData();
+					spgd.addHighScore(highscore);
+					PersistenceHandler.setSudokuPersistentGameData(this, spgd);
+
 				}
 			}
 		}
-
 	}
 
 	// gets the selected field
@@ -575,6 +658,7 @@ public class SudokuActivity extends Activity {
 			startup = false;
 		}
 
+		// if new game is selected through menu disable everything
 		if (menushown) {
 			disable(startup);
 			stopChronometer();

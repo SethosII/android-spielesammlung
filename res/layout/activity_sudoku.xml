@@ -1180,6 +1180,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="#696969"
+            android:onClick="load"
             android:text="@string/load" />
 
         <Button
@@ -1190,6 +1191,7 @@
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:background="#696969"
+            android:onClick="save"
             android:text="@string/save" />
         
         <Button
@@ -1260,6 +1262,7 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:background="#696969"
+                android:onClick="load"
                 android:text="@string/load" />
         </LinearLayout>
     </LinearLayout>
