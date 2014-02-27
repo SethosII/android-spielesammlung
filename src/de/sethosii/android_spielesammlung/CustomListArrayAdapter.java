@@ -72,7 +72,14 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {//BaseAdapter{
 			MinesPersistentGameData mpgd = PersistenceHandler.getMinesPersistentGameData(activity);
 			if(mpgd!=null)
 			{
-				String seconds = Long.toString((mpgd.scoring[0].score/1000)%60);
+				// time < 10 s add 0 at beginning
+				String seconds;
+				long tmp = (mpgd.scoring[0].score/1000)%60;
+				if (tmp < 10) {
+					seconds = "0"+Long.toString(tmp);
+				} else {
+					seconds = Long.toString(tmp);
+				}
 				String minutes = Long.toString((mpgd.scoring[0].score/(1000*60))%60);
 				holder.bt.setText("Highscore: " + minutes + ":"+ seconds);
 			}
@@ -89,7 +96,14 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {//BaseAdapter{
 				SudokuPersistentGameData spgd = PersistenceHandler.getSudokuPersistentGameData(activity);
 				if(spgd!=null)
 				{
-					String seconds = Long.toString((spgd.scoring[0].score/1000)%60);
+					// time < 10 s add 0 at beginning
+					String seconds;
+					long tmp = (spgd.scoring[0].score/1000)%60;
+					if (tmp < 10) {
+						seconds = "0"+Long.toString(tmp);
+					} else {
+						seconds = Long.toString(tmp);
+					}
 					String minutes = Long.toString((spgd.scoring[0].score/(1000*60))%60);
 					holder.bt.setText("Highscores: " + minutes + ":"+ seconds);
 				}
