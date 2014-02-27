@@ -3,6 +3,10 @@ package de.sethosii.android_spielesammlung;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
+import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
+import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
+
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
@@ -72,7 +76,7 @@ public class SudokuActivity extends Activity {
 		optionsmenu.setVisibility(View.GONE);
 
 		// if difficulty is higher than 50 an endless loop is generated
-		diff = 45;
+		diff = 1;
 		inputs = new ArrayList<Integer>();
 		disabled = new ArrayList<Integer>();
 		fields = new Integer[9][9];
@@ -99,7 +103,7 @@ public class SudokuActivity extends Activity {
 
 	}
 
-	// stop music when app is minimized, show menu
+	// stop music when app is minimized, show menu (except on startup)
 	@Override
 	protected void onPause() {
 		player.stop();
@@ -346,6 +350,38 @@ public class SudokuActivity extends Activity {
 					chron.stop();
 					win.setText(R.string.win);
 					win.setVisibility(View.VISIBLE);
+
+					// current highscore in ms
+					long highscore = SystemClock.elapsedRealtime()
+							- chron.getBase();
+
+					SudokuPersistentGameData spgd = PersistenceHandler
+							.getSudokuPersistentGameData(this);
+
+					//checks if current score is higher than saved highscore
+					//if so overwrite
+					if (spgd != null) {
+						if (spgd.scoring.length == 1) {
+							if (highscore < spgd.scoring[0].score) {
+								spgd.scoring[0].score = highscore;
+								PersistenceHandler.setSudokuPersistentGameData(
+										this, spgd);
+							}
+						}
+						//if there is no score, save current score
+						else if (spgd.scoring == null) {
+							spgd = new SudokuPersistentGameData();
+							spgd.addHighScore(highscore, "John Wayne");
+							PersistenceHandler.setSudokuPersistentGameData(
+									this, spgd);
+						}
+					} else {
+						spgd = new SudokuPersistentGameData();
+						spgd.addHighScore(highscore, "John Wayne");
+						PersistenceHandler.setSudokuPersistentGameData(this,
+								spgd);
+
+					}
 				}
 			}
 		}

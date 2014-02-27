@@ -2,6 +2,9 @@ package de.sethosii.android_spielesammlung;
 
 import java.util.ArrayList;
 
+import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
+import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -70,7 +73,17 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {//BaseAdapter{
 			if (s.startsWith("Sudoku")) {
 				Log.w(Tag, "sudo");
 				holder.tt.setText("Sudoku");
-				holder.bt.setText("Highscores: 1:05");
+				//loads sudoku highscore
+				SudokuPersistentGameData spgd = PersistenceHandler.getSudokuPersistentGameData(activity);
+				if(spgd!=null)
+				{
+					String seconds = Long.toString((spgd.scoring[0].score/1000)%60);
+					String minutes = Long.toString((spgd.scoring[0].score/(1000*60))%60);
+					holder.bt.setText("Highscores: " + minutes + ":"+ seconds);
+				}
+				else{
+					holder.bt.setText("Highscores: ");
+				}
 				holder.image.setImageResource(R.drawable.sudoku_icon);
 			} else {
 				Log.w(Tag, "space");

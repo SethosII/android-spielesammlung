@@ -5,11 +5,11 @@ import java.util.Arrays;
 public abstract class PersistentGameDataBase {
 
 	public class HighScoreEntry {
-		public int sore = 0;
+		public long score = 0;
 		public String player = "";
 
-		private HighScoreEntry(int score, String player) {
-			this.sore = score;
+		private HighScoreEntry(long score, String player) {
+			this.score = score;
 			this.player = player;
 		}
 	}
@@ -17,7 +17,7 @@ public abstract class PersistentGameDataBase {
 	/** gespeicherte HighScores für eine Art von Spiel */
 	public HighScoreEntry[] scoring;
 
-	public void addHighScore(int score, String player) {
+	public void addHighScore(long score, String player) {
 		int newIndex = 0;
 		// Array verlängern
 		if (scoring == null) {

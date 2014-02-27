@@ -36,12 +36,11 @@ public class SpacesliderActivity extends Activity {
         // Infos lesen
 		MinesPersistentGameData mpgdr = PersistenceHandler.getMinesPersistentGameData(this);
 		if (mpgdr != null) {
-			;
 		}
 
         // Snapshot speichern
 		MinesPersistentSnapshot mpsw = new MinesPersistentSnapshot();
-		mpsw.sore = 1000000;
+		mpsw.score = 1000000;
 		mpsw.player = "John Wayne";
 		mpsw.minesCount = 10;
 		mpsw.dimensionX = 48;
