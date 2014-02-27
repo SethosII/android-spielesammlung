@@ -1,5 +1,7 @@
 package de.sethosii.android_spielesammlung;
 
+import java.util.ArrayList;
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,25 +11,38 @@ import android.view.View;
 import android.widget.ListView;
 
 
-
 public class MainActivity extends ListActivity {
 
 	private static final String Tag = "MainActivity";
 
+	ListView list;
+	CustomListArrayAdapter adapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		// GUI nicht über XML-Datei erstellen
-		// setContentView(R.layout.activity_main);
+		//setContentView(R.layout.activity_main);
 		Log.e(Tag, "startlist");
-		String[] values = new String[] { "Mines", "Sudoku", "Spaceslider" };
+		
+		//list=(ListView)findViewById(R.id.list);
+		
+		ArrayList<String> values = new ArrayList<String>();//; { "Mines", "Sudoku", "Spaceslider" };
+		values.add("Mines");
+		values.add("Sudoku");
+		values.add("Spaceslider");
+		
+		
+		Log.e(Tag, values.get(0));
+		Log.e(Tag, values.get(1));
+		Log.e(Tag, values.get(2));
 		// use your custom layout
-	    CustomListArrayAdapter adapter = new CustomListArrayAdapter(this, values);
-	    setListAdapter(adapter);
+	    adapter = new CustomListArrayAdapter(this, values);
+	    //list.setAdapter(adapter);
 		//ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 		//		R.layout.listviewitem_main, R.id.top_Line, values);
-		//setListAdapter(adapter);
+		setListAdapter(adapter);
 	}
 
 	@Override

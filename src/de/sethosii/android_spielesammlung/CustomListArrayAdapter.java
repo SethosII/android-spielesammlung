@@ -1,6 +1,9 @@
 package de.sethosii.android_spielesammlung;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,65 +13,119 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-public class CustomListArrayAdapter extends ArrayAdapter<String> {
+public class CustomListArrayAdapter extends ArrayAdapter<String> {//BaseAdapter{
 	private static final String Tag = "CustomListArrayAdapter";
-	private final Activity context;
-	private final String[] names;
+	private Activity activity;
+	private static LayoutInflater inflater=null;
+	private ArrayList<String> names;
 
 	static class ViewHolder {
-		public TextView text;
-		public TextView text_bottom;
+		public TextView tt;
+		public TextView bt;
 		public ImageView image;
 	}
 
-	public CustomListArrayAdapter(Activity context, String[] names) {
-		super(context, R.layout.listviewitem_main, names);
-		this.context = context;
-		this.names = names;
+	public CustomListArrayAdapter(Activity a, ArrayList<String> values) {
+		super(a, R.layout.listviewitem_main, values);
+		this.activity = a;
+		this.names = values;
+		inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View rowView = convertView;
-		Log.w(Tag, "startrow");
-		if (rowView == null) {
-			LayoutInflater inflater = context.getLayoutInflater();
-			rowView = inflater.inflate(R.layout.listviewitem_main, null);
-			ViewHolder viewHolder = new ViewHolder();
-			viewHolder.text = (TextView) rowView.findViewById(R.id.top_Line);
-			//Log.e(Tag, viewHolder.text.getText().toString());
-			viewHolder.text_bottom = (TextView) rowView
-					.findViewById(R.id.bottom_Line);
-			viewHolder.image = (ImageView) rowView.findViewById(R.id.game_icon);
-			viewHolder.text.setText("huch");
-			rowView.setTag(viewHolder);
-		}
+		View vi=convertView;
+		ViewHolder holder;
 		
-		ViewHolder holder = (ViewHolder) rowView.getTag();
-		String s = names[position];
-		holder.text.setText(s);
-		//Log.e(Tag, holder.text.getText().toString());
-		if (s.startsWith("Mines")) {
-			holder.text.setText("Mines");
-			holder.text_bottom.setText("Mines");
-			holder.image.setImageResource(R.drawable.minesweeper_icon);
+        if(convertView==null){
+            Log.w(Tag, "ist null");
+            vi = inflater.inflate(R.layout.listviewitem_main, null);
+            holder = new ViewHolder();
+            holder.tt = (TextView) vi.findViewById(R.id.top_Line);
+            holder.bt=(TextView)vi.findViewById(R.id.bottom_Line);
+            holder.image=(ImageView)vi.findViewById(R.id.game_icon);
+            
+           /************  Set holder with LayoutInflater ************/
+            vi.setTag( holder );
+        }
+        else  
+            holder=(ViewHolder)vi.getTag();
+
+        Log.w(Tag, "startrow");
+        
+        if(names.size()<=0)
+        {
+            holder.tt.setText("No Data");
+            
+        }
+        else
+        {
+        String s = names.get(position);
+        Log.w(Tag, s + position);
+        if (s.startsWith("Mines")) {
+        	Log.w(Tag, "mine");
+        	holder.tt.setText("Mines");
+        	holder.bt.setText("Highscores: 2:45");
+        	holder.image.setImageResource(R.drawable.minesweeper_icon);
 		} else {
 			if (s.startsWith("Sudoku")) {
-				holder.text.setText("Sudoku");
-				holder.text_bottom.setText("Sudoku");
+				Log.w(Tag, "sudo");
+				holder.tt.setText("Sudoku");
+				holder.bt.setText("Highscores: 1:05");
 				holder.image.setImageResource(R.drawable.sudoku_icon);
 			} else {
-				holder.text.setText("Spaceslider");
-				holder.text_bottom.setText("Spaceslider");
+				Log.w(Tag, "space");
+				holder.tt.setText("Spaceslider");
+				holder.bt.setText("Highscores: 1432");
 				holder.image.setImageResource(R.drawable.spaceslider_icon);
 			}
 		}
+        }
+
+        return vi;
+		
+		
+		
+		
+//		View rowView = convertView;
+//		Log.w(Tag, "startrow");
+//		if (rowView == null) {
+//			LayoutInflater inflater = context.getLayoutInflater();
+//			rowView = inflater.inflate(R.layout.listviewitem_main, null);
+//			ViewHolder viewHolder = new ViewHolder();
+//			viewHolder.text = (TextView) rowView.findViewById(R.id.top_Line);
+//			//Log.e(Tag, viewHolder.text.getText().toString());
+//			viewHolder.text_bottom = (TextView) rowView
+//					.findViewById(R.id.bottom_Line);
+//			viewHolder.image = (ImageView) rowView.findViewById(R.id.game_icon);
+//			viewHolder.text.setText("huch");
+//			rowView.setTag(viewHolder);
+//		}
+//		
+//		ViewHolder holder = (ViewHolder) rowView.getTag();
+//		String s = names[position];
+//		holder.text.setText(s);
+//		//Log.e(Tag, holder.text.getText().toString());
+//		if (s.startsWith("Mines")) {
+//			holder.text.setText("Mines");
+//			holder.text_bottom.setText("Mines");
+//			holder.image.setImageResource(R.drawable.minesweeper_icon);
+//		} else {
+//			if (s.startsWith("Sudoku")) {
+//				holder.text.setText("Sudoku");
+//				holder.text_bottom.setText("Sudoku");
+//				holder.image.setImageResource(R.drawable.sudoku_icon);
+//			} else {
+//				holder.text.setText("Spaceslider");
+//				holder.text_bottom.setText("Spaceslider");
+//				holder.image.setImageResource(R.drawable.spaceslider_icon);
+//			}
+//		}
 		
 		// holder.image.setImageResource(R.drawable.no);
 		// } else {
 		// holder.image.setImageResource(R.drawable.ok);
 		// }
 		// }
-		return rowView;
+		//return rowView;
 	}
 }
