@@ -398,7 +398,7 @@ public class MinesActivity extends Activity {
 			for (int i = 0; i < dimensionX; i++) {
 				for (int j = 0; j < dimensionY; j++) {
 					if (view[i][j].getText().equals("")
-							|| view[i][j].getText().equals("!")) {
+							|| view[i][j].getText().equals("X")) {
 						count++;
 					}
 				}
