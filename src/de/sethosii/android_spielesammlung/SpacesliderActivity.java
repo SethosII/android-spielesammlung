@@ -40,7 +40,7 @@ public class SpacesliderActivity extends Activity {
 
         // Snapshot speichern
 		MinesPersistentSnapshot mpsw = new MinesPersistentSnapshot();
-		mpsw.score = 1000000;
+		mpsw.stop = 1000000;
 		mpsw.player = "John Wayne";
 		mpsw.minesCount = 10;
 		mpsw.dimensionX = 48;

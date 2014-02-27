@@ -78,7 +78,7 @@ public class SudokuActivity extends Activity {
 		optionsmenu.setVisibility(View.GONE);
 
 		// if difficulty is higher than 50 an endless loop is generated
-		diff = 10;
+		diff = 45;
 		inputs = new ArrayList<Integer>();
 		disabled = new ArrayList<Integer>();
 		fields = new Integer[9][9];
