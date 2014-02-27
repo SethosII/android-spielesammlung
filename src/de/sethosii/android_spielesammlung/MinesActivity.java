@@ -50,6 +50,9 @@ public class MinesActivity extends Activity {
 	private long timeElapsed;
 	// is chronometer stopped
 	private boolean chronometerStopped;
+	// mediaplayer
+	private MediaPlayer musicPlayer;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +103,7 @@ public class MinesActivity extends Activity {
 	// stop chronometer and music on quit
 	@Override
 	public void finish() {
+		musicPlayer.stop();
 		chronometer.stop();
 		super.finish();
 	}
@@ -108,6 +112,10 @@ public class MinesActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if (getString(R.string.soundoff).equals(
+				((Button) findViewById(R.id.music)).getText())) {
+			playMusic();
+		}
 		resumeChronometer();
 	}
 
@@ -115,6 +123,7 @@ public class MinesActivity extends Activity {
 	@Override
 	protected void onPause() {
 		stopChronometer();
+		musicPlayer.stop();
 		super.onPause();
 	}
 
@@ -442,6 +451,7 @@ public class MinesActivity extends Activity {
 				resumeChronometer();
 			}
 		} else {
+			confirm.setVisibility(View.GONE);
 			menu.setVisibility(View.VISIBLE);
 			enableView(false);
 			menuButton.setColorFilter(Color.RED);
@@ -486,6 +496,39 @@ public class MinesActivity extends Activity {
 	public void save(View v) {
 
 	}
+	
+	// toggle music on/off
+	public void sound(View v) {
+		Button music = (Button) findViewById(R.id.music);
+		if ((musicPlayer != null) && musicPlayer.isPlaying()) {
+			music.setText(R.string.soundon);
+			musicPlayer.stop();
+		} else if ((musicPlayer != null) && !musicPlayer.isPlaying()) {
+			music.setText(R.string.soundoff);
+			playMusic();
+		}
+	}
+
+	// play music
+	public void playMusic() {
+		AssetFileDescriptor afd;
+		try {
+			// read the music file from the asset folder
+			afd = getAssets().openFd("music.mid");
+			musicPlayer = new MediaPlayer();
+			// Set the player music source.
+			musicPlayer.setDataSource(afd.getFileDescriptor(),
+					afd.getStartOffset(), afd.getLength());
+			// Set the looping and play the music.
+			musicPlayer.setLooping(true);
+			musicPlayer.prepare();
+			musicPlayer.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 	// end game
 	public void quit(View v) {
