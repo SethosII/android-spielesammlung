@@ -3,21 +3,21 @@ package de.sethosii.android_spielesammlung.persistence;
 import java.util.Arrays;
 
 public abstract class PersistentGameDataBase {
-
+//player wird vorerst nicht implementiert
 	public class HighScoreEntry {
 		public long score = 0;
-		public String player = "";
+		//public String player = "";
 
-		private HighScoreEntry(long score, String player) {
+		private HighScoreEntry(long score) {
 			this.score = score;
-			this.player = player;
+			//this.player = player;
 		}
 	}
 
 	/** gespeicherte HighScores für eine Art von Spiel */
 	public HighScoreEntry[] scoring;
 
-	public void addHighScore(long score, String player) {
+	public void addHighScore(long score) {
 		int newIndex = 0;
 		// Array verlängern
 		if (scoring == null) {
@@ -28,7 +28,7 @@ public abstract class PersistentGameDataBase {
 		}
 
 		// neuen Wert anfügen
-		HighScoreEntry entry = new HighScoreEntry(score, player);
+		HighScoreEntry entry = new HighScoreEntry(score);
 		scoring[newIndex] = entry;
 	}
 

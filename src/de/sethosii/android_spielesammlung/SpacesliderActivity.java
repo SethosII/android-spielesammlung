@@ -29,8 +29,8 @@ public class SpacesliderActivity extends Activity {
 
         // Infos speichern
 		MinesPersistentGameData mpgdw = new MinesPersistentGameData();
-		mpgdw.addHighScore(1000000, "John Wayne");
-		mpgdw.addHighScore(13, "Dieter");
+		mpgdw.addHighScore(1000000);
+		mpgdw.addHighScore(13);
 		PersistenceHandler.setMinesPersistentGameData(this, mpgdw);
 
         // Infos lesen

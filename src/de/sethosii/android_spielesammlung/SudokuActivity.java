@@ -371,13 +371,13 @@ public class SudokuActivity extends Activity {
 						//if there is no score, save current score
 						else if (spgd.scoring == null) {
 							spgd = new SudokuPersistentGameData();
-							spgd.addHighScore(highscore, "John Wayne");
+							spgd.addHighScore(highscore);
 							PersistenceHandler.setSudokuPersistentGameData(
 									this, spgd);
 						}
 					} else {
 						spgd = new SudokuPersistentGameData();
-						spgd.addHighScore(highscore, "John Wayne");
+						spgd.addHighScore(highscore);
 						PersistenceHandler.setSudokuPersistentGameData(this,
 								spgd);
 
