@@ -48,8 +48,6 @@ public class MinesActivity extends Activity {
 	private Button endButton;
 	// time elapsed
 	private long timeElapsed;
-	// mediaplayer
-	private MediaPlayer musicPlayer;
 	// is chronometer stopped
 	private boolean chronometerStopped;
 
@@ -73,7 +71,7 @@ public class MinesActivity extends Activity {
 				view[i][j] = ((Button) findViewById(R.id.b11 + i * dimensionY
 						+ j));
 				view[i][j].setText("");
-				view[i][j].setBackgroundColor(Color.LTGRAY);
+				view[i][j].setBackgroundColor(Color.parseColor("#DDDDDD"));
 			}
 		}
 		changeMode = (ImageButton) findViewById(R.id.changeMode);
@@ -90,7 +88,6 @@ public class MinesActivity extends Activity {
 		endButton.setVisibility(View.GONE);
 		timeElapsed = 0;
 		chronometerStopped = false;
-		playMusic();
 	}
 
 	@Override
@@ -103,7 +100,6 @@ public class MinesActivity extends Activity {
 	// stop chronometer and music on quit
 	@Override
 	public void finish() {
-		musicPlayer.stop();
 		chronometer.stop();
 		super.finish();
 	}
@@ -112,10 +108,6 @@ public class MinesActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (getString(R.string.soundoff).equals(
-				((Button) findViewById(R.id.music)).getText())) {
-			playMusic();
-		}
 		resumeChronometer();
 	}
 
@@ -123,7 +115,6 @@ public class MinesActivity extends Activity {
 	@Override
 	protected void onPause() {
 		stopChronometer();
-		musicPlayer.stop();
 		super.onPause();
 	}
 
@@ -141,7 +132,7 @@ public class MinesActivity extends Activity {
 			for (int j = 0; j < dimensionY; j++) {
 				solution[i][j] = "";
 				view[i][j].setText("");
-				view[i][j].setBackgroundColor(Color.LTGRAY);
+				view[i][j].setBackgroundColor(Color.parseColor("#DDDDDD"));
 				view[i][j].setTextColor(Color.BLACK);
 				view[i][j].setEnabled(true);
 			}
@@ -494,37 +485,6 @@ public class MinesActivity extends Activity {
 	// save game
 	public void save(View v) {
 
-	}
-
-	// toggle music on/off
-	public void sound(View v) {
-		Button music = (Button) findViewById(R.id.music);
-		if ((musicPlayer != null) && musicPlayer.isPlaying()) {
-			music.setText(R.string.soundon);
-			musicPlayer.stop();
-		} else if ((musicPlayer != null) && !musicPlayer.isPlaying()) {
-			music.setText(R.string.soundoff);
-			playMusic();
-		}
-	}
-
-	// play music
-	public void playMusic() {
-		AssetFileDescriptor afd;
-		try {
-			// read the music file from the asset folder
-			afd = getAssets().openFd("music.mid");
-			musicPlayer = new MediaPlayer();
-			// Set the player music source.
-			musicPlayer.setDataSource(afd.getFileDescriptor(),
-					afd.getStartOffset(), afd.getLength());
-			// Set the looping and play the music.
-			musicPlayer.setLooping(true);
-			musicPlayer.prepare();
-			musicPlayer.start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	// end game

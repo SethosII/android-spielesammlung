@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="500"
-            android:background="#000000"
+            android:background="#999999"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -917,20 +917,6 @@
             android:background="#696969"
             android:onClick="save"
             android:text="@string/save" />
-
-        <Button
-            android:id="@+id/music"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:background="#696969"
-            android:onClick="sound"
-            android:text="@string/soundoff" />
 
         <Button
             android:id="@+id/quitmenu"
