@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class SudokuActivity extends Activity {
@@ -40,6 +41,14 @@ public class SudokuActivity extends Activity {
 	LinearLayout confirm;
 	// mediaplayer
 	MediaPlayer player;
+	// save for pausing chronometer
+	long stop;
+	// all disabeld fields
+	ArrayList<Integer> disabled;
+	// determine if startup
+	boolean startup;
+	// determine if menu is shown
+	boolean menushown;
 	// tag for loggings
 	private final static String Tag = "SudokuActivity";
 
@@ -63,16 +72,37 @@ public class SudokuActivity extends Activity {
 		optionsmenu.setVisibility(View.GONE);
 
 		// if difficulty is higher than 50 an endless loop is generated
-		diff = 50;
+		diff = 45;
 		inputs = new ArrayList<Integer>();
+		disabled = new ArrayList<Integer>();
 		fields = new Integer[9][9];
 
-		play();
-		getallfields();
+		startup = true;
+		menushown = false;
+
+		playMusic();
+		getallFields();
+		disable(startup);
 
 		return true;
 
 	}
+
+	// // start music when app is maximized again
+	// @Override
+	// protected void onResume() {
+	// super.onResume();
+	// playMusic();
+	// resumeChronometer();
+	// }
+	//
+	// // stop music when app is minimized
+	// @Override
+	// protected void onPause() {
+	// stopChronometer();
+	// player.stop();
+	// super.onPause();
+	// }
 
 	// stop chronometer and music on quit
 	@Override
@@ -82,7 +112,122 @@ public class SudokuActivity extends Activity {
 		super.finish();
 	}
 
-	public void play() {
+	// disables all buttons
+	public void disable(boolean startup) {
+		ArrayList<Integer> allids = new ArrayList<Integer>();
+
+		// add all fields
+		for (int i = 0; i < 81; i++) {
+			int id = R.id.field11 + i;
+			allids.add(id);
+
+			// checks if method is launched at startup
+			if (!startup) {
+				// add all disabled fields
+				Button b = (Button) findViewById(id);
+				// saves which fields were disabled for enabling
+				if (!b.isEnabled()) {
+					disabled.add(id);
+				}
+			}
+		}
+
+		// add all inputs
+		for (int j = 0; j < 10; j++) {
+			allids.add(R.id.input1 + j);
+		}
+
+		// add all iconbuttons
+		// on startup all buttons are disabled
+		// if menu is shown menubutton must be enabled
+		int max = 0;
+		if (startup) {
+			max = 3;
+		} else if (!startup) {
+			max = 2;
+		}
+		for (int k = 0; k < max; k++) {
+			allids.add(R.id.newbutton + k);
+		}
+
+		// disable all buttons
+		int change = 0;
+		for (int id : allids) {
+			change++;
+			// switch between Buttons and ImageButtons
+			if (change <= 91) {
+				Button b = (Button) findViewById(id);
+				b.setEnabled(false);
+			}
+			if (change > 91) {
+				ImageButton b = (ImageButton) findViewById(id);
+				b.setEnabled(false);
+			}
+		}
+	}
+
+	// enables all buttons
+	public void enable(boolean startup) {
+		ArrayList<Integer> allids = new ArrayList<Integer>();
+
+		// add all fields
+		for (int i = 0; i < 81; i++) {
+			int id_now = R.id.field11 + i;
+			boolean check = true;
+
+			// checks if function is launched at startup
+			// if not function doesn´t enable set fields
+			if (startup) {
+				allids.add(id_now);
+			} else if (!startup) {
+				for (int id_disabled : disabled) {
+					if (id_now == id_disabled) {
+						check = false;
+					}
+				}
+				if (check) {
+					allids.add(id_now);
+				}
+			}
+		}
+		disabled.clear();
+
+		// add all inputs
+		for (int j = 0; j < 10; j++) {
+			allids.add(R.id.input1 + j);
+		}
+
+		// add all iconbuttons
+		for (int k = 0; k < 3; k++) {
+			allids.add(R.id.newbutton + k);
+		}
+
+		// enable all buttons
+		int change = 0;
+		for (int id : allids) {
+			change++;
+			// switch between Buttons and ImageButtons
+			if (change <= (allids.size() - 3)) {
+				Button b = (Button) findViewById(id);
+				b.setEnabled(true);
+			}
+			if (change > (allids.size() - 3)) {
+				ImageButton b = (ImageButton) findViewById(id);
+				b.setEnabled(true);
+			}
+
+		}
+	}
+
+	public void load() {
+		startup = false;
+	}
+
+	public void save() {
+
+	}
+
+	public void playMusic() {
 		// plays music
 		AssetFileDescriptor afd;
 		try {
@@ -112,14 +257,14 @@ public class SudokuActivity extends Activity {
 		}
 
 		else if ((player != null) && !player.isPlaying()) {
-				music.setText(R.string.soundoff);
-				play();
+			music.setText(R.string.soundoff);
+			playMusic();
 
 		}
 	}
 
-	// orders the fields
-	public void getallfields() {
+	// orders the fields to arranged array
+	public void getallFields() {
 		int counter = 0;
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -229,12 +374,14 @@ public class SudokuActivity extends Activity {
 		int hswitch = 0;
 		int vswitch = 0;
 
+		// enable all buttons
+		enable(startup);
+
 		// hide win message
 		win.setVisibility(View.GONE);
 
 		// count time
-		chron.setBase(SystemClock.elapsedRealtime());
-		chron.start();
+		startChronometer();
 
 		// hide confirm
 		confirm.setVisibility(View.GONE);
@@ -249,7 +396,7 @@ public class SudokuActivity extends Activity {
 		if (inputs != null) {
 			inputs.clear();
 		}
-		// picks numbers of run without putting back into random
+		// picks randomly numbers of run without putting back into random
 		for (int h = 0; h < 9; h++) {
 			int index = (int) (Math.random() * (pointer + 1));
 			random[h] = run[index];
@@ -354,7 +501,7 @@ public class SudokuActivity extends Activity {
 			// if field is not empty check if random field can be removed
 			else if (gapsudoku[rx][ry] != 0) {
 				gapsudoku[rx][ry] = 0;
-				if (checksolutions(gapsudoku) == false) {
+				if (checkSolutions(gapsudoku) == false) {
 					gapsudoku[rx][ry] = save;
 					o--;
 				}
@@ -376,6 +523,17 @@ public class SudokuActivity extends Activity {
 					b.setEnabled(false);
 				}
 			}
+		}
+		
+		// set startup false
+		if (startup) {
+			startup = false;
+		}
+		
+		if(menushown)
+		{
+			disable(startup);
+			stopChronometer();
 		}
 
 	}
@@ -407,21 +565,56 @@ public class SudokuActivity extends Activity {
 		return true;
 	}
 
+	// shows and hides menu
 	public void showMenu(View v) {
+
+		ImageButton menu = (ImageButton) findViewById(R.id.menubutton);
+
+		// if menu is gone, show menu, pause chronometer,
+		// disable background, color menu button
 		if (optionsmenu.getVisibility() == View.GONE) {
 			optionsmenu.setVisibility(View.VISIBLE);
-		} else if (optionsmenu.getVisibility() == View.VISIBLE) {
+			stopChronometer();
+			disable(startup);
+			menu.setColorFilter(Color.RED);
+			menushown = true;
+		}
+
+		// if menu is visible, hide menu,
+		// resume chronometer, enable background, color menu button
+		else if (optionsmenu.getVisibility() == View.VISIBLE) {
 			optionsmenu.setVisibility(View.GONE);
+			resumeChronometer();
+			enable(startup);
+			menu.setColorFilter(null);
+			menushown = false;
 		}
 	}
 
+	public void startChronometer() {
+		chron.setBase(SystemClock.elapsedRealtime());
+		chron.start();
+
+	}
+
+	public void stopChronometer() {
+		stop = SystemClock.elapsedRealtime();
+		chron.stop();
+	}
+
+	public void resumeChronometer() {
+		chron.setBase(chron.getBase() + SystemClock.elapsedRealtime() - stop);
+		chron.start();
+	}
+
+	// quits sudoku
 	public void quit(View v) {
 		chron.stop();
 		finish();
 	}
 
 	// checks if sudoku with gap has a distinct solution
-	public boolean checksolutions(Integer[][] gapsudoku) {
+	public boolean checkSolutions(Integer[][] gapsudoku) {
 		Integer[][] copy = new Integer[9][9];
 		int[] run = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -450,8 +643,8 @@ public class SudokuActivity extends Activity {
 							}
 						}
 
-						// if a distinct solution for a field was found, set
-						// solution, repeat everything
+						// if a distinct solution for a field was found
+						// set solution, repeat everything
 						if (solutions == 1) {
 							copy[i][j] = save;
 							filled = false;
