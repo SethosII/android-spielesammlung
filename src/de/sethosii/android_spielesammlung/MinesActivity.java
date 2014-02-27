@@ -2,6 +2,10 @@ package de.sethosii.android_spielesammlung;
 
 import java.io.IOException;
 
+import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
+import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
+import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
+
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
@@ -408,8 +412,36 @@ public class MinesActivity extends Activity {
 			}
 			if (end.equals(EnumGameState.WIN)) {
 				chronometer.stop();
+				// score
 				timeElapsed = SystemClock.elapsedRealtime()
 						- chronometer.getBase();
+				MinesPersistentGameData mpgd = PersistenceHandler
+						.getMinesPersistentGameData(this);
+				//checks if current score is higher than saved highscore
+				//if so overwrite
+				if (mpgd != null) {
+					if (mpgd.scoring.length == 1) {
+						if (timeElapsed < mpgd.scoring[0].score) {
+							mpgd.scoring[0].score = timeElapsed;
+							PersistenceHandler.setMinesPersistentGameData(
+									this, mpgd);
+						}
+					}
+					//if there is no score, save current score
+					else if (mpgd.scoring == null) {
+						mpgd = new MinesPersistentGameData();
+						mpgd.addHighScore(timeElapsed);
+						PersistenceHandler.setMinesPersistentGameData(
+								this, mpgd);
+					}
+				} else {
+					mpgd = new MinesPersistentGameData();
+					mpgd.addHighScore(timeElapsed);
+					PersistenceHandler.setMinesPersistentGameData(this,
+							mpgd);
+
+				}
+				
 				endButton.setVisibility(View.VISIBLE);
 				endButton.setText(R.string.win);
 				enableView(false);
@@ -510,7 +542,7 @@ public class MinesActivity extends Activity {
 	}
 
 	// play music
-	public void playMusic() {
+	private void playMusic() {
 		AssetFileDescriptor afd;
 		try {
 			// read the music file from the asset folder

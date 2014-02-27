@@ -852,7 +852,8 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:minEms="4"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="#000000" />
 
                 <Chronometer
                     android:id="@+id/chronometer"

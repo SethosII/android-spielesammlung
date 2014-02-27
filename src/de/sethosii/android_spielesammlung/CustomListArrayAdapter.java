@@ -2,6 +2,7 @@ package de.sethosii.android_spielesammlung;
 
 import java.util.ArrayList;
 
+import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
 import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
 import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
 
@@ -67,7 +68,18 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {//BaseAdapter{
         if (s.startsWith("Mines")) {
         	Log.w(Tag, "mine");
         	holder.tt.setText("Mines");
-        	holder.bt.setText("Highscores: 2:45");
+        	// load mines highscore
+			MinesPersistentGameData mpgd = PersistenceHandler.getMinesPersistentGameData(activity);
+			if(mpgd!=null)
+			{
+				String seconds = Long.toString((mpgd.scoring[0].score/1000)%60);
+				String minutes = Long.toString((mpgd.scoring[0].score/(1000*60))%60);
+				holder.bt.setText("Highscore: " + minutes + ":"+ seconds);
+			}
+			else{
+				holder.bt.setText("Highscore: not set");
+			}
+
         	holder.image.setImageResource(R.drawable.minesweeper_icon);
 		} else {
 			if (s.startsWith("Sudoku")) {
