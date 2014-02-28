@@ -3,8 +3,8 @@ package de.sethosii.android_spielesammlung;
 import java.io.IOException;
 
 import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
+import de.sethosii.android_spielesammlung.persistence.MinesPersistentSnapshot;
 import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
-import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
 
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -62,14 +61,18 @@ public class MinesActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.acitivity_mines);
-
-		// initialize variables for beginner difficulty
+		
+		// set values for start
 		mark = false;
 		end = EnumGameState.NOT_STARTED;
 		dimensionX = 9;
 		dimensionY = 9;
 		maxMineCount = 10;
 		mineCount = maxMineCount;
+		timeElapsed = 0;
+		chronometerStopped = false;
+
+		// get elements and initialize them
 		solution = new String[dimensionX][dimensionY];
 		view = new Button[dimensionX][dimensionY];
 		for (int i = 0; i < dimensionX; i++) {
@@ -88,19 +91,13 @@ public class MinesActivity extends Activity {
 		chronometer = (Chronometer) findViewById(R.id.chronometer);
 		menu = (LinearLayout) findViewById(R.id.menu);
 		menu.setVisibility(View.GONE);
-		confirm = (LinearLayout) findViewById(R.id.confirmDialog);
-		enableView(false);
 		endButton = (Button) findViewById(R.id.endbutton);
+		confirm = (LinearLayout) findViewById(R.id.confirmDialog);
 		endButton.setVisibility(View.GONE);
-		timeElapsed = 0;
-		chronometerStopped = false;
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		enableView(false);
+		if (PersistenceHandler.getMinesPersistentSnapshot(this, 0) == null) {
+			((Button) findViewById(R.id.confirmload)).setEnabled(false);
+		}
 	}
 
 	// stop chronometer and music on quit
@@ -146,9 +143,9 @@ public class MinesActivity extends Activity {
 				view[i][j].setText("");
 				view[i][j].setBackgroundColor(Color.parseColor("#DDDDDD"));
 				view[i][j].setTextColor(Color.BLACK);
-				view[i][j].setEnabled(true);
 			}
 		}
+		enableView(true);
 		end = EnumGameState.NOT_FINISHED;
 		mineCount = 10;
 		tvMineCount.setText(getString(R.string.mines_remaining) + ": "
@@ -158,6 +155,7 @@ public class MinesActivity extends Activity {
 		confirm.setVisibility(View.GONE);
 		endButton.setVisibility(View.GONE);
 		enableView(true);
+		
 		// reset time
 		stopChronometer();
 		chronometer.setBase(SystemClock.elapsedRealtime());
@@ -398,16 +396,16 @@ public class MinesActivity extends Activity {
 			endButton.setText(R.string.lose);
 			enableView(false);
 		} else {
-			int count = 0;
+			int remainingFields = 0;
 			for (int i = 0; i < dimensionX; i++) {
 				for (int j = 0; j < dimensionY; j++) {
 					if (view[i][j].getText().equals("")
 							|| view[i][j].getText().equals("X")) {
-						count++;
+						remainingFields++;
 					}
 				}
 			}
-			if (count <= maxMineCount) {
+			if (remainingFields <= maxMineCount) {
 				end = EnumGameState.WIN;
 			}
 			if (end.equals(EnumGameState.WIN)) {
@@ -417,7 +415,7 @@ public class MinesActivity extends Activity {
 						- chronometer.getBase();
 				MinesPersistentGameData mpgd = PersistenceHandler
 						.getMinesPersistentGameData(this);
-				// overwrite highscore if score is higher
+				// score > highscorer: save
 				if (mpgd != null) {
 					if (mpgd.scoring.length == 1) {
 						if (timeElapsed < mpgd.scoring[0].score) {
@@ -426,7 +424,7 @@ public class MinesActivity extends Activity {
 									mpgd);
 						}
 					}
-					// if there is no score, save current score
+					// no highscore: save
 					else if (mpgd.scoring == null) {
 						mpgd = new MinesPersistentGameData();
 						mpgd.addHighScore(timeElapsed);
@@ -447,6 +445,7 @@ public class MinesActivity extends Activity {
 		}
 	}
 
+	// enable or diable all fields
 	private void enableView(boolean enable) {
 		for (int i = 0; i < dimensionX; i++) {
 			for (int j = 0; j < dimensionY; j++) {
@@ -484,6 +483,11 @@ public class MinesActivity extends Activity {
 			confirm.setVisibility(View.GONE);
 			menu.setVisibility(View.VISIBLE);
 			enableView(false);
+			if (PersistenceHandler.getMinesPersistentSnapshot(this, 0) == null) {
+				((Button) findViewById(R.id.loadgame)).setEnabled(false);
+			} else {
+				((Button) findViewById(R.id.loadgame)).setEnabled(true);
+			}
 			menuButton.setColorFilter(Color.RED);
 			if (end == EnumGameState.NOT_FINISHED) {
 				stopChronometer();
@@ -510,7 +514,9 @@ public class MinesActivity extends Activity {
 
 	// resumes chronometer
 	private void resumeChronometer() {
-		if (chronometerStopped && (menu.getVisibility() != View.VISIBLE)) {
+		if (chronometerStopped && (menu.getVisibility() != View.VISIBLE)
+				&& (end == EnumGameState.NOT_FINISHED)) {
+			System.out.println("!!chronoresume!!");
 			chronometer.setBase(chronometer.getBase()
 					+ SystemClock.elapsedRealtime() - timeElapsed);
 			startChronometer();
@@ -519,12 +525,64 @@ public class MinesActivity extends Activity {
 
 	// load game
 	public void load(View v) {
-
+		MinesPersistentSnapshot mps = PersistenceHandler
+				.getMinesPersistentSnapshot(this, 0);
+		if (mps != null) {
+			initialize();
+			timeElapsed = mps.stop;
+			chronometer.setBase(mps.base);
+			chronometer.setText(mps.chrontext);
+			end = mps.end;
+			mineCount = mps.mineCount;
+			tvMineCount.setText(getString(R.string.mines_remaining) + ": "
+					+ mineCount);
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					solution[i][j] = mps.solution[i][j];
+					view[i][j].setText(mps.view[i][j]);
+					if (view[i][j].getText().toString().equals("")) {
+						view[i][j].setTextColor(Color.BLACK);
+						view[i][j].setBackgroundColor(Color
+								.parseColor("#DDDDDD"));
+					} else if (view[i][j].getText().toString().equals(" ")) {
+						view[i][j].setTextColor(Color.BLACK);
+						view[i][j].setBackgroundColor(Color.WHITE);
+					} else if (view[i][j].getText().toString().equals("X")) {
+						view[i][j].setTextColor(Color.RED);
+						view[i][j].setBackgroundColor(Color
+								.parseColor("#DDDDDD"));
+					} else {
+						view[i][j].setTextColor(Color.BLACK);
+						view[i][j].setBackgroundColor(Color.WHITE);
+					}
+				}
+			}
+			resumeChronometer();
+		} else {
+			System.out.println("nothing to load!");
+		}
 	}
 
 	// save game
 	public void save(View v) {
-
+		MinesPersistentSnapshot mps = new MinesPersistentSnapshot();
+		mps.stop = timeElapsed;
+		mps.base = chronometer.getBase();
+		mps.chrontext = chronometer.getText().toString();
+		mps.end = end;
+		mps.mineCount = mineCount;
+		mps.solution = new String[dimensionX][dimensionY];
+		mps.view = new String[dimensionX][dimensionY];
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				mps.solution[i][j] = solution[i][j];
+				mps.view[i][j] = view[i][j].getText().toString();
+			}
+		}
+		PersistenceHandler.setMinesPersistentSnapshot(this, 0, mps);
+		if (menu.getVisibility()==View.VISIBLE) {
+			((Button) findViewById(R.id.loadgame)).setEnabled(true);
+		}
 	}
 
 	// toggle music on/off

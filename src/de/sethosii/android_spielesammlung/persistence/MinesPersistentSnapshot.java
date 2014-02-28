@@ -1,12 +1,14 @@
 package de.sethosii.android_spielesammlung.persistence;
 
+import android.widget.Button;
+import de.sethosii.android_spielesammlung.EnumGameState;
+
 public class MinesPersistentSnapshot extends PersistentSnapshotBase {
 
-	public int dimensionX;
-	public int dimensionY;
-
-	public int minesCount;
-
-	public int[][] fieldState;
-
+	public boolean mark;
+	public EnumGameState end;
+	public int mineCount;
+	public String[][] solution;
+	public String[][] view;
+	
 }

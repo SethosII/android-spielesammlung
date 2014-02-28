@@ -84,7 +84,7 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {//BaseAdapter{
 				holder.bt.setText("Highscore: " + minutes + ":"+ seconds);
 			}
 			else{
-				holder.bt.setText("Highscore: not set");
+				holder.bt.setText("Highscore: ");
 			}
 
         	holder.image.setImageResource(R.drawable.minesweeper_icon);
