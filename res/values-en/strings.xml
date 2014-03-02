@@ -12,7 +12,17 @@
     <string name="menu">Menü</string>
     <string name="win">You won!\n Touch to Continue!</string>
     <string name="lose">You lost!\n Touch to Continue!</string>
+    <string name="confirmtext">Do you want to load a game?</string>
+    <string name="soundon">Music on</string>
+    <string name="soundoff">Music off</string>
 
+    <!-- Main Menu Strings -->
+    
+    <string name="Top_Text">Gamename</string>
+    <string name="Bottom_Text">Highscore: </string>
+    <string name="Game_Icon">Spiel Icon</string>
+    <string name="Plus_Icon">Plus Icon</string>
+    
     <!-- Sudoku Strings -->
 
     <string name="sudoku">Sudoku</string>
@@ -38,8 +48,6 @@
     <!-- Spaceslider Strings -->
 
     <string name="spaceslider">Spaceslider</string>
-    <string name="confirmtext">Do you want to load a game?</string>
-    <string name="soundon">Music on</string>
-    <string name="soundoff">Music off</string>
+
 
 </resources>

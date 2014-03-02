@@ -12,32 +12,29 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="4dip"
-        android:contentDescription="icon"
+        android:contentDescription="@string/Game_Icon"
         android:src="@drawable/minesweeper_icon" />
-
-
 
     <TextView
         android:id="@+id/top_Line"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-		android:layout_alignTop="@+id/game_icon"
+        android:layout_alignTop="@+id/game_icon"
         android:layout_toRightOf="@id/game_icon"
         android:singleLine="true"
-        android:text="uff"
+        android:text="@string/Top_Text"
         android:textSize="16sp" />
-    
-        <TextView
+
+    <TextView
         android:id="@+id/bottom_Line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/game_icon"
         android:layout_below="@id/top_Line"
+        android:layout_toRightOf="@id/game_icon"
         android:ellipsize="marquee"
         android:singleLine="true"
-        android:text="unten"
+        android:text="@string/Bottom_Text"
         android:textSize="12sp" />
-    
 
     <ImageView
         android:id="@+id/plus_icon"
@@ -45,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:contentDescription="@string/Plus_Icon"
         android:src="@drawable/ic_action_new" />
 
 </RelativeLayout>

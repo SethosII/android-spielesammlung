@@ -3,12 +3,6 @@ package de.sethosii.android_spielesammlung;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
-import de.sethosii.android_spielesammlung.persistence.MinesPersistentSnapshot;
-import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
-import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
-import de.sethosii.android_spielesammlung.persistence.SudokuPersistentSnapshot;
-
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
@@ -22,6 +16,9 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
+import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
+import de.sethosii.android_spielesammlung.persistence.SudokuPersistentSnapshot;
 
 public class SudokuActivity extends Activity {
 
