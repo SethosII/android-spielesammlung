@@ -93,10 +93,10 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {
 					}
 					String minutes = Long
 							.toString((mpgd.scoring[0].score / (1000 * 60)) % 60);
-					holder.bt.setText(R.string.Bottom_Text + minutes + ":"
+					holder.bt.setText("Highscore: " + minutes + ":"
 							+ seconds);
 				} else {
-					holder.bt.setText(R.string.Bottom_Text);
+					holder.bt.setText("Highscore: ");
 				}
 
 				holder.image.setImageResource(R.drawable.minesweeper_icon);
@@ -119,10 +119,10 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {
 						}
 						String minutes = Long
 								.toString((spgd.scoring[0].score / (1000 * 60)) % 60);
-						holder.bt.setText(R.string.Bottom_Text + minutes + ":"
+						holder.bt.setText("Highscore: " + minutes + ":"
 								+ seconds);
 					} else {
-						holder.bt.setText(R.string.Bottom_Text);
+						holder.bt.setText("Highscore: ");
 					}
 					holder.image.setImageResource(R.drawable.sudoku_icon);
 				} else {
