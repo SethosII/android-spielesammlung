@@ -8,10 +8,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Paint.Cap;
 import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.Typeface;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -21,15 +20,15 @@ public class SpacesliderView extends View {
 
 	private class StarMap {
 		
-		private class Star {
+		private abstract class SpaceEntity {
 			int x = 0, y = 0;
 			float speed = 0, size = 0;
-			public Star() {
+
+			protected SpaceEntity() {
 				x = Math.round((float)Math.random()*(float)xMax);
-				y = Math.round((float)Math.random()*(float)yMax);
-				speed = (float)Math.random()*20.0f;
-				size = (float)Math.random()*2.0f + 1.0f;
+				speed = (float)Math.random()*20.0f + 1.0f;
 			}
+
 			public void step() {
 				y = Math.round(y + speed);
 				if (y > yMax) {
@@ -38,22 +37,51 @@ public class SpacesliderView extends View {
 				}
 			}
 		}
-		private class AstObj extends Star {
-			int color;
-			public AstObj() {
+
+		private class Star extends SpaceEntity {
+			public Star() {
 				super();
+
+				y = Math.round((float)Math.random()*(float)yMax);
+				size = (float)Math.random()*2.0f + 0.5f;
+			}
+		}
+
+		private class Asteroid extends SpaceEntity {
+			int color;
+
+			public Asteroid() {
+				super();
+
 				y = 0;
 				size = (float)Math.random()*10.0f + 10.0f;
-				if (Math.random() > 0.5f) {
-					color = Color.argb(255, 255, 255, 192);
-				} else {
+				
+				switch ((int)(Math.random() * 3.0f)) {
+				case 0:
+					color = Color.argb(255, 255, 255, 128);
+					break;
+				case 1:
 					color = Color.argb(255, 192, 192, 255);
+					break;
+				default:
+					color = Color.argb(255, 255, 192, 192);
 				}
+			}
+
+			public boolean testCollision(Region regionShip, Region regionClip) {
+				Path pathThis = new Path();
+				pathThis.addCircle(x, y, size, Path.Direction.CW);
+
+				Region regionThis = new Region();
+				regionThis.setPath(pathThis, regionClip);
+
+				// intersection test, first a quick one based on rectangle
+				return ((!regionThis.quickReject(regionShip)) && regionThis.op(regionShip, Region.Op.INTERSECT));
 			}
 		}
 
 		List<Star> stars = new ArrayList<Star>();
-		List<AstObj> objects = new ArrayList<AstObj>();
+		List<Asteroid> asteroids = new ArrayList<Asteroid>();
 
 		private void setStarCount(int count) {
 			while (stars.size() > count) {
@@ -64,12 +92,12 @@ public class SpacesliderView extends View {
 			}
 		}
 
-		private void setObjectCount(int count) {
-			while (objects.size() > count) {
-				objects.remove(0);
+		private void setAsteroidCount(int count) {
+			while (asteroids.size() > count) {
+				asteroids.remove(0);
 			}
-			while (objects.size() < count) {
-				objects.add(new AstObj());
+			while (asteroids.size() < count) {
+				asteroids.add(new Asteroid());
 			}
 		}
 
@@ -78,7 +106,7 @@ public class SpacesliderView extends View {
 			for (Star star : stars) {
 				canvas.drawCircle(star.x, star.y, star.size, paint);
 			}
-			for (AstObj astObj : objects) {
+			for (Asteroid astObj : asteroids) {
 			    paint.setColor(astObj.color);
 				canvas.drawCircle(astObj.x, astObj.y, astObj.size, paint);
 			}
@@ -88,25 +116,105 @@ public class SpacesliderView extends View {
 			for (Star star : stars) {
 				star.step();
 			}
-			for (AstObj astObj : objects) {
+			for (Asteroid astObj : asteroids) {
 				astObj.step();
 			}
 		}
 
+		private boolean testCollisionAll() {
+			Region regionClip = new Region(xMin, yMin, xMax, yMax);
+			Region regionShip = new Region();
+			regionShip.setPath(pathShip, regionClip);
+
+			for (Asteroid astObj : asteroids) {
+				if (astObj.testCollision(regionShip, regionClip)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 	}
-	
+
+        private class SpaceShip {
+            private float shipWidth = 80;  // ship's radius
+            private float shipX = shipWidth + 20;  // ship's center (x,y)
+            private float shipY = shipWidth + 450; //TODO
+            private float shipSpeedX = 5;  // ship's horizontal speed
+            private RectF shipBounds;      // Needed for Canvas.drawOval
+
+            private Path pathWings = new Path();
+            private Path pathBody = new Path();
+
+            public SpaceShip() {
+  		        shipBounds = new RectF();
+
+  		      float posX = 0/*ballX*/;
+  			  float posY = 0/*ballY*/;
+  			  //
+  		      pathWings.reset();
+  		      pathWings.setFillType(Path.FillType.WINDING);
+  		      pathWings.moveTo(posX-shipWidth, posY+shipWidth);
+  		      pathWings.lineTo(posX+shipWidth, posY+shipWidth);
+  		      pathWings.lineTo(posX, posY);
+  		      pathWings.close();
+
+  		      //
+  		      int bodyRadius = 10;
+  		      int noseLen = 10;
+  		      pathBody.reset();
+  		      pathBody.setFillType(Path.FillType.WINDING);
+  		      pathBody.moveTo(posX-bodyRadius, posY+shipWidth);
+  		      pathBody.lineTo(posX+bodyRadius, posY+shipWidth);
+  		      pathBody.lineTo(posX+bodyRadius, posY-shipWidth+noseLen);
+  		      pathBody.lineTo(posX+bodyRadius/2, posY-shipWidth);
+  		      pathBody.lineTo(posX-bodyRadius/2, posY-shipWidth);
+  		      pathBody.lineTo(posX-bodyRadius, posY-shipWidth+noseLen);
+  		      pathBody.close();
+  		      
+            }
+
+            private void paintTo(Canvas canvas) {
+      	      paint.setColor(android.graphics.Color.LTGRAY);
+
+    	      pathShip.reset();
+    	      pathShip.addPath(pathWings, shipX, shipY);
+    	      pathShip.addPath(pathBody, shipX, shipY);
+    	      canvas.drawPath(pathShip, paint);
+
+    	      //canvas.drawPath(pathWings, paint);
+    	      //canvas.drawPath(pathBody, paint);
+
+    		}
+
+            public void step(float value) {
+      	      // Get new (x,y) position
+      	      shipX -= Math.round(60.0f * value);
+      	      //shipX += shipSpeedX;
+      	      //shipY += shipSpeedY;
+      	      // Detect collision and react
+      	      if (shipX + shipWidth > xMax) {
+      	         shipSpeedX = -shipSpeedX;
+      	         shipX = xMax-shipWidth;
+      	      } else if (shipX - shipWidth < xMin) {
+      	         shipSpeedX = -shipSpeedX;
+      	         shipX = xMin+shipWidth;
+      	      }
+
+    	      // Build status message
+    	      statusMsg.delete(0, statusMsg.length());   // Empty buffer
+    	      formatter.format("Ball@(%3.0f,%3.0f), Speed=(%2.0f), Neig(%f)",
+    	    		  shipX, shipY, shipSpeedX, value);
+			}
+        }
+
 	   private int xMin = 0;          // This view's bounds
 	   private int xMax;
 	   private int yMin = 0;
 	   private int yMax;
-	   private float ballRadius = 80; // Ball's radius
-	   private float ballX = ballRadius + 20;  // Ball's center (x,y)
-	   private float ballY = ballRadius + 500; //TODO
-	   private float ballSpeedX = 5;  // Ball's speed (x,y)
-	   private float ballSpeedY = 3;
-	   private RectF ballBounds;      // Needed for Canvas.drawOval
+	   private SpaceShip ship = new SpaceShip();
 	   private Paint paint;           // The paint (e.g. style, color) used for drawing
-	   
+
 	   // For touch inputs - previous touch (x, y)
 	   private float previousX;
 	   private float previousY;
@@ -126,7 +234,6 @@ public class SpacesliderView extends View {
 		      this.setKeepScreenOn(true);
 		      this.setBackgroundColor(Color.BLACK);
 		      
-		      ballBounds = new RectF();
 		      paint = new Paint(Paint.ANTI_ALIAS_FLAG);  //TODO new Paint();
 		      // Set the font face and size of drawing text
 		      paint.setTypeface(Typeface.MONOSPACE);
@@ -143,15 +250,62 @@ public class SpacesliderView extends View {
 
 			  tc = new TiltCalc(context);
 
-	   }
+       }
 	  
 	   
-       Path pathWings = new Path();
-       Path pathBody = new Path();
+       Path pathShip = new Path();
+       Path pathDel = new Path();
+
+       int mDialHeight = 590/*255*/;
+       int mDialWidth = 1280/*480*/;
+       int widthSize;
+       int heightSize;
+       float viewScale;
+
+       @Override
+       protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+           int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+           widthSize = MeasureSpec.getSize(widthMeasureSpec);
+           int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+           heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+           float hScale = 1.0f;
+           float vScale = 1.0f;
+
+           if (widthMode != MeasureSpec.UNSPECIFIED /*&& widthSize < mDialWidth*/) {
+               hScale = (float)widthSize / (float)mDialWidth;
+           }
+
+           if (heightMode != MeasureSpec.UNSPECIFIED /*&& heightSize < mDialHeight*/) {
+               vScale = (float)heightSize / (float)mDialHeight;
+           }
+
+           viewScale = Math.min(hScale, vScale);
+
+           int a1, a2, b1, b2;
+           a1 = (int)((float)widthSize / (float)viewScale);
+           a2 = (int)((float)heightSize / (float)viewScale);
+           b1 = resolveSize((int) (mDialWidth * viewScale), widthMeasureSpec);
+           b2 = resolveSize((int) (mDialHeight * viewScale), heightMeasureSpec);
+ 	       //setMeasuredDimension(resolveSize((int) (mDialWidth * viewScale), widthMeasureSpec),
+           //        resolveSize((int) (mDialHeight * viewScale), heightMeasureSpec));
+           setMeasuredDimension((int)((float)widthSize / (float)viewScale), (int)((float)heightSize / (float)viewScale));
+
+ 	       setScaleX(viewScale);
+ 	       setScaleY(viewScale);
+ 	       setPivotX(0);
+ 	       setPivotY(0);
+       }
 
        // Called back to draw the view. Also called after invalidate().
 	   @Override
 	   protected void onDraw(Canvas canvas) {
+
+		  //paint.setStrokeWidth(1);
+		  paint.setStyle(Paint.Style.FILL);
+		  paint.setAntiAlias(true);
+
 		  // Draw Stars
 		  starMap.paintTo(canvas);
 		  
@@ -161,48 +315,20 @@ public class SpacesliderView extends View {
 	      //canvas.drawOval(ballBounds, paint);
 
 	      // Draw Ship
-	      paint.setStrokeWidth(2);
-	      paint.setColor(android.graphics.Color.LTGRAY);
-	      paint.setStyle(Paint.Style.FILL_AND_STROKE);
-	      paint.setAntiAlias(true);
-
-	      //Point point1_draw = new Point();        
-	      //Point point2_draw = new Point();    
-	      //Point point3_draw = new Point();
-
-	      //mapView.getProjection().toPixels(point1, point1_draw);
-	      //mapView.getProjection().toPixels(point2, point2_draw);
-	      //mapView.getProjection().toPixels(point3, point3_draw);
-
-	      pathWings.reset();
-	      pathWings.setFillType(Path.FillType.EVEN_ODD);
-	      pathWings.moveTo(ballX-ballRadius, ballY+ballRadius);
-	      pathWings.lineTo(ballX+ballRadius, ballY+ballRadius);
-	      pathWings.lineTo(ballX, ballY);
-	      pathWings.close();
-	      canvas.drawPath(pathWings, paint);
-
-	      int bodyRadius = 10;
-	      int noseLen = 10;
-	      pathBody.reset();
-	      pathBody.setFillType(Path.FillType.EVEN_ODD);
-	      pathBody.moveTo(ballX-bodyRadius, ballY+ballRadius);
-	      pathBody.lineTo(ballX+bodyRadius, ballY+ballRadius);
-	      pathBody.lineTo(ballX+bodyRadius, ballY-ballRadius+noseLen);
-	      pathBody.lineTo(ballX+bodyRadius/2, ballY-ballRadius);
-	      pathBody.lineTo(ballX-bodyRadius/2, ballY-ballRadius);
-	      pathBody.lineTo(ballX-bodyRadius, ballY-ballRadius+noseLen);
-	      pathBody.close();
-	      canvas.drawPath(pathBody, paint);
-
-
-
+		  ship.paintTo(canvas);
 
 
 	      // Draw the status message
 	      paint.setColor(Color.DKGRAY);
 	      canvas.drawText(statusMsg.toString(), 10, 30, paint);
-	      
+
+	      canvas.drawText(String.format("x:%d,y:%d", Math.round(xMax), Math.round(yMax)), xMax-150, yMax-30, paint);
+	      paint.setColor(Color.RED);
+	      canvas.drawRect(0, 0, 1, 1, paint);
+	      canvas.drawRect(0, yMax-1, 1, yMax, paint);
+	      canvas.drawRect(xMax-1, yMax-1, xMax, yMax, paint);
+	      canvas.drawRect(xMax-1, 0, xMax, 1, paint);
+
 	      // Update the position of the ball, including collision detection and reaction.
 	      update();
 	  
@@ -211,51 +337,43 @@ public class SpacesliderView extends View {
 	         Thread.sleep(30);  
 	      } catch (InterruptedException e) { }
 	      
+//canvas.restore();
 	      invalidate();  // Force a re-draw
 	   }
 	   
 	   // Detect collision and update the position of the ball.
 	   private void update() {
-		  starMap.stepStars();
+		  if (starMap.testCollisionAll()) {
+			  try {
+				starMap.setAsteroidCount(0);
+				starMap.setAsteroidCount(8);
+				setActivated(false);
+				Thread.sleep(3000);
+				setVisibility(View.GONE);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		  }
 		  
+		  starMap.stepStars();
+
 		  float[] vals = new float[3];
 		  tc.getTilt(vals);
 			  
-	      // Get new (x,y) position
-	      ballX -= Math.round(50.0f * vals[1]);
-	      //ballX += ballSpeedX;
-	      //ballY += ballSpeedY;
-	      // Detect collision and react
-	      if (ballX + ballRadius > xMax) {
-	         ballSpeedX = -ballSpeedX;
-	         ballX = xMax-ballRadius;
-	      } else if (ballX - ballRadius < xMin) {
-	         ballSpeedX = -ballSpeedX;
-	         ballX = xMin+ballRadius;
-	      }
-	      if (ballY + ballRadius > yMax) {
-	         ballSpeedY = -ballSpeedY;
-	         ballY = yMax - ballRadius;
-	      } else if (ballY - ballRadius < yMin) {
-	         ballSpeedY = -ballSpeedY;
-	         ballY = yMin + ballRadius;
-	      }
-
-	      // Build status message
-	      statusMsg.delete(0, statusMsg.length());   // Empty buffer
-	      formatter.format("Ball@(%3.0f,%3.0f), Speed=(%2.0f,%2.0f), Neig(%f)",
-	    		  ballX, ballY, ballSpeedX, ballSpeedY, vals[1]);
+		  ship.step(vals[1]);
 	   }
 	   
 	   // Called back when the view is first created or its size changes.
 	   @Override
 	   public void onSizeChanged(int w, int h, int oldW, int oldH) {
-	      // Set the movement bounds for the ball
-	      xMax = w-1;
-	      yMax = h-1;
+	      // Set the movement bounds for all objects
+		  //w = 1280, h = 590
+		  //w = 480, h = 255
+	      xMax = w;
+	      yMax = h;
 
 		  starMap.setStarCount(50);
-		  starMap.setObjectCount(8);
+		  starMap.setAsteroidCount(8);
 	   }
 
 	   // Key-up event handler
@@ -263,32 +381,19 @@ public class SpacesliderView extends View {
 	   public boolean onKeyUp(int keyCode, KeyEvent event) {
 	      switch (keyCode) {
 	         case KeyEvent.KEYCODE_DPAD_RIGHT: // Increase rightward speed
-	            ballSpeedX++;
+	            //TODO shipSpeedX++;
 	            break;
 	         case KeyEvent.KEYCODE_DPAD_LEFT:  // Increase leftward speed
-	            ballSpeedX--;
+	        	//TODO shipSpeedX--;
 	            break;
 	         case KeyEvent.KEYCODE_DPAD_UP:    // Increase upward speed
-	            ballSpeedY--;
+	            ;
 	            break;
 	         case KeyEvent.KEYCODE_DPAD_DOWN:  // Increase downward speed
-	            ballSpeedY++;
+	            ;
 	            break;
 	         case KeyEvent.KEYCODE_DPAD_CENTER: // Stop
-	            ballSpeedX = 0;
-	            ballSpeedY = 0;
-	            break;
-	         case KeyEvent.KEYCODE_A:    // Zoom in
-	            // Max radius is about 90% of half of the smaller dimension
-	            float maxRadius = (xMax > yMax) ? yMax / 2 * 0.9f  : xMax / 2 * 0.9f;
-	            if (ballRadius < maxRadius) {
-	               ballRadius *= 1.05;   // Increase radius by 5%
-	            }
-	            break;
-	         case KeyEvent.KEYCODE_Z:    // Zoom out
-	            if (ballRadius > 20) {   // Minimum radius
-	               ballRadius *= 0.95;   // Decrease radius by 5%
-	            }
+	            //TODO shipSpeedX = 0;
 	            break;
 	         default:
 	 	        return false;  // Event unhandled
@@ -308,8 +413,8 @@ public class SpacesliderView extends View {
 	            // Modify rotational angles according to movement
 	            deltaX = currentX - previousX;
 	            deltaY = currentY - previousY;
-	            ballSpeedX += deltaX * scalingFactor;
-	            ballSpeedY += deltaY * scalingFactor;
+	            //TODO shipSpeedX += deltaX * scalingFactor;
+	            //TODO shipSpeedY += deltaY * scalingFactor;
 	      }
 	      // Save current x, y
 	      previousX = currentX;
