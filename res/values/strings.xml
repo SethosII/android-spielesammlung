@@ -49,5 +49,7 @@
     <!-- Spaceslider Strings -->
 
     <string name="spaceslider">Spaceslider</string>
+    <string name="succsave">Ihr aktueller Stand wurde gespeichert!</string>
+    <string name="errsave">Ihr aktueller Stand konnte nicht gespeichert werden!</string>
 
 </resources>

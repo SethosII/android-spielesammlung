@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
 import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
 import de.sethosii.android_spielesammlung.persistence.SudokuPersistentSnapshot;
@@ -59,35 +60,39 @@ public class SudokuActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sudoku);
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-
+		// initialize every needed objects
 		win = (Button) findViewById(R.id.winbutton);
 		optionsmenu = (LinearLayout) findViewById(R.id.menu);
 		chron = (Chronometer) findViewById(R.id.chronometer);
 		confirm = (LinearLayout) findViewById(R.id.confirm);
 
+		// hide win message and optionsmenu
 		win.setVisibility(View.GONE);
 		optionsmenu.setVisibility(View.GONE);
 
 		// if difficulty is higher than 50 an endless loop is generated
 		diff = 45;
+
+		// initialize needed lists and arrays
 		inputs = new ArrayList<Integer>();
 		disabled = new ArrayList<Integer>();
 		fields = new Integer[9][9];
 
+		// set flags on creation
 		startup = true;
 		menushown = false;
 
+		// check if there is a state to load
+		if (PersistenceHandler.getSudokuPersistentSnapshot(this, 0) == null) {
+			((Button) findViewById(R.id.confirmload)).setEnabled(false);
+		}
+
+		// order all fields
 		getallFields();
+
+		// disable all fields on startup
 		disable(startup);
-
-		return true;
-
 	}
 
 	// start music when app is maximized again
@@ -230,32 +235,33 @@ public class SudokuActivity extends Activity {
 
 		}
 	}
-// load saved state
+
+	// load saved state
 	public void load(View v) {
-		
-		//load saved Object
+
+		// load saved Object
 		SudokuPersistentSnapshot sps = PersistenceHandler
 				.getSudokuPersistentSnapshot(this, 0);
 		if (sps != null) {
 			startup = false;
 
-			//delete disabled fields
+			// delete disabled fields
 			if (disabled != null) {
 				disabled.clear();
 			}
 
-			//load disabled fields
+			// load disabled fields
 			disabled.addAll(sps.disabled);
 
 			// delete previous inputs
 			if (inputs != null) {
 				inputs.clear();
 			}
-			
-			//load manual inputs
+
+			// load manual inputs
 			inputs.addAll(sps.inputs);
 
-			//load all fields
+			// load all fields
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 9; j++) {
 					Button b = (Button) findViewById(fields[i][j]);
@@ -264,12 +270,12 @@ public class SudokuActivity extends Activity {
 				}
 			}
 
-			//load chronometer
+			// load chronometer
 			stop = sps.stop;
 			chron.setBase(sps.base);
 			chron.setText(sps.chrontext);
 
-			//load from startup
+			// load from startup
 			if (confirm.getVisibility() == View.VISIBLE) {
 				confirm.setVisibility(View.GONE);
 				enable(startup);
@@ -287,28 +293,45 @@ public class SudokuActivity extends Activity {
 
 	// saves current state
 	public void save(View v) {
-		SudokuPersistentSnapshot sps = new SudokuPersistentSnapshot();
 
-		// saves chronometer
-		sps.stop = stop;
-		sps.base = chron.getBase();
-		sps.chrontext = chron.getText().toString();
+		try {
+			SudokuPersistentSnapshot sps = new SudokuPersistentSnapshot();
 
-		// save fields, disabled fields and manual inputs
-		sps.fieldState = new String[9][9];
-		sps.disabled = new ArrayList<Integer>();
-		sps.inputs = new ArrayList<Integer>();
+			// saves chronometer
+			sps.stop = stop;
+			sps.base = chron.getBase();
+			sps.chrontext = chron.getText().toString();
 
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				Button b = (Button) findViewById(fields[i][j]);
-				sps.fieldState[i][j] = b.getText().toString();
+			// save fields, disabled fields and manual inputs
+			sps.fieldState = new String[9][9];
+			sps.disabled = new ArrayList<Integer>();
+			sps.inputs = new ArrayList<Integer>();
+
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					Button b = (Button) findViewById(fields[i][j]);
+					sps.fieldState[i][j] = b.getText().toString();
+				}
 			}
+
+			sps.disabled.addAll(disabled);
+			sps.inputs.addAll(inputs);
+
+			PersistenceHandler.setSudokuPersistentSnapshot(this, 0, sps);
+
+			// enable loading
+			if (menushown) {
+				((Button) findViewById(R.id.loadgame)).setEnabled(true);
+			}
+
+			// show message
+			Toast.makeText(this, R.string.succsave, Toast.LENGTH_LONG).show();
+		} catch (RuntimeException e) {
+
+			// show mesage
+			Toast.makeText(this, R.string.errsave, Toast.LENGTH_LONG).show();
 		}
 
-		sps.disabled.addAll(disabled);
-		sps.inputs.addAll(inputs);
-		PersistenceHandler.setSudokuPersistentSnapshot(this, 0, sps);
 	}
 
 	public void playMusic() {
@@ -703,6 +726,15 @@ public class SudokuActivity extends Activity {
 			disable(startup);
 			menu.setColorFilter(Color.RED);
 			menushown = true;
+
+			// disable load button if there is nothing to load
+			if (PersistenceHandler.getSudokuPersistentSnapshot(this, 0) == null) {
+				((Button) findViewById(R.id.loadgame)).setEnabled(false);
+			}
+
+			else {
+				((Button) findViewById(R.id.loadgame)).setEnabled(true);
+			}
 		}
 
 		// if menu is visible, hide menu,

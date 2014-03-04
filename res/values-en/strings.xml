@@ -48,6 +48,8 @@
     <!-- Spaceslider Strings -->
 
     <string name="spaceslider">Spaceslider</string>
+    <string name="succsave">Your current state has been saved!</string>
+    <string name="errsave">Your current state could not be saved!</string>
 
 
 </resources>
