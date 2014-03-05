@@ -12,12 +12,20 @@ import android.widget.ListView;
 
 public class MainActivity extends ListActivity {
 
-	//tag for logging
+	/**
+	 * tag for logging
+	 */
 	private static final String Tag = "MainActivity";
 
-	//define custom content for List
+	/**
+	 * define custom content for List
+	 */
 	CustomListArrayAdapter adapter;
 
+	
+	/**
+	 * Start Method for the programm 
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,7 +45,15 @@ public class MainActivity extends ListActivity {
 		setListAdapter(adapter);
 	}
 
-	//starts the clicked activity for the chosen game
+	
+	/**
+	 * starts the selected game activity
+	 * 
+	 * @param ListView l the List Element
+	 * @param View v the current View
+	 * @param int position position of the chosen row
+	 * @param long id the id of the row
+	 */
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		String item = (String) getListAdapter().getItem(position);
@@ -55,8 +71,9 @@ public class MainActivity extends ListActivity {
 
 		}
 	}
-
-	//rebuild/refresh(Highscores) the list content 
+	/**
+	 * rebuild/refresh(Highscores) the list content 
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -73,9 +90,11 @@ public class MainActivity extends ListActivity {
 		setListAdapter(adapter);
 	}
 
+	/**
+	 * Inflate the menu; this adds items to the action bar if it is present. 
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}

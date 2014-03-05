@@ -15,25 +15,42 @@ import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
 import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
 import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
 
-//defines the content for each list row with help of "listviewitem_main" layout
+/**
+ * defines the content for each list row with help of "listviewitem_main" layout
+ */
 public class CustomListArrayAdapter extends ArrayAdapter<String> {
-	//tag for logging
+	/**
+	 * tag for logging
+	 */
 	private static final String Tag = "CustomListArrayAdapter";
-	//the activity with should be custom
+	/**
+	 * the activity with should be custom
+	 */
 	private Activity activity;
-	//to get the layout
+	/**
+	 * to get the layout
+	 */
 	private static LayoutInflater inflater = null;
-	//value parameters
+	/**
+	 * value parameters
+	 */
 	private ArrayList<String> names;
 
-	//Holder for each row View
+	/**
+	 * Holder for each row View
+	 */
 	static class ViewHolder {
 		public TextView tt;
 		public TextView bt;
 		public ImageView image;
 	}
 
-	//Constructor with the Activity and the List of String Arrays
+	/**
+	 * Constructor with the Activity and the List of String Arrays
+	 * 
+	 * @param Activity a the activity to use
+	 * @param ArrayList<String> values the given value names
+	 */
 	public CustomListArrayAdapter(Activity a, ArrayList<String> values) {
 		super(a, R.layout.listviewitem_main, values);
 		this.activity = a;
@@ -42,7 +59,15 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	//defines the View Content for each Row with help of positions
+	/**
+	 * defines the View Content for each Row with help of positions
+	 * 
+	 * @param int position current row position
+	 * @param View convertView the default View
+	 * @param ViewGroup parent all List View rows who exist at this time
+	 * @return View vi the layout and content for the ListView row at current position
+	 */
+	//
 	public View getView(int position, View convertView, ViewGroup parent) {
 		//define the default View
 		View vi = convertView;
