@@ -121,7 +121,7 @@ public class SudokuActivity extends Activity {
 		super.onPause();
 	}
 
-	// stop chronometer and music on quit
+	/** stop chronometer and music on quit */
 	@Override
 	public void finish() {
 		player.stop();
@@ -129,7 +129,12 @@ public class SudokuActivity extends Activity {
 		super.finish();
 	}
 
-	// disables all buttons
+	/**
+	 * disables all buttons
+	 * 
+	 * @param startup
+	 *            the variable if sudoku just has been started
+	 */
 	public void disable(boolean startup) {
 		ArrayList<Integer> allids = new ArrayList<Integer>();
 
@@ -183,7 +188,12 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
-	// enables all buttons
+	/**
+	 * enables all buttons
+	 * 
+	 * @param startup
+	 *            the variable if sudoku just has been started
+	 */
 	public void enable(boolean startup) {
 		ArrayList<Integer> allids = new ArrayList<Integer>();
 
@@ -236,7 +246,12 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
-	// load saved state
+	/**
+	 * load saved state
+	 * 
+	 * @param v
+	 *            the view that called method (load buttons)
+	 */
 	public void load(View v) {
 
 		// load saved Object
@@ -291,7 +306,12 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
-	// saves current state
+	/**
+	 * saves current state
+	 * 
+	 * @param v
+	 *            view that called method (save button)
+	 */
 	public void save(View v) {
 
 		try {
@@ -334,8 +354,8 @@ public class SudokuActivity extends Activity {
 
 	}
 
+	/** plays music */
 	public void playMusic() {
-		// plays music
 		AssetFileDescriptor afd;
 		try {
 			// Read the music file from the asset folder
@@ -354,7 +374,12 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
-	// mute
+	/**
+	 * play music or stop music on button touch
+	 * 
+	 * @param v
+	 *            view that called method (music on off button)
+	 */
 	public void sound(View v) {
 		Button music = (Button) findViewById(R.id.music);
 
@@ -370,7 +395,7 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
-	// orders the fields to arranged array
+	/** orders the fields to arranged array */
 	public void getallFields() {
 		int counter = 0;
 		for (int i = 0; i < 9; i++) {
@@ -393,7 +418,12 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
-	// set focused field
+	/**
+	 * set focused field on selected number
+	 * 
+	 * @param v
+	 *            view that called method (selected number)
+	 */
 	public void setNumbers(View v) {
 
 		if (focused != null) {
@@ -441,8 +471,8 @@ public class SudokuActivity extends Activity {
 		checkwin();
 	}
 
+	/** checks if player won */
 	public void checkwin() {
-		// checks if player won
 		if (fillcheck() == true) {
 			if (inputcheck() == true) {
 
@@ -491,7 +521,12 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
-	// gets the selected field
+	/**
+	 * gets the selected field
+	 * 
+	 * @param v
+	 *            view that called method (field)
+	 */
 	public void getField(View v) {
 		focused_old = focused;
 		focused = (Button) findViewById(v.getId());
@@ -504,7 +539,12 @@ public class SudokuActivity extends Activity {
 
 	}
 
-	// deletes all inputs
+	/**
+	 * deletes all inputs
+	 * 
+	 * @param v
+	 *            view that called method (delete button)
+	 */
 	public void deleteInput(View v) {
 		for (int id : inputs) {
 			Button b = (Button) findViewById(id);
@@ -512,7 +552,12 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
-	// generates Sudoku
+	/**
+	 * generates Sudoku
+	 * 
+	 * @param v
+	 *            view that called method (new game buttons)
+	 */
 	public void generateSudoku(View v) {
 		int pointer = 8;
 		int[] run = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -686,7 +731,11 @@ public class SudokuActivity extends Activity {
 
 	}
 
-	// checks if all fields were filled by player
+	/**
+	 * checks if all fields were filled by player
+	 * 
+	 * @return returns if all fields are filled
+	 */
 	public boolean fillcheck() {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -699,7 +748,11 @@ public class SudokuActivity extends Activity {
 		return true;
 	}
 
-	// checks if all fields were filled correctly by player
+	/**
+	 * checks if all fields were filled correctly by player
+	 * 
+	 * @return returns if all fields were filled correctly by player
+	 */
 	public boolean inputcheck() {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -713,7 +766,12 @@ public class SudokuActivity extends Activity {
 		return true;
 	}
 
-	// shows and hides menu
+	/**
+	 * shows and hides menu
+	 * 
+	 * @param v
+	 *            view that called method (menu button)
+	 */
 	public void showMenu(View v) {
 
 		ImageButton menu = (ImageButton) findViewById(R.id.menubutton);
@@ -748,29 +806,43 @@ public class SudokuActivity extends Activity {
 		}
 	}
 
+	/** start chronometer and set base */
 	public void startChronometer() {
 		chron.setBase(SystemClock.elapsedRealtime());
 		chron.start();
 
 	}
 
+	/** stop chronometer and save stop */
 	public void stopChronometer() {
 		stop = SystemClock.elapsedRealtime();
 		chron.stop();
 	}
 
+	/** resume chronometer and set base to continue */
 	public void resumeChronometer() {
 		chron.setBase(chron.getBase() + SystemClock.elapsedRealtime() - stop);
 		chron.start();
 	}
 
-	// quits sudoku
+	/**
+	 * quits sudoku
+	 * 
+	 * @param v
+	 *            view that called method (quit button)
+	 */
 	public void quit(View v) {
 		chron.stop();
 		finish();
 	}
 
-	// checks if sudoku with gap has a distinct solution
+	/**
+	 * checks if sudoku with gap has a distinct solution
+	 * 
+	 * @param gapsudoku
+	 *            sudoku with gaps to be solved
+	 * @return returns if sudoku has a distinct solution
+	 */
 	public boolean checkSolutions(Integer[][] gapsudoku) {
 		Integer[][] copy = new Integer[9][9];
 		int[] run = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
@@ -823,7 +895,19 @@ public class SudokuActivity extends Activity {
 		return true;
 	}
 
-	// checks if a number is valid at the position (y,x)
+	/**
+	 * checks if a number is valid at the position (y,x)
+	 * 
+	 * @param number
+	 *            to be checked
+	 * @param x
+	 *            position x of number
+	 * @param y
+	 *            position y of number
+	 * @param copy
+	 *            the sudoku belonging to the number
+	 * @return returns if number is valid at the position
+	 */
 	public boolean validate(int number, int y, int x, Integer[][] copy) {
 		boolean checkx = true;
 		boolean checky = true;
