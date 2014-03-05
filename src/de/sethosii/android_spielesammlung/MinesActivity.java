@@ -21,41 +21,47 @@ import android.widget.TextView;
 
 public class MinesActivity extends Activity {
 
-	// mark fields or not
+
+	/** mark fields or not */
 	private boolean mark;
-	// game states
+	/** game states */
 	private EnumGameState end;
-	// shortcuts for size
+	/** shortcuts for size in vertical direction */
 	private int dimensionX;
+	/** shortcuts for size in horizontal direction */
 	private int dimensionY;
-	// number of placed mines
+	/** number of placed mines */
 	private int maxMineCount;
+	/** number of mines remaining */
 	private int mineCount;
-	// solution
+	/** solution */
 	private String[][] solution;
-	// user view
+	/** user view */
 	private Button[][] view;
-	// mark
+	/** mark */
 	private ImageButton changeMode;
-	// menu
+	/** menu */
 	private ImageButton menuButton;
-	// display mine count
+	/** display mine count */
 	private TextView tvMineCount;
-	// display time
+	/** display time */
 	private Chronometer chronometer;
-	// menu
+	/** menu */
 	private LinearLayout menu;
-	// confirm
+	/** confirm */
 	private LinearLayout confirm;
-	// game end button
+	/** game end button */
 	private Button endButton;
-	// time elapsed
+	/** time elapsed */
 	private long timeElapsed;
-	// is chronometer stopped
+	/** is chronometer stopped */
 	private boolean chronometerStopped;
-	// mediaplayer
+	/** mediaplayer */
 	private MediaPlayer musicPlayer;
 
+	/**
+	 * initialize all fields
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,7 +106,9 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// stop chronometer and music on quit
+	/** 
+	 * stop chronometer and music on quit
+	 */
 	@Override
 	public void finish() {
 		musicPlayer.stop();
@@ -108,7 +116,9 @@ public class MinesActivity extends Activity {
 		super.finish();
 	}
 
-	// start music when app is maximized again
+	/**
+	 * start music and chronometer when app is maximized
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -119,7 +129,9 @@ public class MinesActivity extends Activity {
 		resumeChronometer();
 	}
 
-	// stop music when app is minimized
+	/**
+	 * stop music and chronometer when app is minimized
+	 */
 	@Override
 	protected void onPause() {
 		stopChronometer();
@@ -127,7 +139,12 @@ public class MinesActivity extends Activity {
 		super.onPause();
 	}
 
-	// generate new game
+	/**
+	 * generate new game
+	 * 
+	 * @param x x position of first touched field
+	 * @param y y position of first touched field
+	 */
 	private void generateGame(int x, int y) {
 		initialize();
 		placeMines(x, y);
@@ -135,7 +152,9 @@ public class MinesActivity extends Activity {
 		startChronometer();
 	}
 
-	// reset all values
+	/**
+	 * reset all values for a new game
+	 */
 	private void initialize() {
 		for (int i = 0; i < dimensionX; i++) {
 			for (int j = 0; j < dimensionY; j++) {
@@ -163,7 +182,12 @@ public class MinesActivity extends Activity {
 		chronometerStopped = true;
 	}
 
-	// place the mines
+	/**
+	 * place the mines after first field is touched
+	 * 
+	 * @param x x position of first touched field
+	 * @param y y position of first touched field
+	 */
 	private void placeMines(int x, int y) {
 		int placed = 0;
 		while (placed < mineCount) {
@@ -177,7 +201,9 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// calculate the numbers
+	/**
+	 * calculate the numbers on the solution
+	 */
 	private void setNumbers() {
 		int number = 0;
 		for (int i = 0; i < dimensionX; i++) {
@@ -232,7 +258,11 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// create input for touchField method
+	/**
+	 * create input for touchField method
+	 * 
+	 * @param v touched view
+	 */
 	public void getField(View v) {
 		String name = getResources().getResourceEntryName(v.getId());
 		int x = Integer.parseInt(name.substring(1, 2)) - 1;
@@ -244,7 +274,12 @@ public class MinesActivity extends Activity {
 		touchField(x, y);
 	}
 
-	// method called when field was touched
+	/**
+	 * method called when field was touched
+	 * 
+	 * @param posX x position of touched field
+	 * @param posY y position of touched field
+	 */
 	private void touchField(int posX, int posY) {
 		Button touched = view[posX][posY];
 		// set flag or not
@@ -286,7 +321,13 @@ public class MinesActivity extends Activity {
 		checkEnd();
 	}
 
-	// reveal surrounding
+	/**
+	 * called when empty field is touched
+	 * reveal surrounding
+	 * 
+	 * @param posX x position of empty field
+	 * @param posY y position of empty field
+	 */
 	private void revealSurrounding(int posX, int posY) {
 		// mark field as empty
 		view[posX][posY].setText(" ");
@@ -387,7 +428,9 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// check game state
+	/**
+	 * check game state
+	 */
 	private void checkEnd() {
 		if (end.equals(EnumGameState.LOSE)) {
 			chronometer.stop();
@@ -445,7 +488,11 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// enable or diable all fields
+	/**
+	 * enable or diable all fields
+	 * 
+	 * @param enable true or false
+	 */
 	private void enableView(boolean enable) {
 		for (int i = 0; i < dimensionX; i++) {
 			for (int j = 0; j < dimensionY; j++) {
@@ -454,7 +501,12 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// change mark mode
+	/**
+	 * method called when cross button is touched
+	 * change mark mode
+	 * 
+	 * @param v touched view
+	 */
 	public void changeMode(View v) {
 		mark = !mark;
 		if (mark) {
@@ -464,13 +516,22 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// reset game
+	/**
+	 * method called when new game button is touched
+	 * 
+	 * @param v touched view
+	 */
 	public void clear(View v) {
 		initialize();
 		end = EnumGameState.NOT_STARTED;
 	}
 
-	// open menu
+	/**
+	 * method called when menu button is touched
+	 * open/close menu
+	 * 
+	 * @param v touched view
+	 */
 	public void menu(View v) {
 		if (menu.getVisibility() == View.VISIBLE) {
 			menu.setVisibility(View.GONE);
@@ -495,7 +556,9 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// start chronometer
+	/**
+	 * start chronometer
+	 */
 	private void startChronometer() {
 		if (chronometerStopped) {
 			chronometer.start();
@@ -503,7 +566,9 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// stops chronometer
+	/**
+	 * stop chronometer
+	 */
 	private void stopChronometer() {
 		if (!chronometerStopped) {
 			chronometer.stop();
@@ -512,7 +577,9 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// resumes chronometer
+	/**
+	 * resume chronometer
+	 */
 	private void resumeChronometer() {
 		if (chronometerStopped && (menu.getVisibility() != View.VISIBLE)
 				&& (end == EnumGameState.NOT_FINISHED)) {
@@ -523,7 +590,12 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// load game
+	/**
+	 * method called when load button is touched
+	 * restore all required fields
+	 * 
+	 * @param v
+	 */
 	public void load(View v) {
 		MinesPersistentSnapshot mps = PersistenceHandler
 				.getMinesPersistentSnapshot(this, 0);
@@ -563,7 +635,12 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// save game
+	/**
+	 * method called when save button is touched
+	 * saves all required fields
+	 * 
+	 * @param v touched view
+	 */
 	public void save(View v) {
 		MinesPersistentSnapshot mps = new MinesPersistentSnapshot();
 		mps.stop = timeElapsed;
@@ -585,7 +662,11 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// toggle music on/off
+	/**
+	 * toggle music on/off
+	 * 
+	 * @param v touched view
+	 */
 	public void sound(View v) {
 		Button music = (Button) findViewById(R.id.music);
 		if ((musicPlayer != null) && musicPlayer.isPlaying()) {
@@ -597,7 +678,9 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// play music
+	/**
+	 * play music.mid
+	 */
 	private void playMusic() {
 		AssetFileDescriptor afd;
 		try {
@@ -616,12 +699,20 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	// end game
+	/**
+	 * end game
+	 * 
+	 * @param v touched view
+	 */
 	public void quit(View v) {
 		finish();
 	}
 
-	// prints solution or view
+	/**
+	 * prints solution or view for debug and testing purposes
+	 * 
+	 * @param field s for solution or v for view
+	 */
 	private void print(char field) {
 		switch (field) {
 		case 's':
