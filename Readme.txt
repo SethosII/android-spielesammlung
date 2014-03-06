@@ -7,7 +7,7 @@ Als Versionsverwaltung nutzen wir GitHub. Das Projekt heißt android-spielesammlu
 
 Um die App nun begutachten zu können gibt es 2 wege:
 1.) Um die App auf ein Android Smartphone zu installieren benötigen Sie eine Installationsdatei(.apk Datei).
-Diese finden Sie im Projektverzeichnis unter ...\android-spielesammlung\bin\MainActivity.apk.
+Diese finden Sie im Projektverzeichnis unter ...\android-spielesammlung\apk_datei\spielesammlung.apk.
 Die Datei kopieren Sie bitte auf das Smartphone und installieren es über den Package Installer.
 Eventl. müssen Sie unter Einstellungen -> Sicherheit -> Geräteverwaltung die Installation von nicht Market Apps auf dem Smartphone zulassen bevor Sie die Spielesammlung installieren können.
 Nach Installation können Sie die App entsprechend Starten.
@@ -20,7 +20,6 @@ Anschliesend importieren Sie die Spielesammlung als Android-Projekt in Eclipse u
 
 
 Beteiligt sind: Martin Kimmel
-		Paul Jahne
 		Sascha Kühnel
 		Paul Jähne
 		André Heinicke

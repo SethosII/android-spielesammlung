@@ -30,3 +30,4 @@ proguard/
 
 # TMP files
 *~*
+!apk_datei/spielesammlung.apk
