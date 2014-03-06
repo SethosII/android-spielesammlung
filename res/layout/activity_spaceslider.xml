@@ -1,0 +1,224 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="500"
+            android:background="#999999"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/newGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:contentDescription="@string/new_game"
+                android:onClick="clear"
+                android:src="@drawable/ic_action_new" />
+
+            <ImageButton
+                android:id="@+id/changeMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:contentDescription="@string/mark"
+                android:onClick="changeMode"
+                android:src="@drawable/ic_action_cancel" />
+
+            <ImageButton
+                android:id="@+id/showMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:contentDescription="@string/menu"
+                android:onClick="menu"
+                android:src="@drawable/ic_action_view_as_grid" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/liveCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:minEms="4"
+                    android:text=""
+                    android:textColor="#000000" />
+
+                <Chronometer
+                    android:id="@+id/chronometer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:format="%s"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#D3D3D3"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/newgame"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="clear"
+            android:text="@string/new_game" />
+
+        <Button
+            android:id="@+id/loadgame"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="load"
+            android:text="@string/load" />
+
+        <Button
+            android:id="@+id/savegame"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="save"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/music"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="sound"
+            android:text="@string/soundoff" />
+
+        <Button
+            android:id="@+id/quitmenu"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="#696969"
+            android:onClick="quit"
+            android:text="@string/quit" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/confirmDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="#D3D3D3"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/confirmtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="@string/confirmtext" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#D3D3D3"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/confirmnewgame"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#696969"
+                android:onClick="clear"
+                android:text="@string/new_game" />
+
+            <Button
+                android:id="@+id/confirmload"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="#696969"
+                android:onClick="load"
+                android:text="@string/load" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/endbutton"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:background="#696969"
+        android:onClick="clear" />
+
+</RelativeLayout>

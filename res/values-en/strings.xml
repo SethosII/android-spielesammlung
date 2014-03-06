@@ -15,6 +15,8 @@
     <string name="confirmtext">Do you want to load a game?</string>
     <string name="soundon">Music on</string>
     <string name="soundoff">Music off</string>
+    <string name="succsave">Your current state has been saved!</string>
+    <string name="errsave">Your current state could not be saved!</string>
 
     <!-- Main Menu Strings -->
     
@@ -48,8 +50,6 @@
     <!-- Spaceslider Strings -->
 
     <string name="spaceslider">Spaceslider</string>
-    <string name="succsave">Your current state has been saved!</string>
-    <string name="errsave">Your current state could not be saved!</string>
-
+    <string name="lives_remaining">Lives</string>
 
 </resources>

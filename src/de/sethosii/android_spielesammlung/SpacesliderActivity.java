@@ -1,27 +1,67 @@
 package de.sethosii.android_spielesammlung;
 
-import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
-import de.sethosii.android_spielesammlung.persistence.MinesPersistentSnapshot;
-import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
-
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.View;
-import android.widget.GridLayout;
+import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 public class SpacesliderActivity extends Activity {
+
+	// display live count
+	private TextView tvLiveCount;
+	// space area
+	private LinearLayout space;
+	// menu
+	private LinearLayout menu;
+	// confirm
+	private LinearLayout confirm;
+	// game end button
+	private Button endButton;
+	// display time
+	private Chronometer chronometer;
+
+
+    private SpacesliderView.OnLiveChangeListener onYes = new SpacesliderView.OnLiveChangeListener()
+    {
+        public void onLiveChange(View v, int liveCount)
+        {
+        	if (liveCount == 0) {
+        		chronometer.stop();
+        	}
+            tvLiveCount.setText(getString(R.string.lives_remaining) + ":\n" + liveCount);
+        }
+    };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-        View ssliderView = new SpacesliderView(this);
-        setContentView(ssliderView);
+
+		setContentView(R.layout.activity_spaceslider);
+
+		space = (LinearLayout) findViewById(R.id.space);
+		menu = (LinearLayout) findViewById(R.id.menu);
+		menu.setVisibility(View.GONE);
+		confirm = (LinearLayout) findViewById(R.id.confirmDialog);
+		confirm.setVisibility(View.GONE);
+		endButton = (Button) findViewById(R.id.endbutton);
+		endButton.setVisibility(View.GONE);
+
+		chronometer = (Chronometer) findViewById(R.id.chronometer);
+
+		tvLiveCount = (TextView) findViewById(R.id.liveCount);
+
+		SpacesliderView ssliderView = new SpacesliderView(this);
+		ssliderView.setOnLiveChangeListener(onYes);
+		space.addView(ssliderView);
+
+		chronometer.setBase(SystemClock.elapsedRealtime());
+		chronometer.start();
+
 //if (true)
 //return;
 

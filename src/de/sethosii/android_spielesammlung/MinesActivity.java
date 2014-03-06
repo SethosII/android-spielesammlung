@@ -66,7 +66,7 @@ public class MinesActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.acitivity_mines);
+		setContentView(R.layout.activity_mines);
 		
 		// set values for start
 		mark = false;

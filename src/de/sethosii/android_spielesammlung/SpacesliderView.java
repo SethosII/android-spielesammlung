@@ -15,8 +15,43 @@ import android.graphics.Typeface;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
+import android.widget.TextView;
 
 public class SpacesliderView extends View {
+
+    /**
+     * Interface definition for a callback to be invoked when the live count of a ship changed.
+     */
+    public interface OnLiveChangeListener {
+        /**
+         * Called when the live count of a ship has changed.
+         *
+         * @param v The view whose state has changed.
+         * @param liveCount The new number of lives.
+         */
+        void onLiveChange(View v, int liveCount);
+    }
+
+    private OnLiveChangeListener mOnLiveChangeListener;
+
+    /**
+     * Returns the livecount-change callback registered for this view.
+     *
+     * @return The callback, or null if one is not registered.
+     */
+    public OnLiveChangeListener getOnLiveChangeListener() {
+        return mOnLiveChangeListener;
+    }
+
+    /**
+     * Register a callback to be invoked when live count of the ship changed.
+     *
+     * @param l The callback that will run.
+     */
+    public void setOnLiveChangeListener(OnLiveChangeListener l) {
+        mOnLiveChangeListener = l;
+    }
 
 	private class StarMap {
 		
@@ -25,16 +60,21 @@ public class SpacesliderView extends View {
 			float speed = 0, size = 0;
 
 			protected SpaceEntity() {
-				x = Math.round((float)Math.random()*(float)xMax);
 				speed = (float)Math.random()*20.0f + 1.0f;
+
+				reset();
 			}
 
 			public void step() {
 				y = Math.round(y + speed);
 				if (y > yMax) {
-					y %= yMax;
-					x = Math.round((float)Math.random()*(float)xMax);
+					reset();
 				}
+			}
+
+			public void reset() {
+				x = Math.round((float)Math.random()*(float)xMax);
+				y = 0;
 			}
 		}
 
@@ -42,7 +82,7 @@ public class SpacesliderView extends View {
 			public Star() {
 				super();
 
-				y = Math.round((float)Math.random()*(float)yMax);
+				y = Math.round((float)Math.random()*(float)yMax);  // starts not on the top edge
 				size = (float)Math.random()*2.0f + 0.5f;
 			}
 		}
@@ -53,7 +93,6 @@ public class SpacesliderView extends View {
 			public Asteroid() {
 				super();
 
-				y = 0;
 				size = (float)Math.random()*10.0f + 10.0f;
 				
 				switch ((int)(Math.random() * 3.0f)) {
@@ -101,7 +140,7 @@ public class SpacesliderView extends View {
 			}
 		}
 
-		private void paintTo(Canvas canvas) {
+		private void paintTo(Canvas canvas, Paint paint) {
 		    paint.setColor(Color.WHITE);
 			for (Star star : stars) {
 				canvas.drawCircle(star.x, star.y, star.size, paint);
@@ -116,47 +155,103 @@ public class SpacesliderView extends View {
 			for (Star star : stars) {
 				star.step();
 			}
-			for (Asteroid astObj : asteroids) {
-				astObj.step();
+			for (Asteroid asteroid : asteroids) {
+				asteroid.step();
 			}
 		}
 
-		private boolean testCollisionAll() {
+		private Asteroid testCollisionAll() {
 			Region regionClip = new Region(xMin, yMin, xMax, yMax);
 			Region regionShip = new Region();
 			regionShip.setPath(pathShip, regionClip);
 
-			for (Asteroid astObj : asteroids) {
-				if (astObj.testCollision(regionShip, regionClip)) {
-					return true;
+			for (Asteroid asteroid : asteroids) {
+				if (asteroid.testCollision(regionShip, regionClip)) {
+					return asteroid;
 				}
 			}
-			return false;
+			return null;
 		}
 
 	}
 
         private class SpaceShip {
-            private float shipWidth = 80;  // ship's radius
-            private float shipX = shipWidth + 20;  // ship's center (x,y)
-            private float shipY = shipWidth + 450; //TODO
-            private float shipSpeedX = 5;  // ship's horizontal speed
-            private RectF shipBounds;      // Needed for Canvas.drawOval
+            private static final int INITIAL_LIVES = 3;
+
+        	private class Flame {
+                private byte flameColor;
+                private int flameLength;
+                private int flameWidth;
+                private Path pathFlame = new Path();
+
+                public Flame(int Length, int Width) {
+                      flameLength = Length;
+                      flameWidth = Width;
+
+                      pathFlame.reset();
+          		      pathFlame.setFillType(Path.FillType.WINDING);
+          		      pathFlame.moveTo(-flameWidth/4, 0);
+          		      pathFlame.lineTo(-flameWidth/2, flameLength/3);
+          		      pathFlame.lineTo(0, flameLength);
+          		      pathFlame.lineTo(flameWidth/2, flameLength/3);
+          		      pathFlame.lineTo(flameWidth/4, 0);
+          		      pathFlame.close();
+				}
+                
+                public int nextColor() {
+            	      int color;
+              	      flameColor = (byte) ((flameColor + 1) % 5);
+          				switch (flameColor) {
+          				case 0:
+          					color = Color.argb(255, 255, 255, 255);
+          					break;
+          				case 1:
+          					color = Color.argb(255, 255, 191, 159);
+          					break;
+          				case 2:
+          					color = Color.argb(255, 255, 127, 63);
+          					break;
+          				case 3:
+          					color = Color.argb(255, 255, 191, 95);
+          					break;
+          				default:
+          					color = Color.argb(255, 255, 223, 127);
+          				}
+          				
+          				return color;
+				}
+
+                public void paintTo(Canvas canvas, float x, float y, Paint paint) {
+      	      	      paint.setColor(nextColor());
+      	      	      pathPaint.reset();
+      	      	      pathPaint.addPath(pathFlame, x, y);
+      	    	      canvas.drawPath(pathPaint, paint);
+          		}
+        	}
+
+        	private Flame flame = new Flame(30, 20);
+
+        	private float shipSpan = 160;    // ship's wing span
+            private float shipLength = 140;  // ship's body length
+            private float shipX = 0;         // ship's center (x,y)
+            private float shipY = 0;
+            private float shipSpeedX = 5;    // ship's horizontal speed
+            private RectF shipBounds;        // Needed for Canvas.drawOval
 
             private Path pathWings = new Path();
             private Path pathBody = new Path();
+            
+            public int lives;
 
             public SpaceShip() {
   		        shipBounds = new RectF();
 
-  		      float posX = 0/*ballX*/;
-  			  float posY = 0/*ballY*/;
   			  //
   		      pathWings.reset();
   		      pathWings.setFillType(Path.FillType.WINDING);
-  		      pathWings.moveTo(posX-shipWidth, posY+shipWidth);
-  		      pathWings.lineTo(posX+shipWidth, posY+shipWidth);
-  		      pathWings.lineTo(posX, posY);
+  		      pathWings.moveTo(0, -shipLength/5);
+  		      pathWings.lineTo(-shipSpan/2, shipLength*2/5);
+  		      pathWings.lineTo(shipSpan/2, shipLength*2/5);
   		      pathWings.close();
 
   		      //
@@ -164,17 +259,28 @@ public class SpacesliderView extends View {
   		      int noseLen = 10;
   		      pathBody.reset();
   		      pathBody.setFillType(Path.FillType.WINDING);
-  		      pathBody.moveTo(posX-bodyRadius, posY+shipWidth);
-  		      pathBody.lineTo(posX+bodyRadius, posY+shipWidth);
-  		      pathBody.lineTo(posX+bodyRadius, posY-shipWidth+noseLen);
-  		      pathBody.lineTo(posX+bodyRadius/2, posY-shipWidth);
-  		      pathBody.lineTo(posX-bodyRadius/2, posY-shipWidth);
-  		      pathBody.lineTo(posX-bodyRadius, posY-shipWidth+noseLen);
+  		      pathBody.moveTo(-bodyRadius, shipLength/2);
+  		      pathBody.lineTo(bodyRadius, shipLength/2);
+  		      pathBody.lineTo(bodyRadius, -shipLength/2+noseLen);
+  		      pathBody.lineTo(bodyRadius/2, -shipLength/2);
+  		      pathBody.lineTo(-bodyRadius/2, -shipLength/2);
+  		      pathBody.lineTo(-bodyRadius, -shipLength/2+noseLen);
   		      pathBody.close();
-  		      
-            }
 
-            private void paintTo(Canvas canvas) {
+  		      reset();
+            }
+            
+            public void reset() {
+    		    lives = INITIAL_LIVES;
+		        if (mOnLiveChangeListener != null) {
+		            mOnLiveChangeListener.onLiveChange(null/*TODO this*/, ship.lives);
+		        }
+
+                shipX = xMax / 2;
+                shipY = yMax - shipLength;
+			}
+
+            public void paintTo(Canvas canvas, Paint paint) {
       	      paint.setColor(android.graphics.Color.LTGRAY);
 
     	      pathShip.reset();
@@ -185,6 +291,7 @@ public class SpacesliderView extends View {
     	      //canvas.drawPath(pathWings, paint);
     	      //canvas.drawPath(pathBody, paint);
 
+    	      flame.paintTo(canvas, shipX, shipY+shipLength/2, paint);
     		}
 
             public void step(float value) {
@@ -193,12 +300,12 @@ public class SpacesliderView extends View {
       	      //shipX += shipSpeedX;
       	      //shipY += shipSpeedY;
       	      // Detect collision and react
-      	      if (shipX + shipWidth > xMax) {
+      	      if (shipX + shipSpan/2 > xMax) {
       	         shipSpeedX = -shipSpeedX;
-      	         shipX = xMax-shipWidth;
-      	      } else if (shipX - shipWidth < xMin) {
+      	         shipX = xMax-shipSpan/2;
+      	      } else if (shipX - shipSpan/2 < xMin) {
       	         shipSpeedX = -shipSpeedX;
-      	         shipX = xMin+shipWidth;
+      	         shipX = xMin+shipSpan/2;
       	      }
 
     	      // Build status message
@@ -227,6 +334,7 @@ public class SpacesliderView extends View {
 	   
 	   StarMap starMap = new StarMap();
 
+	   
 	   // Constructor
 	   public SpacesliderView(Context context) {
 		      super(context);
@@ -254,9 +362,9 @@ public class SpacesliderView extends View {
 	  
 	   
        Path pathShip = new Path();
-       Path pathDel = new Path();
+       Path pathPaint = new Path();
 
-       int mDialHeight = 590/*255*/;
+       int mDialHeight = 590/*255*/;  // wanted virtual dimension of view
        int mDialWidth = 1280/*480*/;
        int widthSize;
        int heightSize;
@@ -281,6 +389,7 @@ public class SpacesliderView extends View {
                vScale = (float)heightSize / (float)mDialHeight;
            }
 
+           // use same scale for x and y
            viewScale = Math.min(hScale, vScale);
 
            int a1, a2, b1, b2;
@@ -307,7 +416,7 @@ public class SpacesliderView extends View {
 		  paint.setAntiAlias(true);
 
 		  // Draw Stars
-		  starMap.paintTo(canvas);
+		  starMap.paintTo(canvas, paint);
 		  
 	      // Draw the ball
 	      //ballBounds.set(ballX-ballRadius, ballY-ballRadius, ballX+ballRadius, ballY+ballRadius);
@@ -315,7 +424,7 @@ public class SpacesliderView extends View {
 	      //canvas.drawOval(ballBounds, paint);
 
 	      // Draw Ship
-		  ship.paintTo(canvas);
+		  ship.paintTo(canvas, paint);
 
 
 	      // Draw the status message
@@ -328,6 +437,7 @@ public class SpacesliderView extends View {
 	      canvas.drawRect(0, yMax-1, 1, yMax, paint);
 	      canvas.drawRect(xMax-1, yMax-1, xMax, yMax, paint);
 	      canvas.drawRect(xMax-1, 0, xMax, 1, paint);
+	      canvas.drawRect(ship.shipX-1, ship.shipY-1, ship.shipX+1, ship.shipY+1, paint);
 
 	      // Update the position of the ball, including collision detection and reaction.
 	      update();
@@ -343,13 +453,23 @@ public class SpacesliderView extends View {
 	   
 	   // Detect collision and update the position of the ball.
 	   private void update() {
-		  if (starMap.testCollisionAll()) {
-			  try {
-				starMap.setAsteroidCount(0);
-				starMap.setAsteroidCount(8);
-				setActivated(false);
-				Thread.sleep(3000);
-				setVisibility(View.GONE);
+		  StarMap.Asteroid asteroid = starMap.testCollisionAll();
+		  if (asteroid != null) {
+			try {
+				--ship.lives;
+		        if (mOnLiveChangeListener != null) {
+		            mOnLiveChangeListener.onLiveChange(this, ship.lives);
+		        }
+
+				if (ship.lives == 0) {
+					starMap.setAsteroidCount(0);
+					starMap.setAsteroidCount(8);
+					setActivated(false);
+					Thread.sleep(3000);
+					setVisibility(View.GONE);
+				} else {
+					asteroid.reset();
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -374,6 +494,8 @@ public class SpacesliderView extends View {
 
 		  starMap.setStarCount(50);
 		  starMap.setAsteroidCount(8);
+
+		  ship.reset();
 	   }
 
 	   // Key-up event handler
