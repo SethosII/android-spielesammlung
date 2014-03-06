@@ -12,11 +12,14 @@
     <string name="menu">Menü</string>
     <string name="win">Gewonnen!\n Antippen für Neues Spiel!</string>
     <string name="lose">Verloren!\n Antippen für Neues Spiel!</string>
+    <string name="over">Game over!\n Antippen für Neues Spiel!</string>
     <string name="confirmtext">Wollen Sie ein Spiel laden?</string>
     <string name="soundon">Musik an</string>
     <string name="soundoff">Musik aus</string>
     <string name="succsave">Ihr aktueller Stand wurde gespeichert!</string>
     <string name="errsave">Ihr aktueller Stand konnte nicht gespeichert werden!</string>
+    <string name="succload">Spielstand erfolgreich geladen!</string>
+    <string name="errload">Es konnte leider kein Spielstand geladen werden!</string>
 
     <!-- Main Menu Strings -->
     
@@ -51,7 +54,5 @@
 
     <string name="spaceslider">Spaceslider</string>
     <string name="lives_remaining">Leben</string>
-    <string name="errload">Es konnte leider kein Spielstand geladen werden!</string>
-    <string name="succload">Spielstand erfolgreich geladen!</string>
 
 </resources>

@@ -12,11 +12,14 @@
     <string name="menu">Menü</string>
     <string name="win">You won!\n Touch to Continue!</string>
     <string name="lose">You lost!\n Touch to Continue!</string>
+    <string name="over">Game over!\n Touch to Continue!</string>
     <string name="confirmtext">Do you want to load a game?</string>
     <string name="soundon">Music on</string>
     <string name="soundoff">Music off</string>
     <string name="succsave">Your current state has been saved!</string>
     <string name="errsave">Your current state could not be saved!</string>
+    <string name="succload">State successfully loaded!</string>
+    <string name="errload">State could not be loaded!</string>
 
     <!-- Main Menu Strings -->
     
@@ -51,7 +54,5 @@
 
     <string name="spaceslider">Spaceslider</string>
     <string name="lives_remaining">Lives</string>
-    <string name="succload">State successfully loaded!</string>
-    <string name="errload">State could not be loaded!</string>
 
 </resources>
