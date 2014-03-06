@@ -18,9 +18,9 @@ import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MinesActivity extends Activity {
-
 
 	/** mark fields or not */
 	private boolean mark;
@@ -67,7 +67,7 @@ public class MinesActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_mines);
-		
+
 		// set values for start
 		mark = false;
 		end = EnumGameState.NOT_STARTED;
@@ -106,7 +106,7 @@ public class MinesActivity extends Activity {
 		}
 	}
 
-	/** 
+	/**
 	 * stop chronometer and music on quit
 	 */
 	@Override
@@ -142,8 +142,10 @@ public class MinesActivity extends Activity {
 	/**
 	 * generate new game
 	 * 
-	 * @param x x position of first touched field
-	 * @param y y position of first touched field
+	 * @param x
+	 *            x position of first touched field
+	 * @param y
+	 *            y position of first touched field
 	 */
 	private void generateGame(int x, int y) {
 		initialize();
@@ -174,7 +176,7 @@ public class MinesActivity extends Activity {
 		confirm.setVisibility(View.GONE);
 		endButton.setVisibility(View.GONE);
 		enableView(true);
-		
+
 		// reset time
 		stopChronometer();
 		chronometer.setBase(SystemClock.elapsedRealtime());
@@ -185,8 +187,10 @@ public class MinesActivity extends Activity {
 	/**
 	 * place the mines after first field is touched
 	 * 
-	 * @param x x position of first touched field
-	 * @param y y position of first touched field
+	 * @param x
+	 *            x position of first touched field
+	 * @param y
+	 *            y position of first touched field
 	 */
 	private void placeMines(int x, int y) {
 		int placed = 0;
@@ -261,7 +265,8 @@ public class MinesActivity extends Activity {
 	/**
 	 * create input for touchField method
 	 * 
-	 * @param v touched view
+	 * @param v
+	 *            touched view
 	 */
 	public void getField(View v) {
 		String name = getResources().getResourceEntryName(v.getId());
@@ -277,8 +282,10 @@ public class MinesActivity extends Activity {
 	/**
 	 * method called when field was touched
 	 * 
-	 * @param posX x position of touched field
-	 * @param posY y position of touched field
+	 * @param posX
+	 *            x position of touched field
+	 * @param posY
+	 *            y position of touched field
 	 */
 	private void touchField(int posX, int posY) {
 		Button touched = view[posX][posY];
@@ -322,11 +329,12 @@ public class MinesActivity extends Activity {
 	}
 
 	/**
-	 * called when empty field is touched
-	 * reveal surrounding
+	 * called when empty field is touched reveal surrounding
 	 * 
-	 * @param posX x position of empty field
-	 * @param posY y position of empty field
+	 * @param posX
+	 *            x position of empty field
+	 * @param posY
+	 *            y position of empty field
 	 */
 	private void revealSurrounding(int posX, int posY) {
 		// mark field as empty
@@ -491,7 +499,8 @@ public class MinesActivity extends Activity {
 	/**
 	 * enable or diable all fields
 	 * 
-	 * @param enable true or false
+	 * @param enable
+	 *            true or false
 	 */
 	private void enableView(boolean enable) {
 		for (int i = 0; i < dimensionX; i++) {
@@ -502,10 +511,10 @@ public class MinesActivity extends Activity {
 	}
 
 	/**
-	 * method called when cross button is touched
-	 * change mark mode
+	 * method called when cross button is touched change mark mode
 	 * 
-	 * @param v touched view
+	 * @param v
+	 *            touched view
 	 */
 	public void changeMode(View v) {
 		mark = !mark;
@@ -519,7 +528,8 @@ public class MinesActivity extends Activity {
 	/**
 	 * method called when new game button is touched
 	 * 
-	 * @param v touched view
+	 * @param v
+	 *            touched view
 	 */
 	public void clear(View v) {
 		initialize();
@@ -527,10 +537,10 @@ public class MinesActivity extends Activity {
 	}
 
 	/**
-	 * method called when menu button is touched
-	 * open/close menu
+	 * method called when menu button is touched open/close menu
 	 * 
-	 * @param v touched view
+	 * @param v
+	 *            touched view
 	 */
 	public void menu(View v) {
 		if (menu.getVisibility() == View.VISIBLE) {
@@ -591,81 +601,91 @@ public class MinesActivity extends Activity {
 	}
 
 	/**
-	 * method called when load button is touched
-	 * restore all required fields
+	 * method called when load button is touched restore all required fields
 	 * 
 	 * @param v
 	 */
 	public void load(View v) {
-		MinesPersistentSnapshot mps = PersistenceHandler
-				.getMinesPersistentSnapshot(this, 0);
-		if (mps != null) {
-			initialize();
-			timeElapsed = mps.stop;
-			chronometer.setBase(mps.base);
-			chronometer.setText(mps.chrontext);
-			end = mps.end;
-			mineCount = mps.mineCount;
-			tvMineCount.setText(getString(R.string.mines_remaining) + ": "
-					+ mineCount);
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
-					solution[i][j] = mps.solution[i][j];
-					view[i][j].setText(mps.view[i][j]);
-					if (view[i][j].getText().toString().equals("")) {
-						view[i][j].setTextColor(Color.BLACK);
-						view[i][j].setBackgroundColor(Color
-								.parseColor("#DDDDDD"));
-					} else if (view[i][j].getText().toString().equals(" ")) {
-						view[i][j].setTextColor(Color.BLACK);
-						view[i][j].setBackgroundColor(Color.WHITE);
-					} else if (view[i][j].getText().toString().equals("X")) {
-						view[i][j].setTextColor(Color.RED);
-						view[i][j].setBackgroundColor(Color
-								.parseColor("#DDDDDD"));
-					} else {
-						view[i][j].setTextColor(Color.BLACK);
-						view[i][j].setBackgroundColor(Color.WHITE);
+		try {
+			MinesPersistentSnapshot mps = PersistenceHandler
+					.getMinesPersistentSnapshot(this, 0);
+			if (mps != null) {
+				initialize();
+				timeElapsed = mps.stop;
+				chronometer.setBase(mps.base);
+				chronometer.setText(mps.chrontext);
+				end = mps.end;
+				mineCount = mps.mineCount;
+				tvMineCount.setText(getString(R.string.mines_remaining) + ": "
+						+ mineCount);
+				for (int i = 0; i < 9; i++) {
+					for (int j = 0; j < 9; j++) {
+						solution[i][j] = mps.solution[i][j];
+						view[i][j].setText(mps.view[i][j]);
+						if (view[i][j].getText().toString().equals("")) {
+							view[i][j].setTextColor(Color.BLACK);
+							view[i][j].setBackgroundColor(Color
+									.parseColor("#DDDDDD"));
+						} else if (view[i][j].getText().toString().equals(" ")) {
+							view[i][j].setTextColor(Color.BLACK);
+							view[i][j].setBackgroundColor(Color.WHITE);
+						} else if (view[i][j].getText().toString().equals("X")) {
+							view[i][j].setTextColor(Color.RED);
+							view[i][j].setBackgroundColor(Color
+									.parseColor("#DDDDDD"));
+						} else {
+							view[i][j].setTextColor(Color.BLACK);
+							view[i][j].setBackgroundColor(Color.WHITE);
+						}
 					}
 				}
+				resumeChronometer();
+			} else {
+				System.out.println("nothing to load!");
 			}
-			resumeChronometer();
-		} else {
-			System.out.println("nothing to load!");
+			Toast.makeText(this, R.string.succload, Toast.LENGTH_LONG).show();
+		} catch (Exception e) {
+			Toast.makeText(this, R.string.errload, Toast.LENGTH_LONG).show();
 		}
 	}
 
 	/**
-	 * method called when save button is touched
-	 * saves all required fields
+	 * method called when save button is touched saves all required fields
 	 * 
-	 * @param v touched view
+	 * @param v
+	 *            touched view
 	 */
 	public void save(View v) {
-		MinesPersistentSnapshot mps = new MinesPersistentSnapshot();
-		mps.stop = timeElapsed;
-		mps.base = chronometer.getBase();
-		mps.chrontext = chronometer.getText().toString();
-		mps.end = end;
-		mps.mineCount = mineCount;
-		mps.solution = new String[dimensionX][dimensionY];
-		mps.view = new String[dimensionX][dimensionY];
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				mps.solution[i][j] = solution[i][j];
-				mps.view[i][j] = view[i][j].getText().toString();
+		try {
+			MinesPersistentSnapshot mps = new MinesPersistentSnapshot();
+			mps.stop = timeElapsed;
+			mps.base = chronometer.getBase();
+			mps.chrontext = chronometer.getText().toString();
+			mps.end = end;
+			mps.mineCount = mineCount;
+			mps.solution = new String[dimensionX][dimensionY];
+			mps.view = new String[dimensionX][dimensionY];
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					mps.solution[i][j] = solution[i][j];
+					mps.view[i][j] = view[i][j].getText().toString();
+				}
 			}
-		}
-		PersistenceHandler.setMinesPersistentSnapshot(this, 0, mps);
-		if (menu.getVisibility()==View.VISIBLE) {
-			((Button) findViewById(R.id.loadgame)).setEnabled(true);
+			PersistenceHandler.setMinesPersistentSnapshot(this, 0, mps);
+			if (menu.getVisibility() == View.VISIBLE) {
+				((Button) findViewById(R.id.loadgame)).setEnabled(true);
+			}
+			Toast.makeText(this, R.string.succsave, Toast.LENGTH_LONG).show();
+		} catch (Exception e) {
+			Toast.makeText(this, R.string.errsave, Toast.LENGTH_LONG).show();
 		}
 	}
 
 	/**
 	 * toggle music on/off
 	 * 
-	 * @param v touched view
+	 * @param v
+	 *            touched view
 	 */
 	public void sound(View v) {
 		Button music = (Button) findViewById(R.id.music);
@@ -685,7 +705,7 @@ public class MinesActivity extends Activity {
 		AssetFileDescriptor afd;
 		try {
 			// read the music file from the asset folder
-			afd = getAssets().openFd("music.mid");
+			afd = getAssets().openFd("mines.mid");
 			musicPlayer = new MediaPlayer();
 			// Set the player music source.
 			musicPlayer.setDataSource(afd.getFileDescriptor(),
@@ -702,7 +722,8 @@ public class MinesActivity extends Activity {
 	/**
 	 * end game
 	 * 
-	 * @param v touched view
+	 * @param v
+	 *            touched view
 	 */
 	public void quit(View v) {
 		finish();
@@ -711,7 +732,8 @@ public class MinesActivity extends Activity {
 	/**
 	 * prints solution or view for debug and testing purposes
 	 * 
-	 * @param field s for solution or v for view
+	 * @param field
+	 *            s for solution or v for view
 	 */
 	private void print(char field) {
 		switch (field) {

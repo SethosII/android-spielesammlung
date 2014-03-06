@@ -135,7 +135,7 @@ public class SudokuActivity extends Activity {
 	 * @param startup
 	 *            the variable if sudoku just has been started
 	 */
-	public void disable(boolean startup) {
+	private void disable(boolean startup) {
 		ArrayList<Integer> allids = new ArrayList<Integer>();
 
 		// add all fields
@@ -194,7 +194,7 @@ public class SudokuActivity extends Activity {
 	 * @param startup
 	 *            the variable if sudoku just has been started
 	 */
-	public void enable(boolean startup) {
+	private void enable(boolean startup) {
 		ArrayList<Integer> allids = new ArrayList<Integer>();
 
 		// add all fields
@@ -254,55 +254,61 @@ public class SudokuActivity extends Activity {
 	 */
 	public void load(View v) {
 
-		// load saved Object
-		SudokuPersistentSnapshot sps = PersistenceHandler
-				.getSudokuPersistentSnapshot(this, 0);
-		if (sps != null) {
-			startup = false;
+		try {
 
-			// delete disabled fields
-			if (disabled != null) {
-				disabled.clear();
-			}
+			// load saved Object
+			SudokuPersistentSnapshot sps = PersistenceHandler
+					.getSudokuPersistentSnapshot(this, 0);
+			if (sps != null) {
+				startup = false;
 
-			// load disabled fields
-			disabled.addAll(sps.disabled);
-
-			// delete previous inputs
-			if (inputs != null) {
-				inputs.clear();
-			}
-
-			// load manual inputs
-			inputs.addAll(sps.inputs);
-
-			// load all fields
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
-					Button b = (Button) findViewById(fields[i][j]);
-					b.setText(sps.fieldState[i][j]);
-
+				// delete disabled fields
+				if (disabled != null) {
+					disabled.clear();
 				}
+
+				// load disabled fields
+				disabled.addAll(sps.disabled);
+
+				// delete previous inputs
+				if (inputs != null) {
+					inputs.clear();
+				}
+
+				// load manual inputs
+				inputs.addAll(sps.inputs);
+
+				// load all fields
+				for (int i = 0; i < 9; i++) {
+					for (int j = 0; j < 9; j++) {
+						Button b = (Button) findViewById(fields[i][j]);
+						b.setText(sps.fieldState[i][j]);
+
+					}
+				}
+
+				// load chronometer
+				stop = sps.stop;
+				chron.setBase(sps.base);
+				chron.setText(sps.chrontext);
+
+				// load from startup
+				if (confirm.getVisibility() == View.VISIBLE) {
+					confirm.setVisibility(View.GONE);
+					enable(startup);
+					resumeChronometer();
+				}
+
+				// delete previous focus
+				if (focused != null) {
+					focused.setBackgroundColor(Color.WHITE);
+					focused = null;
+				}
+
 			}
-
-			// load chronometer
-			stop = sps.stop;
-			chron.setBase(sps.base);
-			chron.setText(sps.chrontext);
-
-			// load from startup
-			if (confirm.getVisibility() == View.VISIBLE) {
-				confirm.setVisibility(View.GONE);
-				enable(startup);
-				resumeChronometer();
-			}
-
-			// delete previous focus
-			if (focused != null) {
-				focused.setBackgroundColor(Color.WHITE);
-				focused = null;
-			}
-
+			Toast.makeText(this, R.string.succload, Toast.LENGTH_LONG).show();
+		} catch (Exception e) {
+			Toast.makeText(this, R.string.errload, Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -346,7 +352,7 @@ public class SudokuActivity extends Activity {
 
 			// show message
 			Toast.makeText(this, R.string.succsave, Toast.LENGTH_LONG).show();
-		} catch (RuntimeException e) {
+		} catch (Exception e) {
 
 			// show mesage
 			Toast.makeText(this, R.string.errsave, Toast.LENGTH_LONG).show();
@@ -355,11 +361,11 @@ public class SudokuActivity extends Activity {
 	}
 
 	/** plays music */
-	public void playMusic() {
+	private void playMusic() {
 		AssetFileDescriptor afd;
 		try {
 			// Read the music file from the asset folder
-			afd = getAssets().openFd("music.mid");
+			afd = getAssets().openFd("sudoku.mid");
 			// Creation of new media player;
 			player = new MediaPlayer();
 			// Set the player music source.
@@ -396,7 +402,7 @@ public class SudokuActivity extends Activity {
 	}
 
 	/** orders the fields to arranged array */
-	public void getallFields() {
+	private void getallFields() {
 		int counter = 0;
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -472,7 +478,7 @@ public class SudokuActivity extends Activity {
 	}
 
 	/** checks if player won */
-	public void checkwin() {
+	private void checkwin() {
 		if (fillcheck() == true) {
 			if (inputcheck() == true) {
 
@@ -736,7 +742,7 @@ public class SudokuActivity extends Activity {
 	 * 
 	 * @return returns if all fields are filled
 	 */
-	public boolean fillcheck() {
+	private boolean fillcheck() {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				Button b = (Button) findViewById(fields[i][j]);
@@ -807,20 +813,20 @@ public class SudokuActivity extends Activity {
 	}
 
 	/** start chronometer and set base */
-	public void startChronometer() {
+	private void startChronometer() {
 		chron.setBase(SystemClock.elapsedRealtime());
 		chron.start();
 
 	}
 
 	/** stop chronometer and save stop */
-	public void stopChronometer() {
+	private void stopChronometer() {
 		stop = SystemClock.elapsedRealtime();
 		chron.stop();
 	}
 
 	/** resume chronometer and set base to continue */
-	public void resumeChronometer() {
+	private void resumeChronometer() {
 		chron.setBase(chron.getBase() + SystemClock.elapsedRealtime() - stop);
 		chron.start();
 	}
@@ -843,7 +849,7 @@ public class SudokuActivity extends Activity {
 	 *            sudoku with gaps to be solved
 	 * @return returns if sudoku has a distinct solution
 	 */
-	public boolean checkSolutions(Integer[][] gapsudoku) {
+	private boolean checkSolutions(Integer[][] gapsudoku) {
 		Integer[][] copy = new Integer[9][9];
 		int[] run = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -908,7 +914,7 @@ public class SudokuActivity extends Activity {
 	 *            the sudoku belonging to the number
 	 * @return returns if number is valid at the position
 	 */
-	public boolean validate(int number, int y, int x, Integer[][] copy) {
+	private boolean validate(int number, int y, int x, Integer[][] copy) {
 		boolean checkx = true;
 		boolean checky = true;
 		boolean checkxy = true;

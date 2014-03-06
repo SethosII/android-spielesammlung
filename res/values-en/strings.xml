@@ -51,5 +51,7 @@
 
     <string name="spaceslider">Spaceslider</string>
     <string name="lives_remaining">Lives</string>
+    <string name="succload">State successfully loaded!</string>
+    <string name="errload">State could not be loaded!</string>
 
 </resources>

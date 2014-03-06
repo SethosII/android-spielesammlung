@@ -51,5 +51,7 @@
 
     <string name="spaceslider">Spaceslider</string>
     <string name="lives_remaining">Leben</string>
+    <string name="errload">Es konnte leider kein Spielstand geladen werden!</string>
+    <string name="succload">Spielstand erfolgreich geladen!</string>
 
 </resources>
