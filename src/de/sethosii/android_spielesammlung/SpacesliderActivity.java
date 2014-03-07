@@ -17,6 +17,7 @@ import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
 import de.sethosii.android_spielesammlung.persistence.SpacesliderPersistentGameData;
 import de.sethosii.android_spielesammlung.persistence.SpacesliderPersistentSnapshot;
@@ -224,6 +225,9 @@ public class SpacesliderActivity extends Activity {
 		if (endButton.getVisibility() == View.VISIBLE) {
 			endButton.setVisibility(View.GONE);
 		}
+		if (menu.getVisibility() == View.VISIBLE) {
+			menu(menuButton);
+		}
 		startChronometer();
 	}
 
@@ -253,6 +257,7 @@ public class SpacesliderActivity extends Activity {
 		} else {
 			menu.setVisibility(View.VISIBLE);
 			confirm.setVisibility(View.GONE);
+			endButton.setVisibility(View.GONE);
 
 			stopChronometer();
 			ssliderView.setRunning(false);
@@ -273,20 +278,26 @@ public class SpacesliderActivity extends Activity {
 	 *            the view that called the method (load button)
 	 */
 	public void load(View v) {
-		// read snapshot
-		SpacesliderPersistentSnapshot ssps = PersistenceHandler.getSpacesliderPersistentSnapshot(
-				this, 0);
-		if (ssps == null) {
-			return;
+		try {
+			// read snapshot
+			SpacesliderPersistentSnapshot ssps = PersistenceHandler
+					.getSpacesliderPersistentSnapshot(this, 0);
+			if (ssps == null) {
+				return;
+			}
+
+			// loads chronometer
+			timeElapsed = ssps.stop;
+			chronometer.setBase(ssps.base);
+			chronometer.setText(ssps.chrontext);
+
+			// ...and the rest
+			ssliderView.applySnapshot(ssps);
+
+			Toast.makeText(this, R.string.succload, Toast.LENGTH_LONG).show();
+		} catch (Exception e) {
+			Toast.makeText(this, R.string.errload, Toast.LENGTH_LONG).show();
 		}
-
-		// loads chronometer
-		timeElapsed = ssps.stop;
-		chronometer.setBase(ssps.base);
-		chronometer.setText(ssps.chrontext);
-
-		// ...and the rest
-		ssliderView.applySnapshot(ssps);
 	}
 
 	/**
@@ -296,19 +307,30 @@ public class SpacesliderActivity extends Activity {
 	 *            the view that called the method (save button)
 	 */
 	public void save(View v) {
-		// get snapshot
-		SpacesliderPersistentSnapshot ssps = new SpacesliderPersistentSnapshot();
+		try {
+			// get snapshot
+			SpacesliderPersistentSnapshot ssps = new SpacesliderPersistentSnapshot();
 
-		// saves chronometer
-		ssps.stop = timeElapsed;
-		ssps.base = chronometer.getBase();
-		ssps.chrontext = chronometer.getText().toString();
+			// saves chronometer
+			ssps.stop = timeElapsed;
+			ssps.base = chronometer.getBase();
+			ssps.chrontext = chronometer.getText().toString();
 
-		// ...and the rest
-		ssliderView.fillSnapshot(ssps);
+			// ...and the rest
+			ssliderView.fillSnapshot(ssps);
 
-		// write snapshot
-		PersistenceHandler.setSpacesliderPersistentSnapshot(this, 0, ssps);
+			// write snapshot
+			PersistenceHandler.setSpacesliderPersistentSnapshot(this, 0, ssps);
+
+			// enable load button
+			if (menu.getVisibility() == View.VISIBLE) {
+				((Button) findViewById(R.id.loadgame)).setEnabled(true);
+			}
+
+			Toast.makeText(this, R.string.succsave, Toast.LENGTH_LONG).show();
+		} catch (Exception e) {
+			Toast.makeText(this, R.string.errsave, Toast.LENGTH_LONG).show();
+		}
 	}
 
 	/**
