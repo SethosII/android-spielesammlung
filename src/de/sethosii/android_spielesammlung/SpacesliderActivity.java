@@ -28,8 +28,6 @@ public class SpacesliderActivity extends Activity {
 
 	/** display live count */
 	private TextView tvLiveCount;
-	/** display difficulty */
-	private TextView tvDifficulty;
 	/** space area */
 	private LinearLayout space;
 	/** menu */
@@ -84,7 +82,6 @@ public class SpacesliderActivity extends Activity {
 		menuButton = (ImageButton) findViewById(R.id.showMenu);
 
 		tvLiveCount = (TextView) findViewById(R.id.liveCount);
-		tvDifficulty = (TextView) findViewById(R.id.difficulty);
 
 		ssliderView = new SpacesliderView(this);
 		ssliderView.setOnLiveChangeListener(new SpacesliderView.OnSpacesliderChangeListener() {
@@ -134,8 +131,6 @@ public class SpacesliderActivity extends Activity {
 			// code is not called within onCreate()
 			@Override
 			public void onDifficultyChange(View v, float difficulty) {
-				tvDifficulty.setText(getString(R.string.difficulty)
-						+ String.format("\n%.2f", difficulty));
 			}
 		});
 		space.addView(ssliderView);
