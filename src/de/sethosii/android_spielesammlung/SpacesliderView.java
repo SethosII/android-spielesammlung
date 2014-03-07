@@ -166,6 +166,9 @@ public class SpacesliderView extends View {
 			}
 		}
 
+		/**
+		 * Moves all space entities.
+		 */
 		private void stepStars() {
 			for (Star star : stars) {
 				star.step();
@@ -175,6 +178,11 @@ public class SpacesliderView extends View {
 			}
 		}
 
+		/**
+		 * Tests collision of all asteroids with ship.
+		 * 
+		 * @return the asteroids in collision
+		 */
 		private Asteroid testCollisionAll() {
 			Region regionClip = new Region(xMin, yMin, xMax, yMax);
 			Region regionShip = new Region();
@@ -307,17 +315,13 @@ public class SpacesliderView extends View {
 			pathShip.addPath(pathBody, shipX, shipY);
 			canvas.drawPath(pathShip, paint);
 
-			// canvas.drawPath(pathWings, paint);
-			// canvas.drawPath(pathBody, paint);
-
 			flame.paintTo(canvas, shipX, shipY + shipLength / 2, paint);
 		}
 
 		public void step(float value) {
 			// Get new (x,y) position
 			shipX -= Math.round(60.0f * value);
-			// shipX += shipSpeedX;
-			// shipY += shipSpeedY;
+
 			// Detect collision and react
 			if (shipX + shipSpan / 2 > xMax) {
 				shipSpeedX = -shipSpeedX;
@@ -328,9 +332,9 @@ public class SpacesliderView extends View {
 			}
 
 			// Build status message
-			statusMsg.delete(0, statusMsg.length()); // Empty buffer
-			formatter.format("Ball@(%3.0f,%3.0f), Speed=(%2.0f), Neig(%f)", shipX, shipY,
-					shipSpeedX, value);
+			// statusMsg.delete(0, statusMsg.length()); // Empty buffer
+			// formatter.format("Ball@(%3.0f,%3.0f), Speed=(%2.0f), Neig(%f)", shipX, shipY,
+			// shipSpeedX, value);
 		}
 	}
 
@@ -360,7 +364,11 @@ public class SpacesliderView extends View {
 
 	StarMap starMap = new StarMap();
 
-	// Constructor
+	/**
+	 * Constructor
+	 * 
+	 * @param context
+	 */
 	public SpacesliderView(Context context) {
 		super(context);
 
@@ -425,7 +433,11 @@ public class SpacesliderView extends View {
 		setPivotY(0);
 	}
 
-	// Called back to draw the view. Also called after invalidate().
+	/**
+	 * Called back to draw the view. Also called after invalidate().(non-Javadoc)
+	 * 
+	 * @see android.view.View#onDraw(android.graphics.Canvas)
+	 */
 	@Override
 	protected void onDraw(Canvas canvas) {
 
@@ -435,11 +447,6 @@ public class SpacesliderView extends View {
 
 		// Draw Stars
 		starMap.paintTo(canvas, paint);
-
-		// Draw the ball
-		// ballBounds.set(ballX-ballRadius, ballY-ballRadius, ballX+ballRadius, ballY+ballRadius);
-		// paint.setColor(Color.BLUE);
-		// canvas.drawOval(ballBounds, paint);
 
 		// Draw Ship
 		ship.paintTo(canvas, paint);
@@ -468,11 +475,12 @@ public class SpacesliderView extends View {
 		} catch (InterruptedException e) {
 		}
 
-		// canvas.restore();
 		invalidate(); // Force a re-draw
 	}
 
-	// Detect collision and update the position of the ball.
+	/**
+	 * Detect collision and update the position of all entities.
+	 */
 	private void update() {
 		StarMap.Asteroid asteroid = starMap.testCollisionAll();
 		if (asteroid != null) {
@@ -499,7 +507,9 @@ public class SpacesliderView extends View {
 		ship.step(vals[1]);
 	}
 
-	// Called back when the view is first created or its size changes.
+	/**
+	 * Called back when the view is first created or its size changes.
+	 */
 	@Override
 	public void onSizeChanged(int w, int h, int oldW, int oldH) {
 		// Set the movement bounds for all objects
@@ -513,7 +523,9 @@ public class SpacesliderView extends View {
 		reset();
 	}
 
-	// Key-up event handler
+	/**
+	 * Key-up event handler. For future use.
+	 */
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		switch (keyCode) {
@@ -538,7 +550,9 @@ public class SpacesliderView extends View {
 		return true; // Event handled
 	}
 
-	// Touch-input handler
+	/**
+	 * Touch-input handler. For future use.
+	 */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		float currentX = event.getX();
@@ -559,6 +573,9 @@ public class SpacesliderView extends View {
 		return true; // Event handled
 	}
 
+	/**
+	 * Full reset.
+	 */
 	public void reset() {
 		difficulty = 1;
 		if (mOnSpacesliderChangeListener != null) {
@@ -573,6 +590,9 @@ public class SpacesliderView extends View {
 		running = true;
 	}
 
+	/**
+	 * Increases difficulty: More asteroids, more speed.
+	 */
 	public void increaseDifficulty() {
 		difficulty *= 1.1f;
 		starMap.setAsteroidCount(Math.round(BASE_ASTEROID_COUNT * difficulty));
