@@ -54,5 +54,6 @@
 
     <string name="spaceslider">Spaceslider</string>
     <string name="lives_remaining">Leben</string>
+    <string name="difficulty">Schwere</string>
 
 </resources>

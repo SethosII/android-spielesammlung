@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
 import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
+import de.sethosii.android_spielesammlung.persistence.SpacesliderPersistentGameData;
 import de.sethosii.android_spielesammlung.persistence.SudokuPersistentGameData;
 
 /**
@@ -123,7 +124,6 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {
 				} else {
 					holder.bt.setText("Highscore: ");
 				}
-
 				holder.image.setImageResource(R.drawable.minesweeper_icon);
 			} else {
 				//set content for the sudoku row
@@ -154,7 +154,23 @@ public class CustomListArrayAdapter extends ArrayAdapter<String> {
 					//set content for the spaceslider row
 					Log.w(Tag, "space");
 					holder.tt.setText(R.string.spaceslider);
-					holder.bt.setText("Highscores: 1432");
+					// loads and set spaceslider highscore
+					SpacesliderPersistentGameData sspgd = PersistenceHandler
+							.getSpacesliderPersistentGameData(activity);
+					if (sspgd != null) {
+						// time < 10 s add 0 at beginning
+						String seconds;
+						long tmp = (sspgd.scoring[0].score / 1000) % 60;
+						if (tmp < 10) {
+							seconds = "0" + Long.toString(tmp);
+						} else {
+							seconds = Long.toString(tmp);
+						}
+						String minutes = Long.toString((sspgd.scoring[0].score / (1000 * 60)) % 60);
+						holder.bt.setText("Highscore: " + minutes + ":" + seconds);
+					} else {
+						holder.bt.setText("Highscore: ");
+					}
 					holder.image.setImageResource(R.drawable.spaceslider_icon);
 				}
 			}

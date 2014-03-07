@@ -2,10 +2,6 @@ package de.sethosii.android_spielesammlung;
 
 import java.io.IOException;
 
-import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
-import de.sethosii.android_spielesammlung.persistence.MinesPersistentSnapshot;
-import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
-
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
@@ -19,6 +15,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.sethosii.android_spielesammlung.persistence.MinesPersistentGameData;
+import de.sethosii.android_spielesammlung.persistence.MinesPersistentSnapshot;
+import de.sethosii.android_spielesammlung.persistence.PersistenceHandler;
 
 public class MinesActivity extends Activity {
 
@@ -699,18 +698,19 @@ public class MinesActivity extends Activity {
 	}
 
 	/**
-	 * play music.mid
+	 * plays music mines.mid
 	 */
 	private void playMusic() {
 		AssetFileDescriptor afd;
 		try {
-			// read the music file from the asset folder
+			// Read the music file from the asset folder
 			afd = getAssets().openFd("mines.mid");
+			// Creation of new media player
 			musicPlayer = new MediaPlayer();
-			// Set the player music source.
+			// Set the player music source
 			musicPlayer.setDataSource(afd.getFileDescriptor(),
 					afd.getStartOffset(), afd.getLength());
-			// Set the looping and play the music.
+			// Set the looping and play the music
 			musicPlayer.setLooping(true);
 			musicPlayer.prepare();
 			musicPlayer.start();

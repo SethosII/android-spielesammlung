@@ -1,6 +1,8 @@
 package de.sethosii.android_spielesammlung.persistence;
 
 public class SpacesliderPersistentSnapshot extends PersistentSnapshotBase {
+	/** save current difficulty */
+	public float difficulty;
 	/** save remaining lives */
 	public int liveCount;
 	/** save ship position */

@@ -72,7 +72,7 @@ public class SpacesliderView extends View {
 			float speed = 0, size = 0;
 
 			protected SpaceEntity() {
-				speed = (float) Math.random() * 20.0f + 1.0f;
+				speed = (float) Math.random() * 12.0f + 1.0f;
 
 				reset();
 			}
@@ -95,6 +95,7 @@ public class SpacesliderView extends View {
 				super();
 
 				y = Math.round((float) Math.random() * (float) yMax); // starts not on the top edge
+				// star size between 0.5 and 3.5 virtual pixels
 				size = (float) Math.random() * 3.0f + 0.5f;
 			}
 		}
@@ -105,7 +106,8 @@ public class SpacesliderView extends View {
 			public Asteroid() {
 				super();
 
-				size = (float) Math.random() * 15.0f + 10.0f;
+				// asteroid size between 13 and 28 virtual pixels
+				size = (float) Math.random() * 15.0f + 13.0f;
 
 				switch ((int) (Math.random() * 3.0f)) {
 				case 0:
@@ -189,7 +191,7 @@ public class SpacesliderView extends View {
 	}
 
 	private class SpaceShip {
-		private static final int INITIAL_LIVES = 30;
+		private static final int INITIAL_LIVES = 5;
 
 		private class Flame {
 			private byte flameColor;
@@ -332,7 +334,10 @@ public class SpacesliderView extends View {
 		}
 	}
 
-	private static final int BASE_ASTEROID_COUNT = 6;
+	/** number of asteroids on start */
+	private static final int BASE_ASTEROID_COUNT = 5;
+	/** number of stars in space */
+	private static final int DEFAULT_STAR_COUNT = 50;
 
 	private boolean running = false;
 	private int xMin = 0; // This view's bounds
@@ -411,13 +416,6 @@ public class SpacesliderView extends View {
 		// use same scale for x and y
 		viewScale = Math.min(hScale, vScale);
 
-		int a1, a2, b1, b2;
-		a1 = (int) ((float) widthSize / (float) viewScale);
-		a2 = (int) ((float) heightSize / (float) viewScale);
-		b1 = resolveSize((int) (mDialWidth * viewScale), widthMeasureSpec);
-		b2 = resolveSize((int) (mDialHeight * viewScale), heightMeasureSpec);
-		// setMeasuredDimension(resolveSize((int) (mDialWidth * viewScale), widthMeasureSpec),
-		// resolveSize((int) (mDialHeight * viewScale), heightMeasureSpec));
 		setMeasuredDimension((int) ((float) widthSize / (float) viewScale),
 				(int) ((float) heightSize / (float) viewScale));
 
@@ -510,7 +508,7 @@ public class SpacesliderView extends View {
 		xMax = w;
 		yMax = h;
 
-		starMap.setStarCount(50);
+		starMap.setStarCount(DEFAULT_STAR_COUNT);
 
 		reset();
 	}
@@ -601,6 +599,7 @@ public class SpacesliderView extends View {
 	 *            snapshot object
 	 */
 	public void fillSnapshot(SpacesliderPersistentSnapshot s) {
+		s.difficulty = difficulty;
 		s.liveCount = ship.lives;
 		s.shipX = Math.round(ship.shipX);
 
@@ -628,6 +627,7 @@ public class SpacesliderView extends View {
 	 *            snapshot object
 	 */
 	public void applySnapshot(SpacesliderPersistentSnapshot s) {
+		difficulty = s.difficulty;
 		ship.setLives(s.liveCount);
 		ship.shipX = s.shipX;
 

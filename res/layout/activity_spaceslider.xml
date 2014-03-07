@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:contentDescription="@string/new_game"
-                android:onClick="clear"
+                android:onClick="newGame"
                 android:src="@drawable/ic_action_new" />
 
             <ImageButton
@@ -113,7 +113,7 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="#696969"
-            android:onClick="clear"
+            android:onClick="newGame"
             android:text="@string/new_game" />
 
         <Button
@@ -206,7 +206,7 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:background="#696969"
-                android:onClick="clear"
+                android:onClick="newGame"
                 android:text="@string/new_game" />
 
             <Button
@@ -228,6 +228,6 @@
         android:layout_height="150dp"
         android:layout_centerInParent="true"
         android:background="#696969"
-        android:onClick="clear" />
+        android:onClick="newGame" />
 
 </RelativeLayout>

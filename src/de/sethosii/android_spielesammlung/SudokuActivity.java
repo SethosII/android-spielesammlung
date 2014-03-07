@@ -10,7 +10,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -838,7 +837,6 @@ public class SudokuActivity extends Activity {
 	 *            view that called method (quit button)
 	 */
 	public void quit(View v) {
-		chron.stop();
 		finish();
 	}
 
