@@ -255,9 +255,11 @@ public class SpacesliderActivity extends Activity {
 			ssliderView.setRunning(true);
 			resumeChronometer();
 		} else {
+			if (endButton.getVisibility() == View.VISIBLE) {
+				newGame(v);
+			}
 			menu.setVisibility(View.VISIBLE);
 			confirm.setVisibility(View.GONE);
-			endButton.setVisibility(View.GONE);
 
 			stopChronometer();
 			ssliderView.setRunning(false);
